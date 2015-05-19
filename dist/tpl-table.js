@@ -11,7 +11,7 @@
       controllerAs: 'vm',
       bindToController: true,
       templateUrl: 'src/tpltable.directive.html',
-      scope: { opts: '=tplTableOptions' }
+      scope: { opts: '=tpltableOptions' }
     };
   }).directive('focusMe', [
     '$timeout',

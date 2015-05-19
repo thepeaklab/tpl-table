@@ -1,12 +1,12 @@
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/david\/Development\/Projects\/directives\/tpl-table\/src\/tpltable\.directive\.scss}line{font-family:\0000312}}
-tpltable .top-row {
+tpl-table .top-row {
   height: 30px;
   vertical-align: middle;
   color: #5c5c5c;
   font-size: 12px;
 }
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/david\/Development\/Projects\/directives\/tpl-table\/src\/tpltable\.directive\.scss}line{font-family:\0000319}}
-tpltable .top-row .elementsperside__label {
+tpl-table .top-row .elementsperside__label {
   height: 28px;
   line-height: 28px;
   display: inline-block;
@@ -15,7 +15,7 @@ tpltable .top-row .elementsperside__label {
   margin-left: 5px;
 }
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/david\/Development\/Projects\/directives\/tpl-table\/src\/tpltable\.directive\.scss}line{font-family:\0000330}}
-tpltable .top-row__entry-count {
+tpl-table .top-row__entry-count {
   float: left;
   height: 30px;
   border: 1px solid #ebebeb;
@@ -23,13 +23,13 @@ tpltable .top-row__entry-count {
   background-color: #fff;
 }
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/david\/Development\/Projects\/directives\/tpl-table\/src\/tpltable\.directive\.scss}line{font-family:\0000338}}
-tpltable .top-row form {
+tpl-table .top-row form {
   float: right;
   height: 30px;
   line-height: 28px;
 }
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/david\/Development\/Projects\/directives\/tpl-table\/src\/tpltable\.directive\.scss}line{font-family:\0000344}}
-tpltable .top-row__search {
+tpl-table .top-row__search {
   float: right;
   height: 30px;
   line-height: 28px;
@@ -40,7 +40,7 @@ tpltable .top-row__search {
   padding-left: 10px;
 }
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/david\/Development\/Projects\/directives\/tpl-table\/src\/tpltable\.directive\.scss}line{font-family:\0000356}}
-tpltable .bottom-row {
+tpl-table .bottom-row {
   height: 30px;
   line-height: 30px;
   vertical-align: middle;
@@ -49,52 +49,52 @@ tpltable .bottom-row {
   font-weight: 200;
 }
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/david\/Development\/Projects\/directives\/tpl-table\/src\/tpltable\.directive\.scss}line{font-family:\0000364}}
-tpltable .bottom-row .paginator {
+tpl-table .bottom-row .paginator {
   float: right;
   border: 1px solid #ebebeb;
   height: 30px;
   line-height: 28px;
 }
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/david\/Development\/Projects\/directives\/tpl-table\/src\/tpltable\.directive\.scss}line{font-family:\0000370}}
-tpltable .bottom-row .paginator div {
+tpl-table .bottom-row .paginator div {
   float: left;
   height: 28px;
   line-height: 28px;
   padding: 0 7px;
 }
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/david\/Development\/Projects\/directives\/tpl-table\/src\/tpltable\.directive\.scss}line{font-family:\0000376}}
-tpltable .bottom-row .paginator div:hover {
+tpl-table .bottom-row .paginator div:hover {
   background-color: #e8f7fe;
 }
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/david\/Development\/Projects\/directives\/tpl-table\/src\/tpltable\.directive\.scss}line{font-family:\0000381}}
-tpltable .bottom-row .paginator__first {
+tpl-table .bottom-row .paginator__first {
   border-right: 1px solid #ebebeb;
 }
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/david\/Development\/Projects\/directives\/tpl-table\/src\/tpltable\.directive\.scss}line{font-family:\0000383}}
-tpltable .bottom-row .paginator__first.inactive {
+tpl-table .bottom-row .paginator__first.inactive {
   color: #ebebeb;
   cursor: default;
 }
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/david\/Development\/Projects\/directives\/tpl-table\/src\/tpltable\.directive\.scss}line{font-family:\0000386}}
-tpltable .bottom-row .paginator__first.inactive:hover {
+tpl-table .bottom-row .paginator__first.inactive:hover {
   background-color: #fff;
 }
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/david\/Development\/Projects\/directives\/tpl-table\/src\/tpltable\.directive\.scss}line{font-family:\0000392}}
-tpltable .bottom-row .paginator__mid {
+tpl-table .bottom-row .paginator__mid {
   border-right: 1px solid #ebebeb;
 }
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/david\/Development\/Projects\/directives\/tpl-table\/src\/tpltable\.directive\.scss}line{font-family:\0000395}}
-tpltable .bottom-row .paginator__mid.active {
+tpl-table .bottom-row .paginator__mid.active {
   background-color: #004894 !important;
   color: #fff;
 }
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/david\/Development\/Projects\/directives\/tpl-table\/src\/tpltable\.directive\.scss}line{font-family:\00003102}}
-tpltable .bottom-row .paginator__last.inactive {
+tpl-table .bottom-row .paginator__last.inactive {
   color: #ebebeb;
   cursor: default;
 }
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/david\/Development\/Projects\/directives\/tpl-table\/src\/tpltable\.directive\.scss}line{font-family:\00003105}}
-tpltable .bottom-row .paginator__last.inactive:hover {
+tpl-table .bottom-row .paginator__last.inactive:hover {
   background-color: #fff;
 }
 
