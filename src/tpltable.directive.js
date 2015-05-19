@@ -10,7 +10,7 @@
         bindToController: true,
         templateUrl: 'src/tpltable.directive.html',
         scope: {
-          opts: '=tpltableOptions'
+          opts: '=tplTableOptions'
         }
       };
     })
