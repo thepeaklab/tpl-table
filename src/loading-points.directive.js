@@ -3,6 +3,6 @@ angular.module('tpl.table')
     'use strict';
     return {
       restrict: 'E',
-      templateUrl: 'src/loading-points.html'
+      templateUrl: 'src/loading-points.directive.html'
     };
   });
