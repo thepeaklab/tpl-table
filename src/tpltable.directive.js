@@ -41,17 +41,6 @@
 
         vm.editableCell = [null, null];
 
-        // vm.opts.tableId = vm.opts.tableId || 'tpltable';
-        // vm.opts.loading = vm.opts.loading || false;
-        // vm.opts.searchModel = vm.opts.searchModel !== undefined ? vm.opts.searchModel : null;
-        // vm.opts.paginationModel = vm.opts.paginationModel || 1;
-        // vm.opts.dataPageCount = vm.opts.dataPageCount || null;
-        // vm.opts.elementsPerSideModel = vm.opts.elementsPerSideModel || 10;
-        // vm.opts.editable = vm.opts.editable || false;
-        // vm.opts.tableData = vm.opts.tableData || [];
-        // vm.opts.dataOrder = vm.opts.dataOrder || null;
-        // vm.opts.onRowClick = vm.opts.onRowClick || null;
-        // vm.opts.tableColumns = vm.opts.tableColumns || [
         vm.opts.id = vm.opts.id || 'tpltable';
         vm.opts.loading = vm.opts.loading || false;
         vm.opts.editable = vm.opts.editable || false;

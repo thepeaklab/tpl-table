@@ -54,12 +54,12 @@
 <div class="bottom-row">
   <div class="paginator">
     <div class="paginator__first" ng-class="{'inactive': vm.opts.paginationModel === 1}" ng-disabled="vm.opts.paginationModel === 1" ng-click="setPage(1)"> {{'TABLE_PAGING_START'|translate}}</div>
-    <div class="paginator__mid" ng-if="paginationStart > 1" ng-click="skipPagesBackward()"> ... </div>
+    <div class="paginator__mid" ng-if="vm.paginationStart > 1" ng-click="skipPagesBackward()"> ... </div>
 
     <div class="paginator__mid" ng-class="{'active': i === vm.opts.paginationModel}" ng-repeat="i in [vm.paginationStart, vm.paginationEnd] | toRange"
     ng-click="setPage(i)"> {{i}} </div>
 
-    <div class="paginator__mid" ng-if="paginationEnd < vm.opts.pageCount" ng-click="skipPagesForward()"> ... </div>
+    <div class="paginator__mid" ng-if="vm.paginationEnd < vm.opts.pageCount" ng-click="skipPagesForward()"> ... </div>
     <div class="paginator__last" ng-class="{'inactive': vm.opts.paginationModel === vm.opts.pageCount}" ng-disabled="vm.opts.paginationModel === vm.opts.pageCount" ng-click="setPage(vm.opts.pageCount)"> {{'TABLE_PAGING_END'|translate}}</div>
   </div>
 </div>

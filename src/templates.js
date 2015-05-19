@@ -58,12 +58,12 @@ angular.module('tpl.table').run(['$templateCache', function($templateCache) {
     "<div class=\"bottom-row\">\n" +
     "  <div class=\"paginator\">\n" +
     "    <div class=\"paginator__first\" ng-class=\"{'inactive': vm.opts.paginationModel === 1}\" ng-disabled=\"vm.opts.paginationModel === 1\" ng-click=\"setPage(1)\"> {{'TABLE_PAGING_START'|translate}}</div>\n" +
-    "    <div class=\"paginator__mid\" ng-if=\"paginationStart > 1\" ng-click=\"skipPagesBackward()\"> ... </div>\n" +
+    "    <div class=\"paginator__mid\" ng-if=\"vm.paginationStart > 1\" ng-click=\"skipPagesBackward()\"> ... </div>\n" +
     "\n" +
     "    <div class=\"paginator__mid\" ng-class=\"{'active': i === vm.opts.paginationModel}\" ng-repeat=\"i in [vm.paginationStart, vm.paginationEnd] | toRange\"\n" +
     "    ng-click=\"setPage(i)\"> {{i}} </div>\n" +
     "\n" +
-    "    <div class=\"paginator__mid\" ng-if=\"paginationEnd < vm.opts.pageCount\" ng-click=\"skipPagesForward()\"> ... </div>\n" +
+    "    <div class=\"paginator__mid\" ng-if=\"vm.paginationEnd < vm.opts.pageCount\" ng-click=\"skipPagesForward()\"> ... </div>\n" +
     "    <div class=\"paginator__last\" ng-class=\"{'inactive': vm.opts.paginationModel === vm.opts.pageCount}\" ng-disabled=\"vm.opts.paginationModel === vm.opts.pageCount\" ng-click=\"setPage(vm.opts.pageCount)\"> {{'TABLE_PAGING_END'|translate}}</div>\n" +
     "  </div>\n" +
     "</div>\n"
