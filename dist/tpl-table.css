@@ -356,6 +356,11 @@ tpl-table .bottom-row .paginator__last.inactive:hover {
 }
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/david\/Development\/Projects\/directives\/tpl-table\/src\/tpltable\.directive\.scss}line{font-family:\00003243}}
 .tpltable__row--placeholder {
+  background-color: #fff !important;
   height: 370px !important;
   text-align: center;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/david\/Development\/Projects\/directives\/tpl-table\/src\/tpltable\.directive\.scss}line{font-family:\00003248}}
+.tpltable__row--placeholder:hover {
+  background-color: #fff !important;
 }

@@ -241,8 +241,13 @@ tpl-table {
 
   &__row {
     &--placeholder {
+      background-color: #fff !important;
       height: 370px !important;
       text-align: center;
+
+      &:hover {
+        background-color: #fff !important;
+      }
     }
   }
 
