@@ -15,7 +15,7 @@
 
 #Usage (HTML)
 
-      <tpltable tpltable-options="tableOptions"></tpltable>
+      <tpl-table tpl-table-options="tableOptions"></tpl-table>
 
 #Usage (JS)
 Beispielhaftes Options-Objekt:
