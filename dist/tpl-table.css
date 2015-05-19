@@ -354,8 +354,8 @@ tpl-table .bottom-row .paginator__last.inactive:hover {
 .tpltable__body tr .edit-input:focus {
   outline-width: 0;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/david\/Development\/Projects\/directives\/tpl-table\/src\/tpltable\.directive\.scss}line{font-family:\00003242}}
-.tpltable__body__row--placeholder {
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/david\/Development\/Projects\/directives\/tpl-table\/src\/tpltable\.directive\.scss}line{font-family:\00003243}}
+.tpltable__row--placeholder {
   height: 370px;
   text-align: center;
 }

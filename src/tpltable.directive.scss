@@ -237,12 +237,12 @@ tpl-table {
 
       }
     }
+  }
 
-    &__row {
-      &--placeholder {
-        height: 370px;
-        text-align: center;
-      }
+  &__row {
+    &--placeholder {
+      height: 370px;
+      text-align: center;
     }
   }
 

@@ -57,7 +57,7 @@ angular.module('tpl.table').run(['$templateCache', function($templateCache) {
     "  <tbody class=\"tpltable__body\">\n" +
     "\n" +
     "    <tr class=\"tpltable__row--placeholder\" ng-if=\"!vm.opts.entries || !vm.opts.entries.length\">\n" +
-    "      <td colpan=\"{{vm.opts.entrieValuesOrder.length + (vm.opts.editable ? 1 : 0)}}\">\n" +
+    "      <td colspan=\"{{vm.opts.entrieValuesOrder.length + (vm.opts.editable ? 1 : 0)}}\">\n" +
     "        <loadingpoints ng-if=\"vm.opts.loading\"></loadingpoints>\n" +
     "      </td>\n" +
     "    </tr>\n" +
