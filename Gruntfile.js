@@ -57,7 +57,7 @@ module.exports = function(grunt) {
         stripBanners: true
       },
       js: {
-        src: ['<%= yo.src %>/*.js'],
+        src: ['<%= yo.src %>/*.js', '!<%= yo.src %>/templates.js', '<%= yo.src %>/templates.js',],
         dest: '<%= yo.dist %>/tpl-table.js'
       },
       css: {
