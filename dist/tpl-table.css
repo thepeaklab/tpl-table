@@ -1,0 +1,219 @@
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/david\/Development\/Projects\/directives\/tpl-table\/src\/tpltable\.directive\.scss}line{font-family:\0000312}}
+tpltable .top-row {
+  height: 30px;
+  vertical-align: middle;
+  color: #5c5c5c;
+  font-size: 12px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/david\/Development\/Projects\/directives\/tpl-table\/src\/tpltable\.directive\.scss}line{font-family:\0000319}}
+tpltable .top-row .elementsperside__label {
+  height: 28px;
+  line-height: 28px;
+  display: inline-block;
+  vertical-align: middle;
+  margin-top: -20px;
+  margin-left: 5px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/david\/Development\/Projects\/directives\/tpl-table\/src\/tpltable\.directive\.scss}line{font-family:\0000330}}
+tpltable .top-row__entry-count {
+  float: left;
+  height: 30px;
+  border: 1px solid #ebebeb;
+  border-radius: 0 !important;
+  background-color: #fff;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/david\/Development\/Projects\/directives\/tpl-table\/src\/tpltable\.directive\.scss}line{font-family:\0000338}}
+tpltable .top-row form {
+  float: right;
+  height: 30px;
+  line-height: 28px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/david\/Development\/Projects\/directives\/tpl-table\/src\/tpltable\.directive\.scss}line{font-family:\0000344}}
+tpltable .top-row__search {
+  float: right;
+  height: 30px;
+  line-height: 28px;
+  border: 1px solid #ebebeb;
+  border-radius: 0;
+  font-size: 12px;
+  font-weight: 200;
+  padding-left: 10px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/david\/Development\/Projects\/directives\/tpl-table\/src\/tpltable\.directive\.scss}line{font-family:\0000356}}
+tpltable .bottom-row {
+  height: 30px;
+  line-height: 30px;
+  vertical-align: middle;
+  color: #004894;
+  font-size: 12px;
+  font-weight: 200;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/david\/Development\/Projects\/directives\/tpl-table\/src\/tpltable\.directive\.scss}line{font-family:\0000364}}
+tpltable .bottom-row .paginator {
+  float: right;
+  border: 1px solid #ebebeb;
+  height: 30px;
+  line-height: 28px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/david\/Development\/Projects\/directives\/tpl-table\/src\/tpltable\.directive\.scss}line{font-family:\0000370}}
+tpltable .bottom-row .paginator div {
+  float: left;
+  height: 28px;
+  line-height: 28px;
+  padding: 0 7px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/david\/Development\/Projects\/directives\/tpl-table\/src\/tpltable\.directive\.scss}line{font-family:\0000376}}
+tpltable .bottom-row .paginator div:hover {
+  background-color: #e8f7fe;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/david\/Development\/Projects\/directives\/tpl-table\/src\/tpltable\.directive\.scss}line{font-family:\0000381}}
+tpltable .bottom-row .paginator__first {
+  border-right: 1px solid #ebebeb;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/david\/Development\/Projects\/directives\/tpl-table\/src\/tpltable\.directive\.scss}line{font-family:\0000383}}
+tpltable .bottom-row .paginator__first.inactive {
+  color: #ebebeb;
+  cursor: default;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/david\/Development\/Projects\/directives\/tpl-table\/src\/tpltable\.directive\.scss}line{font-family:\0000386}}
+tpltable .bottom-row .paginator__first.inactive:hover {
+  background-color: #fff;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/david\/Development\/Projects\/directives\/tpl-table\/src\/tpltable\.directive\.scss}line{font-family:\0000392}}
+tpltable .bottom-row .paginator__mid {
+  border-right: 1px solid #ebebeb;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/david\/Development\/Projects\/directives\/tpl-table\/src\/tpltable\.directive\.scss}line{font-family:\0000395}}
+tpltable .bottom-row .paginator__mid.active {
+  background-color: #004894 !important;
+  color: #fff;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/david\/Development\/Projects\/directives\/tpl-table\/src\/tpltable\.directive\.scss}line{font-family:\00003102}}
+tpltable .bottom-row .paginator__last.inactive {
+  color: #ebebeb;
+  cursor: default;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/david\/Development\/Projects\/directives\/tpl-table\/src\/tpltable\.directive\.scss}line{font-family:\00003105}}
+tpltable .bottom-row .paginator__last.inactive:hover {
+  background-color: #fff;
+}
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/david\/Development\/Projects\/directives\/tpl-table\/src\/tpltable\.directive\.scss}line{font-family:\00003116}}
+.tpltable {
+  margin: 10px 0;
+  width: 100%;
+  border: 1px solid #ebebeb;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/david\/Development\/Projects\/directives\/tpl-table\/src\/tpltable\.directive\.scss}line{font-family:\00003124}}
+.tpltable__head {
+  border: 1px solid #ebebeb;
+  border-bottom: 2px solid #ebebeb;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/david\/Development\/Projects\/directives\/tpl-table\/src\/tpltable\.directive\.scss}line{font-family:\00003128}}
+.tpltable__head tr {
+  border: 1px solid #ebebeb;
+  height: 36px;
+  line-height: 36px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/david\/Development\/Projects\/directives\/tpl-table\/src\/tpltable\.directive\.scss}line{font-family:\00003134}}
+.tpltable__head tr th {
+  border: 1px solid #ebebeb;
+  line-height: 36px;
+  height: 36px;
+  padding: 0 10px;
+  font-weight: 400;
+  font-size: 12px;
+  position: relative;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/david\/Development\/Projects\/directives\/tpl-table\/src\/tpltable\.directive\.scss}line{font-family:\00003148}}
+.tpltable__body tr {
+  border: 1px solid #ebebeb;
+  height: 36px;
+  line-height: 36px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/david\/Development\/Projects\/directives\/tpl-table\/src\/tpltable\.directive\.scss}line{font-family:\00003153}}
+.tpltable__body tr.active {
+  background-color: #e8f7fe !important;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/david\/Development\/Projects\/directives\/tpl-table\/src\/tpltable\.directive\.scss}line{font-family:\00003156}}
+.tpltable__body tr.active:hover {
+  background-color: #e8f7fe !important;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/david\/Development\/Projects\/directives\/tpl-table\/src\/tpltable\.directive\.scss}line{font-family:\00003161}}
+.tpltable__body tr.clickable {
+  cursor: zoom-in;
+  cursor: -webkit-zoom-in;
+  cursor: -moz-zoom-in;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/david\/Development\/Projects\/directives\/tpl-table\/src\/tpltable\.directive\.scss}line{font-family:\00003167}}
+.tpltable__body tr.notclickable {
+  cursor: default !important;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/david\/Development\/Projects\/directives\/tpl-table\/src\/tpltable\.directive\.scss}line{font-family:\00003171}}
+.tpltable__body tr:hover {
+  background-color: #f5f5f5 !important;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/david\/Development\/Projects\/directives\/tpl-table\/src\/tpltable\.directive\.scss}line{font-family:\00003175}}
+.tpltable__body tr:nth-child(odd) {
+  background-color: #fafafa;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/david\/Development\/Projects\/directives\/tpl-table\/src\/tpltable\.directive\.scss}line{font-family:\00003179}}
+.tpltable__body tr td {
+  border: 1px solid #ebebeb;
+  line-height: 36px;
+  height: 36px;
+  padding: 0 10px;
+  font-weight: 400;
+  font-size: 12px;
+  position: relative;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/david\/Development\/Projects\/directives\/tpl-table\/src\/tpltable\.directive\.scss}line{font-family:\00003188}}
+.tpltable__body tr td.active {
+  background-color: #004894;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/david\/Development\/Projects\/directives\/tpl-table\/src\/tpltable\.directive\.scss}line{font-family:\00003192}}
+.tpltable__body tr td .cell-controll {
+  margin: auto;
+  width: 36px;
+  height: 36px;
+  cursor: pointer;
+  position: absolute;
+  right: 0;
+  top: 0;
+  text-align: center;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/david\/Development\/Projects\/directives\/tpl-table\/src\/tpltable\.directive\.scss}line{font-family:\00003202}}
+.tpltable__body tr td .cell-controll.edit {
+  background-color: inherit;
+  border-left: 1px solid #ebebeb;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/david\/Development\/Projects\/directives\/tpl-table\/src\/tpltable\.directive\.scss}line{font-family:\00003206}}
+.tpltable__body tr td .cell-controll.edit:hover {
+  background-color: #e8f7fe;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/david\/Development\/Projects\/directives\/tpl-table\/src\/tpltable\.directive\.scss}line{font-family:\00003211}}
+.tpltable__body tr td .cell-controll.save {
+  background-color: #004894;
+  border-left: 1px solid #ebebeb;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/david\/Development\/Projects\/directives\/tpl-table\/src\/tpltable\.directive\.scss}line{font-family:\00003216}}
+.tpltable__body tr td .cell-controll .icon {
+  display: inline-block;
+  vertical-align: middle;
+  margin: auto;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/david\/Development\/Projects\/directives\/tpl-table\/src\/tpltable\.directive\.scss}line{font-family:\00003224}}
+.tpltable__body tr .edit-input {
+  position: absolute;
+  left: 0;
+  top: 0;
+  line-height: 34px;
+  padding-left: 10px;
+  border: 0;
+  background-color: inherit;
+  width: calc(100% - 36px);
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/david\/Development\/Projects\/directives\/tpl-table\/src\/tpltable\.directive\.scss}line{font-family:\00003234}}
+.tpltable__body tr .edit-input:focus {
+  outline-width: 0;
+}

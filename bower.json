@@ -1,0 +1,13 @@
+{
+  "name": "tpl.table",
+  "version": "0.9.0",
+  "main": [
+    "dist/tpl-table.js"
+  ],
+  "dependencies": {
+
+  },
+  "devDependencies": {
+    "angular": "latest"
+  }
+}

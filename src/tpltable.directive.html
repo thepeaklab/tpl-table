@@ -1,0 +1,65 @@
+
+<div class="top-row">
+
+  <div class="elementsperside__select prettyselect">
+    <select class="top-row__entry-count input-sm" ng-model="vm.opts.entriesPerPageCount" ng-options="o as o for o in vm.POSSIBLE_RANGE_VALUES" />
+  </div>
+  <span class="elementsperside__label">
+    {{ 'TABLE_ENTRIES_PER_SITE' | translate }} {{dataOrder}}
+  </span>
+
+  <form ng-if="vm.opts.searchModel!==null" ng-submit="setSearch()">
+    <input class="top-row__search" type="text" ng-model="vm.searchInput" placeholder="{{'TABLE_SEARCH'|translate}}" />
+  </form>
+
+</div>
+
+<table class="tpltable">
+
+  <thead class="tpltable__head">
+    <tr>
+      <th ng-repeat="column in vm.opts.columns">{{column.name}}</th>
+      <th ng-if="vm.opts.editable" class="edit">edit.</th>
+    </tr>
+  </thead>
+
+  <tbody class="tpltable__body">
+    <tr ng-repeat="row in vm.opts.entries" ng-class="{'active': vm.editableCell[0]===$index, 'clickable': vm.opts.onRowClick, 'notclickable': !vm.opts.onRowClick || vm.editableCell[0]!==null}" ng-click="!vm.opts.onRowClick || vm.editableCell[0]!==null || vm.opts.onRowClick($index)">
+
+      <td ng-repeat="cell in vm.opts.entrieValuesOrder" ng-mouseleave="hover=false" ng-mouseenter="hover=true">
+
+        <span ng-if="(vm.editableCell[0]!==$parent.$index || vm.editableCell[1]!==$index) || !vm.opts.columns[$index].editable">
+          {{row[cell]}} {{columnValues[$index]}}
+        </span>
+
+        <span ng-if="vm.editableCell[1]===$index && vm.editableCell[0]===$parent.$index && vm.opts.columns[$index].editable">
+          <input type="text" class="edit-input" ng-model="vm.tempEditColumnCopy[cell]" focus-me="vm.editableCell[1]===$index && vm.editableCell[0]===$parent.$parent.$index" ng-click="$event.stopPropagation()" ng-keyup="$event.keyCode == 13 && saveEditedColumn()"/> {{columnValues[$index]}}
+        </span>
+
+        <div class="cell-controll edit" ng-if="vm.opts.columns[$index].editable && hover" ng-click="toggleEditCell($event, $parent.$parent.$index, $index)">
+          <div ng-if="hover" class="icon icon-edit"></div>
+        </div>
+        <div class="cell-controll save" ng-if="vm.opts.columns[$index].editable && vm.editableCell[0]===$parent.$index && vm.editableCell[1]===$index" ng-click="$parent.hover=false;saveEditedColumn()">
+          <div  class="icon icon-check"></div>
+        </div>
+      </td>
+
+      <td ng-if="vm.opts.editable" class="edit" ng-class="{'active': vm.editableCell[1]===$parent.$index}"></td>
+
+    </tr>
+  </tbody>
+
+</table>
+
+<div class="bottom-row">
+  <div class="paginator">
+    <div class="paginator__first" ng-class="{'inactive': vm.opts.paginationModel === 1}" ng-disabled="vm.opts.paginationModel === 1" ng-click="setPage(1)"> {{'TABLE_PAGING_START'|translate}}</div>
+    <div class="paginator__mid" ng-if="paginationStart > 1" ng-click="skipPagesBackward()"> ... </div>
+
+    <div class="paginator__mid" ng-class="{'active': i === vm.opts.paginationModel}" ng-repeat="i in [vm.paginationStart, vm.paginationEnd] | toRange"
+    ng-click="setPage(i)"> {{i}} </div>
+
+    <div class="paginator__mid" ng-if="paginationEnd < vm.opts.pageCount" ng-click="skipPagesForward()"> ... </div>
+    <div class="paginator__last" ng-class="{'inactive': vm.opts.paginationModel === vm.opts.pageCount}" ng-disabled="vm.opts.paginationModel === vm.opts.pageCount" ng-click="setPage(vm.opts.pageCount)"> {{'TABLE_PAGING_END'|translate}}</div>
+  </div>
+</div>
