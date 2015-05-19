@@ -241,7 +241,7 @@ tpl-table {
 
   &__row {
     &--placeholder {
-      height: 370px;
+      height: 370px !important;
       text-align: center;
     }
   }
