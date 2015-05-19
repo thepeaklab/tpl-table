@@ -364,3 +364,7 @@ tpl-table .bottom-row .paginator__last.inactive:hover {
 .tpltable__row--placeholder:hover {
   background-color: #fff !important;
 }
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/david\/Development\/Projects\/directives\/tpl-table\/src\/tpltable\.directive\.scss}line{font-family:\00003254}}
+.tpltable tr.tpltable__row--placeholder:hover {
+  background-color: #fff !important;
+}

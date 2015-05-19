@@ -251,6 +251,10 @@ tpl-table {
     }
   }
 
+  tr.tpltable__row--placeholder:hover {
+    background-color: #fff !important;
+  }
+
 }
 
 
