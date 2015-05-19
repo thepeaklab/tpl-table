@@ -4,7 +4,7 @@
 }());
 (function () {
   'use strict';
-  angular.module('tpl.table').directive('tplTable').directive('tpltable', function tpltable() {
+  angular.module('tpl.table').directive('tpltable', function tpltable() {
     return {
       restrict: 'E',
       controller: 'TplTableCtrl',
