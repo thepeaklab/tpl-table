@@ -63,24 +63,23 @@
         vm.opts.entrieValuesOrder = vm.opts.entrieValuesOrder || null;
         vm.opts.onRowClick = vm.opts.onRowClick || null;
         vm.opts.columns = vm.opts.columns || [
-                                                                {
-                                                                  name : '',
-                                                                  editable : true
-                                                                },
-                                                                {
-                                                                  name : '',
-                                                                  editable : true
-                                                                },
-                                                                {
-                                                                  name : '',
-                                                                  editable : true
-                                                                },
-                                                                {
-                                                                  name : '',
-                                                                  editable : true
-                                                                }
-                                                               ];
-
+                                              {
+                                                name : '',
+                                                editable : true
+                                              },
+                                              {
+                                                name : '',
+                                                editable : true
+                                              },
+                                              {
+                                                name : '',
+                                                editable : true
+                                              },
+                                              {
+                                                name : '',
+                                                editable : true
+                                              }
+                                             ];
 
         vm.paginationStart = 1;
         vm.paginationEnd = 1;
