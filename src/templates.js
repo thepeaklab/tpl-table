@@ -1,6 +1,33 @@
 angular.module('tpl.table').run(['$templateCache', function($templateCache) {
   'use strict';
 
+  $templateCache.put('src/loading-points.directive.html',
+    "<!-- <svg width=\"70\" height=\"20\">\n" +
+    "  <rect width=\"6\" height=\"6\" x=\"0\" y=\"0\" rx=\"1\" ry=\"1\">\n" +
+    "    <animate attributeName=\"width\" values=\"0;6;6;6;0\" dur=\"1000ms\" repeatCount=\"indefinite\"/>\n" +
+    "    <animate attributeName=\"height\" values=\"0;6;6;6;0\" dur=\"1000ms\" repeatCount=\"indefinite\"/>\n" +
+    "    <animate attributeName=\"x\" values=\"3;0;0;0;3\" dur=\"1000ms\" repeatCount=\"indefinite\"/>\n" +
+    "    <animate attributeName=\"y\" values=\"3;0;0;0;3\" dur=\"1000ms\" repeatCount=\"indefinite\"/>\n" +
+    "  </rect>\n" +
+    "  <rect width=\"6\" height=\"6\" x=\"10\" y=\"0\" rx=\"1\" ry=\"1\">\n" +
+    "    <animate attributeName=\"width\" values=\"0;6;6;6;0\" begin=\"200ms\" dur=\"1000ms\" repeatCount=\"indefinite\"/>\n" +
+    "    <animate attributeName=\"height\" values=\"0;6;6;6;0\" begin=\"200ms\" dur=\"1000ms\" repeatCount=\"indefinite\"/>\n" +
+    "    <animate attributeName=\"x\" values=\"10;8;8;8;10\" begin=\"200ms\" dur=\"1000ms\" repeatCount=\"indefinite\"/>\n" +
+    "    <animate attributeName=\"y\" values=\"3;0;0;0;3\" begin=\"200ms\" dur=\"1000ms\" repeatCount=\"indefinite\"/>\n" +
+    "  </rect>\n" +
+    "  <rect width=\"6\" height=\"6\" x=\"20\" y=\"0\" rx=\"1\" ry=\"1\">\n" +
+    "    <animate attributeName=\"width\" values=\"0;6;6;6;0\" begin=\"400ms\" dur=\"1000ms\" repeatCount=\"indefinite\"/>\n" +
+    "    <animate attributeName=\"height\" values=\"0;6;6;6;0\" begin=\"400ms\" dur=\"1000ms\" repeatCount=\"indefinite\"/>\n" +
+    "    <animate attributeName=\"x\" values=\"18;16;16;16;18\" begin=\"400ms\" dur=\"1000ms\" repeatCount=\"indefinite\"/>\n" +
+    "    <animate attributeName=\"y\" values=\"3;0;0;0;3\" begin=\"400ms\" dur=\"1000ms\" repeatCount=\"indefinite\"/>\n" +
+    "  </rect>\n" +
+    "</svg> -->\n" +
+    "<div id=\"rect3\"></div>\n" +
+    "<div id=\"rect2\"></div>\n" +
+    "<div id=\"rect1\"></div>\n"
+  );
+
+
   $templateCache.put('src/tpltable.directive.html',
     "\n" +
     "<div class=\"top-row\">\n" +
@@ -28,7 +55,14 @@ angular.module('tpl.table').run(['$templateCache', function($templateCache) {
     "  </thead>\n" +
     "\n" +
     "  <tbody class=\"tpltable__body\">\n" +
-    "    <tr ng-repeat=\"row in vm.opts.entries\" ng-class=\"{'active': vm.editableCell[0]===$index, 'clickable': vm.opts.onRowClick, 'notclickable': !vm.opts.onRowClick || vm.editableCell[0]!==null}\" ng-click=\"!vm.opts.onRowClick || vm.editableCell[0]!==null || vm.opts.onRowClick($index)\">\n" +
+    "\n" +
+    "    <tr class=\"tpltable__row--placeholder\" ng-if=\"!vm.opts.entries || !vm.opts.entries.length\">\n" +
+    "      <td rowspan=\"vm.opts.entrieValuesOrder.length + (vm.opts.editable ? 1 : 0)\">\n" +
+    "        <loadingpoints ng-if=\"vm.opts.loading\"></loadingpoints>\n" +
+    "      </td>\n" +
+    "    </tr>\n" +
+    "\n" +
+    "    <tr ng-if=\"vm.opts.entries && vm.opts.entries.length\" ng-repeat=\"row in vm.opts.entries\" ng-class=\"{'active': vm.editableCell[0]===$index, 'clickable': vm.opts.onRowClick, 'notclickable': !vm.opts.onRowClick || vm.editableCell[0]!==null}\" ng-click=\"!vm.opts.onRowClick || vm.editableCell[0]!==null || vm.opts.onRowClick($index)\">\n" +
     "\n" +
     "      <td ng-repeat=\"cell in vm.opts.entrieValuesOrder\" ng-mouseleave=\"hover=false\" ng-mouseenter=\"hover=true\">\n" +
     "\n" +

@@ -24,7 +24,14 @@
   </thead>
 
   <tbody class="tpltable__body">
-    <tr ng-repeat="row in vm.opts.entries" ng-class="{'active': vm.editableCell[0]===$index, 'clickable': vm.opts.onRowClick, 'notclickable': !vm.opts.onRowClick || vm.editableCell[0]!==null}" ng-click="!vm.opts.onRowClick || vm.editableCell[0]!==null || vm.opts.onRowClick($index)">
+
+    <tr class="tpltable__row--placeholder" ng-if="!vm.opts.entries || !vm.opts.entries.length">
+      <td rowspan="vm.opts.entrieValuesOrder.length + (vm.opts.editable ? 1 : 0)">
+        <loadingpoints ng-if="vm.opts.loading"></loadingpoints>
+      </td>
+    </tr>
+
+    <tr ng-if="vm.opts.entries && vm.opts.entries.length" ng-repeat="row in vm.opts.entries" ng-class="{'active': vm.editableCell[0]===$index, 'clickable': vm.opts.onRowClick, 'notclickable': !vm.opts.onRowClick || vm.editableCell[0]!==null}" ng-click="!vm.opts.onRowClick || vm.editableCell[0]!==null || vm.opts.onRowClick($index)">
 
       <td ng-repeat="cell in vm.opts.entrieValuesOrder" ng-mouseleave="hover=false" ng-mouseenter="hover=true">
 
