@@ -23,6 +23,7 @@ Beispielhaftes Options-Objekt:
       tableOptions = {
           id: 'customersTable',
           loading: false,
+          noDataAvailableText: ,
           searchModel: '',
           paginationModel: 1,
           pageCount: null,
@@ -60,4 +61,6 @@ Beispielhaftes Options-Objekt:
 
 Sowohl 'entries' als auch 'pageCount' sollten nachdem die Daten Verfügbar sind (z.B. nach empfangen einer Antwort von
 einem entsprechenden Service) dynamisch gesetzt werden.
+
+Einige derOptionen sind optional, wie z.B. loading, noDataAvailableText, onRowClick ...
 
