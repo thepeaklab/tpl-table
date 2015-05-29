@@ -95,11 +95,12 @@ angular.module('tpl.table').run(['$templateCache', function($templateCache) {
     "\n" +
     "    <div class=\"paginator__first\" ng-class=\"{'inactive': vm.opts.paginationModel === 1}\"\n" +
     "    ng-style=\"vm.opts.paginationModel !== 1 && !pageFirstHover {'color': vm.opts.colors.secondaryColor} ||\n" +
-    "              vm.opts.paginationModel !== 1 && pageFirstHover && {'color': vm.opts.colors.secondaryFontColor, 'background-color': vm.opts.colors.secondaryColor}\"\n" +
+    "              vm.opts.paginationModel !== 1 && pageFirstHover && {'color': vm.opts.colors.secondaryFontColor, 'background-color': vm.opts.colors.primaryColor}\"\n" +
     "    ng-disabled=\"vm.opts.paginationModel === 1\" ng-click=\"setPage(1)\" ng-mouseenter=\"pageFirstHover=true\" ng-mouseleave=\"pageFirstHover=false\"> {{'TABLE_PAGING_START'|translate}}</div>\n" +
     "\n" +
     "    <div class=\"paginator__mid\" ng-if=\"vm.paginationStart > 1\" ng-click=\"skipPagesBackward()\"\n" +
-    "    ng-style=\"pageMid1Hover && {'color': vm.opts.colors.secondaryFontColor, 'background-color': vm.opts.colors.secondaryColor} || {'color': vm.opts.colors.secondaryColor}\"\n" +
+    "    ng-style=\"pageMid1Hover && {'color': vm.opts.colors.secondaryFontColor, 'background-color': vm.opts.colors.primaryColor} ||\n" +
+    "             {'color': vm.opts.colors.secondaryColor}\"\n" +
     "    ng-mouseenter=\"pageMid1Hover=true\" ng-mouseleave=\"pageMid1Hover=false\"> ... </div>\n" +
     "\n" +
     "    <div class=\"paginator__mid\" ng-class=\"{'active': i === vm.opts.paginationModel}\" ng-repeat=\"i in [vm.paginationStart, vm.paginationEnd] | toRange\" ng-click=\"setPage(i)\"\n" +
@@ -109,12 +110,13 @@ angular.module('tpl.table').run(['$templateCache', function($templateCache) {
     "    ng-mouseenter=\"pageMidHover=true\" ng-mouseleave=\"pageMidHover=false\"> {{i}} {{pageMidHover}} </div>\n" +
     "\n" +
     "    <div class=\"paginator__mid\" ng-if=\"vm.paginationEnd < vm.opts.pageCount\" ng-click=\"skipPagesForward()\"\n" +
-    "    ng-style=\"pageMid2Hover && {'color': vm.opts.colors.secondaryFontColor, 'background-color': vm.opts.colors.secondaryColor} || {'color': vm.opts.colors.secondaryColor}\"\n" +
+    "    ng-style=\"pageMid2Hover && {'color': vm.opts.colors.secondaryFontColor, 'background-color': vm.opts.colors.primaryColor} ||\n" +
+    "              {'color': vm.opts.colors.secondaryColor}\"\n" +
     "    ng-mouseenter=\"pageMid2Hover=true\" ng-mouseleave=\"pageMid2Hover=false\"> ... </div>\n" +
     "\n" +
     "    <div class=\"paginator__last\" ng-class=\"{'inactive': vm.opts.paginationModel === vm.opts.pageCount}\"\n" +
     "    ng-style=\"vm.opts.paginationModel !== vm.opts.pageCount && !pageLastHover && {'color': vm.opts.colors.secondaryColor} ||\n" +
-    "              vm.opts.paginationModel !== vm.opts.pageCount && pageLastHover && {'color': vm.opts.colors.secondaryFontColor, 'background-color': vm.opts.colors.secondaryColor}\"\n" +
+    "              vm.opts.paginationModel !== vm.opts.pageCount && pageLastHover && {'color': vm.opts.colors.secondaryFontColor, 'background-color': vm.opts.colors.primaryColor}\"\n" +
     "    ng-disabled=\"vm.opts.paginationModel === vm.opts.pageCount\" ng-click=\"setPage(vm.opts.pageCount)\" ng-mouseenter=\"pageLastHover=true\" ng-mouseleave=\"pageLastHover=false\"> {{'TABLE_PAGING_END'|translate}}</div>\n" +
     "\n" +
     "  </div>\n" +

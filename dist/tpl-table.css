@@ -222,7 +222,7 @@ tpl-table .bottom-row .paginator__mid {
 }
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/david\/Development\/Projects\/directives\/tpl-table\/src\/tpltable\.directive\.scss}line{font-family:\0000395}}
 tpl-table .bottom-row .paginator__mid.active {
-  background-color: #004894 !important;
+  background-color: #004894;
   color: #fff;
 }
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/david\/Development\/Projects\/directives\/tpl-table\/src\/tpltable\.directive\.scss}line{font-family:\00003102}}

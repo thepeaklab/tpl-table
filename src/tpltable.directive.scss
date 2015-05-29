@@ -93,7 +93,7 @@ tpl-table {
         border-right: 1px solid $border-color-grey;
 
         &.active {
-          background-color: $color-blue-dark !important;
+          background-color: $color-blue-dark;
           color: #fff;
         }
       }
