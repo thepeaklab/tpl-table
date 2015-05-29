@@ -76,7 +76,7 @@
     ng-style="i !== vm.opts.paginationModel && !pageMidHover && {'color': vm.opts.colors.secondaryColor} ||
               i !== vm.opts.paginationModel && pageMidHover && {'background-color': vm.opts.colors.primaryColor} ||
               {'color': vm.opts.colors.secondaryFontColor, 'background-color': vm.opts.colors.secondaryColor}"
-    ng-mouseenter="pageMidHover=true" ng-mouseleave="pageMidHover=false"> {{i}} {{pageMidHover}} </div>
+    ng-mouseenter="pageMidHover=true" ng-mouseleave="pageMidHover=false"> {{i}} </div>
 
     <div class="paginator__mid" ng-if="vm.paginationEnd < vm.opts.pageCount" ng-click="skipPagesForward()"
     ng-style="pageMid2Hover && {'color': vm.opts.colors.secondaryFontColor, 'background-color': vm.opts.colors.primaryColor} ||

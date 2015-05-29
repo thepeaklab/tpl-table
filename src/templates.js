@@ -107,7 +107,7 @@ angular.module('tpl.table').run(['$templateCache', function($templateCache) {
     "    ng-style=\"i !== vm.opts.paginationModel && !pageMidHover && {'color': vm.opts.colors.secondaryColor} ||\n" +
     "              i !== vm.opts.paginationModel && pageMidHover && {'background-color': vm.opts.colors.primaryColor} ||\n" +
     "              {'color': vm.opts.colors.secondaryFontColor, 'background-color': vm.opts.colors.secondaryColor}\"\n" +
-    "    ng-mouseenter=\"pageMidHover=true\" ng-mouseleave=\"pageMidHover=false\"> {{i}} {{pageMidHover}} </div>\n" +
+    "    ng-mouseenter=\"pageMidHover=true\" ng-mouseleave=\"pageMidHover=false\"> {{i}} </div>\n" +
     "\n" +
     "    <div class=\"paginator__mid\" ng-if=\"vm.paginationEnd < vm.opts.pageCount\" ng-click=\"skipPagesForward()\"\n" +
     "    ng-style=\"pageMid2Hover && {'color': vm.opts.colors.secondaryFontColor, 'background-color': vm.opts.colors.primaryColor} ||\n" +
