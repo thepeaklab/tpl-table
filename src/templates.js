@@ -75,10 +75,10 @@ angular.module('tpl.table').run(['$templateCache', function($templateCache) {
     "          <input type=\"text\" class=\"edit-input\" ng-model=\"vm.tempEditColumnCopy[cell]\" focus-me=\"vm.editableCell[1]===$index && vm.editableCell[0]===$parent.$parent.$index\" ng-click=\"$event.stopPropagation()\" ng-keyup=\"$event.keyCode == 13 && saveEditedColumn()\"/> {{columnValues[$index]}}\n" +
     "        </span>\n" +
     "\n" +
-    "        <div class=\"cell-controll edit\" ng-if=\"vm.opts.columns[$index].editable && hover\" ng-click=\"toggleEditCell($event, $parent.$parent.$index, $index)\" ng-style=\"hoverEdit && {\\'background-color\\': vm.opts.colors.primaryColor, \\'color\\': vm.opts.colors.primaryFontColor}\" ng-mouseenter=\"hoverEdit=true\" ng-mouseleave=\"hoverEdit=false\">\n" +
+    "        <div class=\"cell-controll edit\" ng-if=\"vm.opts.columns[$index].editable && hover\" ng-click=\"toggleEditCell($event, $parent.$parent.$index, $index)\" ng-style=\"hoverEdit && {'background-color': vm.opts.colors.primaryColor, 'color': vm.opts.colors.primaryFontColor}\" ng-mouseenter=\"hoverEdit=true\" ng-mouseleave=\"hoverEdit=false\">\n" +
     "          <div ng-if=\"hover\" class=\"icon icon-edit\"></div>\n" +
     "        </div>\n" +
-    "        <div class=\"cell-controll save\" ng-if=\"vm.opts.columns[$index].editable && vm.editableCell[0]===$parent.$index && vm.editableCell[1]===$index\" ng-style=\"{\\'background-color\\': vm.opts.colors.secondaryColor, \\'color\\': vm.opts.colors.secondaryFontColor}\" ng-click=\"$parent.hover=false;saveEditedColumn()\">\n" +
+    "        <div class=\"cell-controll save\" ng-if=\"vm.opts.columns[$index].editable && vm.editableCell[0]===$parent.$index && vm.editableCell[1]===$index\" ng-style=\"{'background-color': vm.opts.colors.secondaryColor, 'color': vm.opts.colors.secondaryFontColor}\" ng-click=\"$parent.hover=false;saveEditedColumn()\">\n" +
     "          <div  class=\"icon icon-check\"></div>\n" +
     "        </div>\n" +
     "      </td>\n" +
