@@ -2,7 +2,7 @@
 <div class="top-row">
 
   <div class="elementsperside__select prettyselect">
-    <select class="top-row__entry-count input-sm" ng-model="vm.opts.entriesPerPageCount" ng-options="o as o for o in vm.POSSIBLE_RANGE_VALUES" />
+    <select class="top-row__entry-count input-sm" ng-model="vm.opts.entriesPerPageCount" ng-options="o as o for o in vm.POSSIBLE_RANGE_VALUES" ng-style="{'color': vm.opts.colors.secondaryColor}" />
   </div>
   <span class="elementsperside__label">
     {{ 'TABLE_ENTRIES_PER_SITE' | translate }} {{dataOrder}}
@@ -32,7 +32,7 @@
       </td>
     </tr>
 
-    <tr ng-if="vm.opts.entries && vm.opts.entries.length" ng-repeat="row in vm.opts.entries" ng-class="{'active': vm.editableCell[0]===$index, 'clickable': vm.opts.onRowClick, 'notclickable': !vm.opts.onRowClick || vm.editableCell[0]!==null}" ng-click="!vm.opts.onRowClick || vm.editableCell[0]!==null || vm.opts.onRowClick($index)">
+    <tr ng-if="vm.opts.entries && vm.opts.entries.length" ng-repeat="row in vm.opts.entries" ng-style="vm.editableCell[0]===$index && {'background-color': vm.opts.colors.primaryColor}" ng-class="{'clickable': vm.opts.onRowClick, 'notclickable': !vm.opts.onRowClick || vm.editableCell[0]!==null}" ng-click="!vm.opts.onRowClick || vm.editableCell[0]!==null || vm.opts.onRowClick($index)">
 
       <td ng-repeat="cell in vm.opts.entrieValuesOrder" ng-mouseleave="hover=false" ng-mouseenter="hover=true">
 
@@ -44,10 +44,10 @@
           <input type="text" class="edit-input" ng-model="vm.tempEditColumnCopy[cell]" focus-me="vm.editableCell[1]===$index && vm.editableCell[0]===$parent.$parent.$index" ng-click="$event.stopPropagation()" ng-keyup="$event.keyCode == 13 && saveEditedColumn()"/> {{columnValues[$index]}}
         </span>
 
-        <div class="cell-controll edit" ng-if="vm.opts.columns[$index].editable && hover" ng-click="toggleEditCell($event, $parent.$parent.$index, $index)">
+        <div class="cell-controll edit" ng-if="vm.opts.columns[$index].editable && hover" ng-click="toggleEditCell($event, $parent.$parent.$index, $index)" ng-style="hoverEdit && {\'background-color\': vm.opts.colors.primaryColor, \'color\': vm.opts.colors.primaryFontColor}" ng-mouseenter="hoverEdit=true" ng-mouseleave="hoverEdit=false">
           <div ng-if="hover" class="icon icon-edit"></div>
         </div>
-        <div class="cell-controll save" ng-if="vm.opts.columns[$index].editable && vm.editableCell[0]===$parent.$index && vm.editableCell[1]===$index" ng-click="$parent.hover=false;saveEditedColumn()">
+        <div class="cell-controll save" ng-if="vm.opts.columns[$index].editable && vm.editableCell[0]===$parent.$index && vm.editableCell[1]===$index" ng-style="{\'background-color\': vm.opts.colors.secondaryColor, \'color\': vm.opts.colors.secondaryFontColor}" ng-click="$parent.hover=false;saveEditedColumn()">
           <div  class="icon icon-check"></div>
         </div>
       </td>
@@ -61,13 +61,13 @@
 
 <div class="bottom-row">
   <div class="paginator">
-    <div class="paginator__first" ng-class="{'inactive': vm.opts.paginationModel === 1}" ng-disabled="vm.opts.paginationModel === 1" ng-click="setPage(1)"> {{'TABLE_PAGING_START'|translate}}</div>
-    <div class="paginator__mid" ng-if="vm.paginationStart > 1" ng-click="skipPagesBackward()"> ... </div>
+    <div class="paginator__first" ng-class="{'inactive': vm.opts.paginationModel === 1}" ng-style="vm.opts.paginationModel !== 1 && {'color': vm.opts.colors.secondaryColor}" ng-disabled="vm.opts.paginationModel === 1" ng-click="setPage(1)"> {{'TABLE_PAGING_START'|translate}}</div>
+    <div class="paginator__mid" ng-if="vm.paginationStart > 1" ng-click="skipPagesBackward()" ng-style="{'color': vm.opts.colors.secondaryColor}"> ... </div>
 
     <div class="paginator__mid" ng-class="{'active': i === vm.opts.paginationModel}" ng-repeat="i in [vm.paginationStart, vm.paginationEnd] | toRange"
-    ng-click="setPage(i)"> {{i}} </div>
+    ng-click="setPage(i)" ng-style="i !== vm.opts.paginationModel && {'color': vm.opts.colors.secondaryColor} || {'color': vm.opts.colors.secondaryFontColor, 'background-color': vm.opts.colors.secondaryColor}"> {{i}} </div>
 
-    <div class="paginator__mid" ng-if="vm.paginationEnd < vm.opts.pageCount" ng-click="skipPagesForward()"> ... </div>
-    <div class="paginator__last" ng-class="{'inactive': vm.opts.paginationModel === vm.opts.pageCount}" ng-disabled="vm.opts.paginationModel === vm.opts.pageCount" ng-click="setPage(vm.opts.pageCount)"> {{'TABLE_PAGING_END'|translate}}</div>
+    <div class="paginator__mid" ng-if="vm.paginationEnd < vm.opts.pageCount" ng-click="skipPagesForward()" ng-style="{'color': vm.opts.colors.secondaryColor}"> ... </div>
+    <div class="paginator__last" ng-class="{'inactive': vm.opts.paginationModel === vm.opts.pageCount}" ng-style="vm.opts.paginationModel !== vm.opts.pageCount && {'color': vm.opts.colors.secondaryColor}" ng-disabled="vm.opts.paginationModel === vm.opts.pageCount" ng-click="setPage(vm.opts.pageCount)"> {{'TABLE_PAGING_END'|translate}}</div>
   </div>
 </div>

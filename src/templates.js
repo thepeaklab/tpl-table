@@ -33,7 +33,7 @@ angular.module('tpl.table').run(['$templateCache', function($templateCache) {
     "<div class=\"top-row\">\n" +
     "\n" +
     "  <div class=\"elementsperside__select prettyselect\">\n" +
-    "    <select class=\"top-row__entry-count input-sm\" ng-model=\"vm.opts.entriesPerPageCount\" ng-options=\"o as o for o in vm.POSSIBLE_RANGE_VALUES\" />\n" +
+    "    <select class=\"top-row__entry-count input-sm\" ng-model=\"vm.opts.entriesPerPageCount\" ng-options=\"o as o for o in vm.POSSIBLE_RANGE_VALUES\" ng-style=\"{'color': vm.opts.colors.secondaryColor}\" />\n" +
     "  </div>\n" +
     "  <span class=\"elementsperside__label\">\n" +
     "    {{ 'TABLE_ENTRIES_PER_SITE' | translate }} {{dataOrder}}\n" +
@@ -63,7 +63,7 @@ angular.module('tpl.table').run(['$templateCache', function($templateCache) {
     "      </td>\n" +
     "    </tr>\n" +
     "\n" +
-    "    <tr ng-if=\"vm.opts.entries && vm.opts.entries.length\" ng-repeat=\"row in vm.opts.entries\" ng-class=\"{'active': vm.editableCell[0]===$index, 'clickable': vm.opts.onRowClick, 'notclickable': !vm.opts.onRowClick || vm.editableCell[0]!==null}\" ng-click=\"!vm.opts.onRowClick || vm.editableCell[0]!==null || vm.opts.onRowClick($index)\">\n" +
+    "    <tr ng-if=\"vm.opts.entries && vm.opts.entries.length\" ng-repeat=\"row in vm.opts.entries\" ng-style=\"vm.editableCell[0]===$index && {'background-color': vm.opts.colors.primaryColor}\" ng-class=\"{'clickable': vm.opts.onRowClick, 'notclickable': !vm.opts.onRowClick || vm.editableCell[0]!==null}\" ng-click=\"!vm.opts.onRowClick || vm.editableCell[0]!==null || vm.opts.onRowClick($index)\">\n" +
     "\n" +
     "      <td ng-repeat=\"cell in vm.opts.entrieValuesOrder\" ng-mouseleave=\"hover=false\" ng-mouseenter=\"hover=true\">\n" +
     "\n" +
@@ -75,10 +75,10 @@ angular.module('tpl.table').run(['$templateCache', function($templateCache) {
     "          <input type=\"text\" class=\"edit-input\" ng-model=\"vm.tempEditColumnCopy[cell]\" focus-me=\"vm.editableCell[1]===$index && vm.editableCell[0]===$parent.$parent.$index\" ng-click=\"$event.stopPropagation()\" ng-keyup=\"$event.keyCode == 13 && saveEditedColumn()\"/> {{columnValues[$index]}}\n" +
     "        </span>\n" +
     "\n" +
-    "        <div class=\"cell-controll edit\" ng-if=\"vm.opts.columns[$index].editable && hover\" ng-click=\"toggleEditCell($event, $parent.$parent.$index, $index)\">\n" +
+    "        <div class=\"cell-controll edit\" ng-if=\"vm.opts.columns[$index].editable && hover\" ng-click=\"toggleEditCell($event, $parent.$parent.$index, $index)\" ng-style=\"hoverEdit && {\\'background-color\\': vm.opts.colors.primaryColor, \\'color\\': vm.opts.colors.primaryFontColor}\" ng-mouseenter=\"hoverEdit=true\" ng-mouseleave=\"hoverEdit=false\">\n" +
     "          <div ng-if=\"hover\" class=\"icon icon-edit\"></div>\n" +
     "        </div>\n" +
-    "        <div class=\"cell-controll save\" ng-if=\"vm.opts.columns[$index].editable && vm.editableCell[0]===$parent.$index && vm.editableCell[1]===$index\" ng-click=\"$parent.hover=false;saveEditedColumn()\">\n" +
+    "        <div class=\"cell-controll save\" ng-if=\"vm.opts.columns[$index].editable && vm.editableCell[0]===$parent.$index && vm.editableCell[1]===$index\" ng-style=\"{\\'background-color\\': vm.opts.colors.secondaryColor, \\'color\\': vm.opts.colors.secondaryFontColor}\" ng-click=\"$parent.hover=false;saveEditedColumn()\">\n" +
     "          <div  class=\"icon icon-check\"></div>\n" +
     "        </div>\n" +
     "      </td>\n" +
@@ -92,14 +92,14 @@ angular.module('tpl.table').run(['$templateCache', function($templateCache) {
     "\n" +
     "<div class=\"bottom-row\">\n" +
     "  <div class=\"paginator\">\n" +
-    "    <div class=\"paginator__first\" ng-class=\"{'inactive': vm.opts.paginationModel === 1}\" ng-disabled=\"vm.opts.paginationModel === 1\" ng-click=\"setPage(1)\"> {{'TABLE_PAGING_START'|translate}}</div>\n" +
-    "    <div class=\"paginator__mid\" ng-if=\"vm.paginationStart > 1\" ng-click=\"skipPagesBackward()\"> ... </div>\n" +
+    "    <div class=\"paginator__first\" ng-class=\"{'inactive': vm.opts.paginationModel === 1}\" ng-style=\"vm.opts.paginationModel !== 1 && {'color': vm.opts.colors.secondaryColor}\" ng-disabled=\"vm.opts.paginationModel === 1\" ng-click=\"setPage(1)\"> {{'TABLE_PAGING_START'|translate}}</div>\n" +
+    "    <div class=\"paginator__mid\" ng-if=\"vm.paginationStart > 1\" ng-click=\"skipPagesBackward()\" ng-style=\"{'color': vm.opts.colors.secondaryColor}\"> ... </div>\n" +
     "\n" +
     "    <div class=\"paginator__mid\" ng-class=\"{'active': i === vm.opts.paginationModel}\" ng-repeat=\"i in [vm.paginationStart, vm.paginationEnd] | toRange\"\n" +
-    "    ng-click=\"setPage(i)\"> {{i}} </div>\n" +
+    "    ng-click=\"setPage(i)\" ng-style=\"i !== vm.opts.paginationModel && {'color': vm.opts.colors.secondaryColor} || {'color': vm.opts.colors.secondaryFontColor, 'background-color': vm.opts.colors.secondaryColor}\"> {{i}} </div>\n" +
     "\n" +
-    "    <div class=\"paginator__mid\" ng-if=\"vm.paginationEnd < vm.opts.pageCount\" ng-click=\"skipPagesForward()\"> ... </div>\n" +
-    "    <div class=\"paginator__last\" ng-class=\"{'inactive': vm.opts.paginationModel === vm.opts.pageCount}\" ng-disabled=\"vm.opts.paginationModel === vm.opts.pageCount\" ng-click=\"setPage(vm.opts.pageCount)\"> {{'TABLE_PAGING_END'|translate}}</div>\n" +
+    "    <div class=\"paginator__mid\" ng-if=\"vm.paginationEnd < vm.opts.pageCount\" ng-click=\"skipPagesForward()\" ng-style=\"{'color': vm.opts.colors.secondaryColor}\"> ... </div>\n" +
+    "    <div class=\"paginator__last\" ng-class=\"{'inactive': vm.opts.paginationModel === vm.opts.pageCount}\" ng-style=\"vm.opts.paginationModel !== vm.opts.pageCount && {'color': vm.opts.colors.secondaryColor}\" ng-disabled=\"vm.opts.paginationModel === vm.opts.pageCount\" ng-click=\"setPage(vm.opts.pageCount)\"> {{'TABLE_PAGING_END'|translate}}</div>\n" +
     "  </div>\n" +
     "</div>\n"
   );
