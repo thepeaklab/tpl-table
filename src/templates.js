@@ -94,7 +94,7 @@ angular.module('tpl.table').run(['$templateCache', function($templateCache) {
     "  <div class=\"paginator\">\n" +
     "\n" +
     "    <div class=\"paginator__first\" ng-class=\"{'inactive': vm.opts.paginationModel === 1}\"\n" +
-    "    ng-style=\"vm.opts.paginationModel !== 1 && !pageFirstHover {'color': vm.opts.colors.secondaryColor} ||\n" +
+    "    ng-style=\"vm.opts.paginationModel !== 1 && !pageFirstHover && {'color': vm.opts.colors.secondaryColor} ||\n" +
     "              vm.opts.paginationModel !== 1 && pageFirstHover && {'color': vm.opts.colors.secondaryFontColor, 'background-color': vm.opts.colors.primaryColor}\"\n" +
     "    ng-disabled=\"vm.opts.paginationModel === 1\" ng-click=\"setPage(1)\" ng-mouseenter=\"pageFirstHover=true\" ng-mouseleave=\"pageFirstHover=false\"> {{'TABLE_PAGING_START'|translate}}</div>\n" +
     "\n" +

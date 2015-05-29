@@ -63,7 +63,7 @@
   <div class="paginator">
 
     <div class="paginator__first" ng-class="{'inactive': vm.opts.paginationModel === 1}"
-    ng-style="vm.opts.paginationModel !== 1 && !pageFirstHover {'color': vm.opts.colors.secondaryColor} ||
+    ng-style="vm.opts.paginationModel !== 1 && !pageFirstHover && {'color': vm.opts.colors.secondaryColor} ||
               vm.opts.paginationModel !== 1 && pageFirstHover && {'color': vm.opts.colors.secondaryFontColor, 'background-color': vm.opts.colors.primaryColor}"
     ng-disabled="vm.opts.paginationModel === 1" ng-click="setPage(1)" ng-mouseenter="pageFirstHover=true" ng-mouseleave="pageFirstHover=false"> {{'TABLE_PAGING_START'|translate}}</div>
 
