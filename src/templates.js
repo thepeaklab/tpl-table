@@ -95,7 +95,7 @@ angular.module('tpl.table').run(['$templateCache', function($templateCache) {
     "\n" +
     "    <div class=\"paginator__first\" ng-class=\"{'inactive': vm.opts.paginationModel === 1}\"\n" +
     "    ng-style=\"vm.opts.paginationModel !== 1 && !pageFirstHover && {'color': vm.opts.colors.secondaryColor} ||\n" +
-    "              vm.opts.paginationModel !== 1 && pageFirstHover && {'color': vm.opts.colors.secondaryFontColor, 'background-color': vm.opts.colors.primaryColor}\"\n" +
+    "              vm.opts.paginationModel !== 1 && pageFirstHover && {'color': vm.opts.colors.secondaryColor, 'background-color': vm.opts.colors.primaryColor}\"\n" +
     "    ng-disabled=\"vm.opts.paginationModel === 1\" ng-click=\"setPage(1)\" ng-mouseenter=\"pageFirstHover=true\" ng-mouseleave=\"pageFirstHover=false\"> {{'TABLE_PAGING_START'|translate}}</div>\n" +
     "\n" +
     "    <div class=\"paginator__mid\" ng-if=\"vm.paginationStart > 1\" ng-click=\"skipPagesBackward()\"\n" +
@@ -116,7 +116,7 @@ angular.module('tpl.table').run(['$templateCache', function($templateCache) {
     "\n" +
     "    <div class=\"paginator__last\" ng-class=\"{'inactive': vm.opts.paginationModel === vm.opts.pageCount}\"\n" +
     "    ng-style=\"vm.opts.paginationModel !== vm.opts.pageCount && !pageLastHover && {'color': vm.opts.colors.secondaryColor} ||\n" +
-    "              vm.opts.paginationModel !== vm.opts.pageCount && pageLastHover && {'color': vm.opts.colors.secondaryFontColor, 'background-color': vm.opts.colors.primaryColor}\"\n" +
+    "              vm.opts.paginationModel !== vm.opts.pageCount && pageLastHover && {'color': vm.opts.colors.secondaryColor, 'background-color': vm.opts.colors.primaryColor}\"\n" +
     "    ng-disabled=\"vm.opts.paginationModel === vm.opts.pageCount\" ng-click=\"setPage(vm.opts.pageCount)\" ng-mouseenter=\"pageLastHover=true\" ng-mouseleave=\"pageLastHover=false\"> {{'TABLE_PAGING_END'|translate}}</div>\n" +
     "\n" +
     "  </div>\n" +
