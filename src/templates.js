@@ -63,7 +63,7 @@ angular.module('tpl.table').run(['$templateCache', function($templateCache) {
     "      </td>\n" +
     "    </tr>\n" +
     "\n" +
-    "    <tr ng-if=\"vm.opts.entries && vm.opts.entries.length\" ng-repeat=\"row in vm.opts.entries\" ng-style=\"vm.editableCell[0]===$index && {'background-color': vm.opts.colors.primaryColor, 'color': vm.opt.colors.primaryFontColor}\" ng-class=\"{'clickable': vm.opts.onRowClick, 'notclickable': !vm.opts.onRowClick || vm.editableCell[0]!==null}\" ng-click=\"!vm.opts.onRowClick || vm.editableCell[0]!==null || vm.opts.onRowClick($index)\">\n" +
+    "    <tr ng-if=\"vm.opts.entries && vm.opts.entries.length\" ng-repeat=\"row in vm.opts.entries\" ng-style=\"vm.editableCell[0]===$index && {'background-color': vm.opts.colors.primaryColor, 'color': vm.opts.colors.primaryFontColor}\" ng-class=\"{'clickable': vm.opts.onRowClick, 'notclickable': !vm.opts.onRowClick || vm.editableCell[0]!==null}\" ng-click=\"!vm.opts.onRowClick || vm.editableCell[0]!==null || vm.opts.onRowClick($index)\">\n" +
     "\n" +
     "      <td ng-repeat=\"cell in vm.opts.entrieValuesOrder\" ng-mouseleave=\"hover=false\" ng-mouseenter=\"hover=true\">\n" +
     "\n" +
