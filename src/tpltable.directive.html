@@ -68,18 +68,18 @@
     ng-disabled="vm.opts.paginationModel === 1" ng-click="setPage(1)" ng-mouseenter="pageFirstHover=true" ng-mouseleave="pageFirstHover=false"> {{'TABLE_PAGING_START'|translate}}</div>
 
     <div class="paginator__mid" ng-if="vm.paginationStart > 1" ng-click="skipPagesBackward()"
-    ng-style="pageMid1Hover && {'color': vm.opts.colors.secondaryFontColor, 'background-color': vm.opts.colors.primaryColor} ||
+    ng-style="pageMid1Hover && {'color': vm.opts.colors.secondaryColor, 'background-color': vm.opts.colors.primaryColor} ||
              {'color': vm.opts.colors.secondaryColor}"
     ng-mouseenter="pageMid1Hover=true" ng-mouseleave="pageMid1Hover=false"> ... </div>
 
     <div class="paginator__mid" ng-class="{'active': i === vm.opts.paginationModel}" ng-repeat="i in [vm.paginationStart, vm.paginationEnd] | toRange" ng-click="setPage(i)"
     ng-style="i !== vm.opts.paginationModel && !pageMidHover && {'color': vm.opts.colors.secondaryColor} ||
-              i !== vm.opts.paginationModel && pageMidHover && {'background-color': vm.opts.colors.primaryColor} ||
+              i !== vm.opts.paginationModel && pageMidHover && {'background-color': vm.opts.colors.primaryColor, 'color': vm.opts.colors.secondaryColor} ||
               {'color': vm.opts.colors.secondaryFontColor, 'background-color': vm.opts.colors.secondaryColor}"
     ng-mouseenter="pageMidHover=true" ng-mouseleave="pageMidHover=false"> {{i}} </div>
 
     <div class="paginator__mid" ng-if="vm.paginationEnd < vm.opts.pageCount" ng-click="skipPagesForward()"
-    ng-style="pageMid2Hover && {'color': vm.opts.colors.secondaryFontColor, 'background-color': vm.opts.colors.primaryColor} ||
+    ng-style="pageMid2Hover && {'color': vm.opts.colors.secondaryColor, 'background-color': vm.opts.colors.primaryColor} ||
               {'color': vm.opts.colors.secondaryColor}"
     ng-mouseenter="pageMid2Hover=true" ng-mouseleave="pageMid2Hover=false"> ... </div>
 
