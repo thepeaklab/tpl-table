@@ -95,6 +95,10 @@ tpl-table {
         &.active {
           background-color: $color-blue-dark;
           color: #fff;
+
+          &:hover: {
+            background-color: $color-blue-dark;
+          }
         }
       }
 
