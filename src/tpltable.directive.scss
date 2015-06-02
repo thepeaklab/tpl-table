@@ -22,7 +22,7 @@ tpl-table {
         display: inline-block;
         vertical-align: middle;
         position: relative;
-        margin-top: -23px;
+        margin-top: -22px;
         margin-left: 5px;
       }
     }
@@ -97,7 +97,7 @@ tpl-table {
           background-color: $color-blue-dark;
           color: #fff;
 
-          &:hover: {
+          &:hover {
             background-color: $color-blue-dark;
           }
         }
