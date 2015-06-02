@@ -179,6 +179,9 @@ tpl-table {
 
       &:nth-child(odd) {
         background-color: $table-color-grey;
+        &:hover {
+          background-color: $color-grey-light;
+        }
       }
 
       td {
