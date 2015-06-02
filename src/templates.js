@@ -76,10 +76,10 @@ angular.module('tpl.table').run(['$templateCache', function($templateCache) {
     "        </span>\n" +
     "\n" +
     "        <div class=\"cell-controll edit\" ng-if=\"vm.opts.columns[$index].editable && hover\" ng-click=\"toggleEditCell($event, $parent.$parent.$index, $index)\" ng-style=\"hoverEdit && {'background-color': vm.opts.colors.primaryColor, 'color': vm.opts.colors.primaryFontColor}\" ng-mouseenter=\"hoverEdit=true\" ng-mouseleave=\"hoverEdit=false\">\n" +
-    "          <div ng-if=\"hover\" class=\"icon icon-edit\"></div>\n" +
+    "          <div ng-if=\"hover\" class=\"iconfont iconfont-pen\"></div>\n" +
     "        </div>\n" +
     "        <div class=\"cell-controll save\" ng-if=\"vm.opts.columns[$index].editable && vm.editableCell[0]===$parent.$index && vm.editableCell[1]===$index\" ng-style=\"{'background-color': vm.opts.colors.secondaryColor, 'color': vm.opts.colors.secondaryFontColor}\" ng-click=\"$parent.hover=false;saveEditedColumn()\">\n" +
-    "          <div  class=\"icon icon-check\"></div>\n" +
+    "          <div  class=\"iconfont iconfont-check\"></div>\n" +
     "        </div>\n" +
     "      </td>\n" +
     "\n" +
