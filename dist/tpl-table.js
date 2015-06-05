@@ -52,9 +52,9 @@
       vm.opts.noDataAvailableText = vm.opts.noDataAvailableText || 'No Data Available ...';
       vm.opts.editable = vm.opts.editable || false;
       vm.opts.searchModel = vm.opts.searchModel !== undefined ? vm.opts.searchModel : null;
-      vm.opts.paginationModel = vm.opts.paginationModel || 1;
+      vm.opts.paginationModel = vm.opts.paginationModel || 0;
       vm.opts.pageCount = vm.opts.pageCount || null;
-      vm.opts.entriesPerPageCount = vm.opts.entriesPerPageCount || 10;
+      vm.opts.entriesPerPageCount = vm.opts.entriesPerPageCount || 0;
       vm.opts.entries = vm.opts.entries || [];
       vm.opts.entrieValuesOrder = vm.opts.entrieValuesOrder || null;
       vm.opts.onRowClick = vm.opts.onRowClick || null;
