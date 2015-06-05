@@ -30,12 +30,12 @@ angular.module('tpl.table').run(['$templateCache', function($templateCache) {
 
   $templateCache.put('src/tpltable.directive.html',
     "\n" +
-    "<div class=\"top-row\">\n" +
+    "<div class=\"top-row\" ng-if=\"vm.opts.entriesPerPageCount || vm.opts.searchModel\">\n" +
     "\n" +
-    "  <div class=\"elementsperside__select prettyselect\">\n" +
+    "  <div class=\"elementsperside__select prettyselect\" ng-if=\"vm.opts.entriesPerPageCount\">\n" +
     "    <select class=\"top-row__entry-count input-sm\" ng-model=\"vm.opts.entriesPerPageCount\" ng-options=\"o as o for o in vm.POSSIBLE_RANGE_VALUES\" ng-style=\"{'color': vm.opts.colors.secondaryColor}\" />\n" +
     "  </div>\n" +
-    "  <span class=\"elementsperside__label\">\n" +
+    "  <span class=\"elementsperside__label\" ng-if=\"vm.opts.entriesPerPageCount\">\n" +
     "    {{ 'TABLE_ENTRIES_PER_SITE' | translate }} {{dataOrder}}\n" +
     "  </span>\n" +
     "\n" +
@@ -90,7 +90,7 @@ angular.module('tpl.table').run(['$templateCache', function($templateCache) {
     "\n" +
     "</table>\n" +
     "\n" +
-    "<div class=\"bottom-row\">\n" +
+    "<div class=\"bottom-row\" ng-if=\"vm.opts.paginationModel\">\n" +
     "  <div class=\"paginator\">\n" +
     "\n" +
     "    <div class=\"paginator__first\" ng-class=\"{'inactive': vm.opts.paginationModel === 1}\"\n" +
