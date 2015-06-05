@@ -1,10 +1,10 @@
 
-<div class="top-row">
+<div class="top-row" ng-if="vm.opts.entriesPerPageCount || vm.opts.searchModel">
 
-  <div class="elementsperside__select prettyselect">
+  <div class="elementsperside__select prettyselect" ng-if="vm.opts.entriesPerPageCount">
     <select class="top-row__entry-count input-sm" ng-model="vm.opts.entriesPerPageCount" ng-options="o as o for o in vm.POSSIBLE_RANGE_VALUES" ng-style="{'color': vm.opts.colors.secondaryColor}" />
   </div>
-  <span class="elementsperside__label">
+  <span class="elementsperside__label" ng-if="vm.opts.entriesPerPageCount">
     {{ 'TABLE_ENTRIES_PER_SITE' | translate }} {{dataOrder}}
   </span>
 
