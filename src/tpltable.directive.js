@@ -39,6 +39,10 @@
 
         vm.POSSIBLE_RANGE_VALUES = [10, 25, 50, 100];
 
+        vm.POSSIBLE_CONTENT_TYPES = ['TEXT', 'IMAGE'];
+        vm.CONTENT_TYPE_TEXT = 0;
+        vm.CONTENT_TYPE_IMAGE = 1;
+
         vm.editableCell = [null, null];
 
         vm.opts.id = vm.opts.id || 'tpltable';
@@ -55,19 +59,23 @@
         vm.opts.columns = vm.opts.columns || [
                                               {
                                                 name : '',
-                                                editable : true
+                                                editable : true,
+                                                content: vm.POSSIBLE_CONTENT_TYPES[vm.CONTENT_TYPE_TEXT]
                                               },
                                               {
                                                 name : '',
-                                                editable : true
+                                                editable : true,
+                                                content: vm.POSSIBLE_CONTENT_TYPES[vm.CONTENT_TYPE_TEXT]
                                               },
                                               {
                                                 name : '',
-                                                editable : true
+                                                editable : true,
+                                                content: vm.POSSIBLE_CONTENT_TYPES[vm.CONTENT_TYPE_TEXT]
                                               },
                                               {
                                                 name : '',
-                                                editable : true
+                                                editable : true,
+                                                content: vm.POSSIBLE_CONTENT_TYPES[vm.CONTENT_TYPE_TEXT]
                                               }
                                              ];
 
@@ -97,6 +105,27 @@
           if (newVal || newVal === 0) {
             refreshPagination();
             resetEdit();
+          }
+        });
+
+        $scope.$watchCollection('vm.opts.colums', function(newVal) {
+          if (newVal && newVal.length) {
+
+            angular.forEach(newVal, function(column) {
+              if (column.content && column.content !== '') {
+
+                var contentString = column.content.toUpperCase();
+                if (vm.POSSIBLE_CONTENT_TYPES.indexOf(contentString) < 0) {
+                  column.content = vm.POSSIBLE_CONTENT_TYPES[vm.CONTENT_TYPE_TEXT];
+                } else {
+                  column.content = contentString;
+                }
+
+              } else {
+                column.content = vm.POSSIBLE_CONTENT_TYPES[vm.CONTENT_TYPE_TEXT];
+              }
+            });
+
           }
         });
 

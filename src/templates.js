@@ -67,9 +67,15 @@ angular.module('tpl.table').run(['$templateCache', function($templateCache) {
     "\n" +
     "      <td ng-repeat=\"cell in vm.opts.entrieValuesOrder\" ng-mouseleave=\"hover=false\" ng-mouseenter=\"hover=true\">\n" +
     "\n" +
-    "        <span ng-if=\"(vm.editableCell[0]!==$parent.$index || vm.editableCell[1]!==$index) || !vm.opts.columns[$index].editable\">\n" +
-    "          {{row[cell]}} {{columnValues[$index]}}\n" +
-    "        </span>\n" +
+    "        <div  ng-if=\"(vm.editableCell[0]!==$parent.$index || vm.editableCell[1]!==$index) || !vm.opts.columns[$index].editable\">\n" +
+    "          <!-- TEXT -->\n" +
+    "          <span ng-if=\"vm.opts.columns[$index].content === POSSIBLE_CONTENT_TYPES[0]\">\n" +
+    "            {{row[cell]}} {{columnValues[$index]}}\n" +
+    "          </span>\n" +
+    "          <!-- IMAGE -->\n" +
+    "          <img ng-if=\"vm.opts.columns[$index].content === POSSIBLE_CONTENT_TYPE[1]\" ng-src=\"row[cell]\" />\n" +
+    "          <!-- OTHER ??? -->\n" +
+    "        </div>\n" +
     "\n" +
     "        <span ng-if=\"vm.editableCell[1]===$index && vm.editableCell[0]===$parent.$index && vm.opts.columns[$index].editable\">\n" +
     "          <input type=\"text\" class=\"edit-input\" ng-model=\"vm.tempEditColumnCopy[cell]\" focus-me=\"vm.editableCell[1]===$index && vm.editableCell[0]===$parent.$parent.$index\" ng-click=\"$event.stopPropagation()\" ng-keyup=\"$event.keyCode == 13 && saveEditedColumn()\"/> {{columnValues[$index]}}\n" +
@@ -95,32 +101,32 @@ angular.module('tpl.table').run(['$templateCache', function($templateCache) {
     "\n" +
     "    <div class=\"paginator__first\" ng-class=\"{'inactive': vm.opts.paginationModel === 1}\"\n" +
     "    ng-style=\"vm.opts.paginationModel !== 1 && !pageFirstHover && {'color': vm.opts.colors.secondaryColor} ||\n" +
-    "              vm.opts.paginationModel !== 1 && pageFirstHover && {'color': vm.opts.colors.secondaryColor, 'background-color': vm.opts.colors.primaryColor}\"\n" +
+    "    vm.opts.paginationModel !== 1 && pageFirstHover && {'color': vm.opts.colors.secondaryColor, 'background-color': vm.opts.colors.primaryColor}\"\n" +
     "    ng-disabled=\"vm.opts.paginationModel === 1\" ng-click=\"setPage(1)\" ng-mouseenter=\"pageFirstHover=true\" ng-mouseleave=\"pageFirstHover=false\"> {{'TABLE_PAGING_START'|translate}}</div>\n" +
     "\n" +
     "    <div class=\"paginator__mid\" ng-if=\"vm.paginationStart > 1\" ng-click=\"skipPagesBackward()\"\n" +
-    "    ng-style=\"pageMid1Hover && {'color': vm.opts.colors.secondaryColor, 'background-color': vm.opts.colors.primaryColor} ||\n" +
-    "             {'color': vm.opts.colors.secondaryColor}\"\n" +
-    "    ng-mouseenter=\"pageMid1Hover=true\" ng-mouseleave=\"pageMid1Hover=false\"> ... </div>\n" +
+    "      ng-style=\"pageMid1Hover && {'color': vm.opts.colors.secondaryColor, 'background-color': vm.opts.colors.primaryColor} ||\n" +
+    "      {'color': vm.opts.colors.secondaryColor}\"\n" +
+    "      ng-mouseenter=\"pageMid1Hover=true\" ng-mouseleave=\"pageMid1Hover=false\"> ... </div>\n" +
     "\n" +
-    "    <div class=\"paginator__mid\" ng-class=\"{'active': i === vm.opts.paginationModel}\" ng-repeat=\"i in [vm.paginationStart, vm.paginationEnd] | toRange\" ng-click=\"setPage(i)\"\n" +
-    "    ng-style=\"i !== vm.opts.paginationModel && !pageMidHover && {'color': vm.opts.colors.secondaryColor} ||\n" +
-    "              i !== vm.opts.paginationModel && pageMidHover && {'background-color': vm.opts.colors.primaryColor, 'color': vm.opts.colors.secondaryColor} ||\n" +
-    "              {'color': vm.opts.colors.secondaryFontColor, 'background-color': vm.opts.colors.secondaryColor}\"\n" +
-    "    ng-mouseenter=\"pageMidHover=true\" ng-mouseleave=\"pageMidHover=false\"> {{i}} </div>\n" +
+    "      <div class=\"paginator__mid\" ng-class=\"{'active': i === vm.opts.paginationModel}\" ng-repeat=\"i in [vm.paginationStart, vm.paginationEnd] | toRange\" ng-click=\"setPage(i)\"\n" +
+    "      ng-style=\"i !== vm.opts.paginationModel && !pageMidHover && {'color': vm.opts.colors.secondaryColor} ||\n" +
+    "      i !== vm.opts.paginationModel && pageMidHover && {'background-color': vm.opts.colors.primaryColor, 'color': vm.opts.colors.secondaryColor} ||\n" +
+    "      {'color': vm.opts.colors.secondaryFontColor, 'background-color': vm.opts.colors.secondaryColor}\"\n" +
+    "      ng-mouseenter=\"pageMidHover=true\" ng-mouseleave=\"pageMidHover=false\"> {{i}} </div>\n" +
     "\n" +
-    "    <div class=\"paginator__mid\" ng-if=\"vm.paginationEnd < vm.opts.pageCount\" ng-click=\"skipPagesForward()\"\n" +
-    "    ng-style=\"pageMid2Hover && {'color': vm.opts.colors.secondaryColor, 'background-color': vm.opts.colors.primaryColor} ||\n" +
-    "              {'color': vm.opts.colors.secondaryColor}\"\n" +
-    "    ng-mouseenter=\"pageMid2Hover=true\" ng-mouseleave=\"pageMid2Hover=false\"> ... </div>\n" +
+    "      <div class=\"paginator__mid\" ng-if=\"vm.paginationEnd < vm.opts.pageCount\" ng-click=\"skipPagesForward()\"\n" +
+    "      ng-style=\"pageMid2Hover && {'color': vm.opts.colors.secondaryColor, 'background-color': vm.opts.colors.primaryColor} ||\n" +
+    "      {'color': vm.opts.colors.secondaryColor}\"\n" +
+    "      ng-mouseenter=\"pageMid2Hover=true\" ng-mouseleave=\"pageMid2Hover=false\"> ... </div>\n" +
     "\n" +
-    "    <div class=\"paginator__last\" ng-class=\"{'inactive': vm.opts.paginationModel === vm.opts.pageCount}\"\n" +
-    "    ng-style=\"vm.opts.paginationModel !== vm.opts.pageCount && !pageLastHover && {'color': vm.opts.colors.secondaryColor} ||\n" +
-    "              vm.opts.paginationModel !== vm.opts.pageCount && pageLastHover && {'color': vm.opts.colors.secondaryColor, 'background-color': vm.opts.colors.primaryColor}\"\n" +
-    "    ng-disabled=\"vm.opts.paginationModel === vm.opts.pageCount\" ng-click=\"setPage(vm.opts.pageCount)\" ng-mouseenter=\"pageLastHover=true\" ng-mouseleave=\"pageLastHover=false\"> {{'TABLE_PAGING_END'|translate}}</div>\n" +
+    "      <div class=\"paginator__last\" ng-class=\"{'inactive': vm.opts.paginationModel === vm.opts.pageCount}\"\n" +
+    "      ng-style=\"vm.opts.paginationModel !== vm.opts.pageCount && !pageLastHover && {'color': vm.opts.colors.secondaryColor} ||\n" +
+    "      vm.opts.paginationModel !== vm.opts.pageCount && pageLastHover && {'color': vm.opts.colors.secondaryColor, 'background-color': vm.opts.colors.primaryColor}\"\n" +
+    "      ng-disabled=\"vm.opts.paginationModel === vm.opts.pageCount\" ng-click=\"setPage(vm.opts.pageCount)\" ng-mouseenter=\"pageLastHover=true\" ng-mouseleave=\"pageLastHover=false\"> {{'TABLE_PAGING_END'|translate}}</div>\n" +
     "\n" +
-    "  </div>\n" +
-    "</div>\n"
+    "    </div>\n" +
+    "  </div>\n"
   );
 
 }]);
