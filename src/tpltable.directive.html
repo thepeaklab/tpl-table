@@ -42,7 +42,7 @@
             {{row[cell]}} {{columnValues[$index]}}
           </span>
           <!-- IMAGE -->
-          <img ng-if="vm.opts.columns[$index].content === vm.POSSIBLE_CONTENT_TYPES[1]" ng-src="row[cell]" />
+          <img ng-if="vm.opts.columns[$index].content === vm.POSSIBLE_CONTENT_TYPES[1]" ng-src="row[cell]" ng-style="{'max-width': row[cell].maxWidth ? row[cell].maxWidth : '250px'; 'max-height': row[cell].maxHeight ? row[cell].maxHeight : '250px'" />
           <!-- OTHER ??? -->
         </div>
 

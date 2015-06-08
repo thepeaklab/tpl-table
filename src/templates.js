@@ -73,7 +73,7 @@ angular.module('tpl.table').run(['$templateCache', function($templateCache) {
     "            {{row[cell]}} {{columnValues[$index]}}\n" +
     "          </span>\n" +
     "          <!-- IMAGE -->\n" +
-    "          <img ng-if=\"vm.opts.columns[$index].content === vm.POSSIBLE_CONTENT_TYPES[1]\" ng-src=\"row[cell]\" />\n" +
+    "          <img ng-if=\"vm.opts.columns[$index].content === vm.POSSIBLE_CONTENT_TYPES[1]\" ng-src=\"row[cell]\" ng-style=\"{'max-width': row[cell].maxWidth ? row[cell].maxWidth : '250px'; 'max-height': row[cell].maxHeight ? row[cell].maxHeight : '250px'\" />\n" +
     "          <!-- OTHER ??? -->\n" +
     "        </div>\n" +
     "\n" +
