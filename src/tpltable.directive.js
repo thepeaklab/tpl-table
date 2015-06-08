@@ -80,7 +80,7 @@
         vm.opts.colors.secondaryFontColor = vm.opts.colors.secondaryFontColor || 'ffffff';
 
         $scope.$watch('vm.opts.searchModel', function(newVal) {
-          if (newVal) {
+          if (newVal || newVal === '' || newVal === 0) {
             vm.opts.paginationModel = 1;
             refreshPagination();
           }
@@ -94,7 +94,7 @@
         });
 
         $scope.$watch('vm.opts.pageCount', function(newVal) {
-          if (newVal) {
+          if (newVal || newVal === 0) {
             refreshPagination();
             resetEdit();
           }
