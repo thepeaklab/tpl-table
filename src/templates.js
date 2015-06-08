@@ -69,11 +69,11 @@ angular.module('tpl.table').run(['$templateCache', function($templateCache) {
     "\n" +
     "        <div  ng-if=\"(vm.editableCell[0]!==$parent.$index || vm.editableCell[1]!==$index) || !vm.opts.columns[$index].editable\">\n" +
     "          <!-- TEXT -->\n" +
-    "          <span ng-if=\"vm.opts.columns[$index].content === POSSIBLE_CONTENT_TYPES[0]\">\n" +
+    "          <span ng-if=\"vm.opts.columns[$index].content === vm.POSSIBLE_CONTENT_TYPES[0]\">\n" +
     "            {{row[cell]}} {{columnValues[$index]}}\n" +
     "          </span>\n" +
     "          <!-- IMAGE -->\n" +
-    "          <img ng-if=\"vm.opts.columns[$index].content === POSSIBLE_CONTENT_TYPE[1]\" ng-src=\"row[cell]\" />\n" +
+    "          <img ng-if=\"vm.opts.columns[$index].content === vm.POSSIBLE_CONTENT_TYPES[1]\" ng-src=\"row[cell]\" />\n" +
     "          <!-- OTHER ??? -->\n" +
     "        </div>\n" +
     "\n" +

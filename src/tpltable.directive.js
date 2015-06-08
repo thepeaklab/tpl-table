@@ -108,7 +108,7 @@
           }
         });
 
-        $scope.$watchCollection('vm.opts.colums', function(newVal) {
+        $scope.$watchCollection('vm.opts.columns', function(newVal) {
           if (newVal && newVal.length) {
 
             angular.forEach(newVal, function(column) {
