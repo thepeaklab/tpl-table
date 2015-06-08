@@ -34,15 +34,19 @@
 
     <tr ng-if="vm.opts.entries && vm.opts.entries.length" ng-repeat="row in vm.opts.entries" ng-style="vm.editableCell[0]===$index && {'background-color': vm.opts.colors.primaryColor, 'color': vm.opts.colors.primaryFontColor}" ng-class="{'clickable': vm.opts.onRowClick, 'notclickable': !vm.opts.onRowClick || vm.editableCell[0]!==null}" ng-click="!vm.opts.onRowClick || vm.editableCell[0]!==null || vm.opts.onRowClick($index)">
 
-      <td ng-repeat="cell in vm.opts.entrieValuesOrder" class="tpltable__cell" ng-mouseleave="hover=false" ng-mouseenter="hover=true">
+      <td ng-repeat="cell in vm.opts.entrieValuesOrder" ng-mouseleave="hover=false" ng-mouseenter="hover=true">
 
         <div  ng-if="(vm.editableCell[0]!==$parent.$index || vm.editableCell[1]!==$index) || !vm.opts.columns[$index].editable">
           <!-- TEXT -->
-          <span ng-if="vm.opts.columns[$index].content === vm.POSSIBLE_CONTENT_TYPES[0]">
-            {{row[cell]}} {{columnValues[$index]}}
-          </span>
+          <div class="cell__text" ng-if="vm.opts.columns[$index].content === vm.POSSIBLE_CONTENT_TYPES[0]">
+            <span>
+              {{row[cell]}} {{columnValues[$index]}}
+            </span>
+          </div>
           <!-- IMAGE -->
-          <img ng-if="vm.opts.columns[$index].content === vm.POSSIBLE_CONTENT_TYPES[1]" ng-src="{{row[cell]}}" ng-style="{'max-width': vm.opts.columns[$index].maxWidth ? vm.opts.columns[$index].maxWidth : '250px', 'max-height': vm.opts.columns[$index].maxHeight ? vm.opts.columns[$index].maxHeight : '250px'}" />
+          <div class="cell__image" ng-if="vm.opts.columns[$index].content === vm.POSSIBLE_CONTENT_TYPES[1]">
+            <img  ng-src="{{row[cell]}}" ng-style="{'max-width': vm.opts.columns[$index].maxWidth ? vm.opts.columns[$index].maxWidth : '250px', 'max-height': vm.opts.columns[$index].maxHeight ? vm.opts.columns[$index].maxHeight : '250px'}" />
+          </div>
           <!-- OTHER ??? -->
         </div>
 

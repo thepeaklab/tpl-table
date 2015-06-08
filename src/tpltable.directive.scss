@@ -261,7 +261,6 @@ tpl-table {
   }
 
   &__cell {
-    text-align: center;
 
     img {
       margin: 10px;
@@ -271,6 +270,14 @@ tpl-table {
 
   tr.tpltable__row--placeholder:hover {
     background-color: #fff !important;
+  }
+
+}
+
+.cell {
+
+  &__image {
+    text-align: center;
   }
 
 }

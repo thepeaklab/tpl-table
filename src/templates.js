@@ -65,15 +65,19 @@ angular.module('tpl.table').run(['$templateCache', function($templateCache) {
     "\n" +
     "    <tr ng-if=\"vm.opts.entries && vm.opts.entries.length\" ng-repeat=\"row in vm.opts.entries\" ng-style=\"vm.editableCell[0]===$index && {'background-color': vm.opts.colors.primaryColor, 'color': vm.opts.colors.primaryFontColor}\" ng-class=\"{'clickable': vm.opts.onRowClick, 'notclickable': !vm.opts.onRowClick || vm.editableCell[0]!==null}\" ng-click=\"!vm.opts.onRowClick || vm.editableCell[0]!==null || vm.opts.onRowClick($index)\">\n" +
     "\n" +
-    "      <td ng-repeat=\"cell in vm.opts.entrieValuesOrder\" class=\"tpltable__cell\" ng-mouseleave=\"hover=false\" ng-mouseenter=\"hover=true\">\n" +
+    "      <td ng-repeat=\"cell in vm.opts.entrieValuesOrder\" ng-mouseleave=\"hover=false\" ng-mouseenter=\"hover=true\">\n" +
     "\n" +
     "        <div  ng-if=\"(vm.editableCell[0]!==$parent.$index || vm.editableCell[1]!==$index) || !vm.opts.columns[$index].editable\">\n" +
     "          <!-- TEXT -->\n" +
-    "          <span ng-if=\"vm.opts.columns[$index].content === vm.POSSIBLE_CONTENT_TYPES[0]\">\n" +
-    "            {{row[cell]}} {{columnValues[$index]}}\n" +
-    "          </span>\n" +
+    "          <div class=\"cell__text\" ng-if=\"vm.opts.columns[$index].content === vm.POSSIBLE_CONTENT_TYPES[0]\">\n" +
+    "            <span>\n" +
+    "              {{row[cell]}} {{columnValues[$index]}}\n" +
+    "            </span>\n" +
+    "          </div>\n" +
     "          <!-- IMAGE -->\n" +
-    "          <img ng-if=\"vm.opts.columns[$index].content === vm.POSSIBLE_CONTENT_TYPES[1]\" ng-src=\"{{row[cell]}}\" ng-style=\"{'max-width': vm.opts.columns[$index].maxWidth ? vm.opts.columns[$index].maxWidth : '250px', 'max-height': vm.opts.columns[$index].maxHeight ? vm.opts.columns[$index].maxHeight : '250px'}\" />\n" +
+    "          <div class=\"cell__image\" ng-if=\"vm.opts.columns[$index].content === vm.POSSIBLE_CONTENT_TYPES[1]\">\n" +
+    "            <img  ng-src=\"{{row[cell]}}\" ng-style=\"{'max-width': vm.opts.columns[$index].maxWidth ? vm.opts.columns[$index].maxWidth : '250px', 'max-height': vm.opts.columns[$index].maxHeight ? vm.opts.columns[$index].maxHeight : '250px'}\" />\n" +
+    "          </div>\n" +
     "          <!-- OTHER ??? -->\n" +
     "        </div>\n" +
     "\n" +
