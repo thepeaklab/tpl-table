@@ -83,17 +83,23 @@
       vm.opts.colors.secondaryColor = vm.opts.colors.secondaryColor || '004894';
       vm.opts.colors.primaryFontColor = vm.opts.colors.primaryFontColor || '333333';
       vm.opts.colors.secondaryFontColor = vm.opts.colors.secondaryFontColor || 'ffffff';
-      $scope.$watch('vm.opts.searchModel', function () {
-        vm.opts.paginationModel = 1;
-        refreshPagination();
+      $scope.$watch('vm.opts.searchModel', function (newVal) {
+        if (newVal) {
+          vm.opts.paginationModel = 1;
+          refreshPagination();
+        }
       });
-      $scope.$watch('vm.opts.entriesPerPageCount', function () {
-        vm.opts.paginationModel = 1;
-        resetEdit();
+      $scope.$watch('vm.opts.entriesPerPageCount', function (newVal) {
+        if (newVal) {
+          vm.opts.paginationModel = 1;
+          resetEdit();
+        }
       });
-      $scope.$watch('vm.opts.pageCount', function () {
-        refreshPagination();
-        resetEdit();
+      $scope.$watch('vm.opts.pageCount', function (newVal) {
+        if (newVal) {
+          refreshPagination();
+          resetEdit();
+        }
       });
       var refreshPagination = function refreshPagination() {
         var calculatedStart = vm.opts.paginationModel - (MAX_PAGINATION_BUTTONS - 1) / 2;
