@@ -93,7 +93,9 @@ angular.module('tpl.table').run(['$templateCache', function($templateCache) {
     "        </div>\n" +
     "      </td>\n" +
     "\n" +
-    "      <td ng-if=\"vm.opts.editable\" class=\"edit\" ng-class=\"{'active': vm.editableCell[1]===$parent.$index}\"></td>\n" +
+    "      <td ng-if=\"vm.opts.editable\" class=\"edit\" ng-class=\"{'active': vm.editableCell[1]===$parent.$index}\" ng-click=\"!vm.opts.onEditBtnClick || vm.editableCell[0]!==null || vm.opts.onEditBtnClick($index)\">\n" +
+    "        Edit\n" +
+    "      </td>\n" +
     "\n" +
     "    </tr>\n" +
     "  </tbody>\n" +
