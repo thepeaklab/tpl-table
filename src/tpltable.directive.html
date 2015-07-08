@@ -62,7 +62,9 @@
         </div>
       </td>
 
-      <td ng-if="vm.opts.editable" class="edit" ng-class="{'active': vm.editableCell[1]===$parent.$index}"></td>
+      <td ng-if="vm.opts.editable" class="edit" ng-class="{'active': vm.editableCell[1]===$parent.$index}" ng-click="!vm.opts.onEditBtnClick || vm.editableCell[0]!==null || vm.opts.onEditBtnClick($index)">
+        Edit
+      </td>
 
     </tr>
   </tbody>
