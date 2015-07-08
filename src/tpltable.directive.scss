@@ -1,4 +1,5 @@
 @import 'compass/utilities/general/clearfix';
+@import 'fonts';
 
 $font-color-darkgrey: #5c5c5c;
 $border-color-grey: #ebebeb;
@@ -163,16 +164,6 @@ tpl-table {
         }
       }
 
-      &.clickable {
-        cursor: zoom-in;
-        cursor: -webkit-zoom-in;
-        cursor: -moz-zoom-in;
-      }
-
-      &.notclickable {
-        cursor: default !important;
-      }
-
       &:hover {
         background-color: $color-grey-light;
       }
@@ -195,6 +186,16 @@ tpl-table {
 
         &.active {
           background-color: $color-blue-dark;
+        }
+
+        &.clickable {
+          cursor: zoom-in;
+          cursor: -webkit-zoom-in;
+          cursor: -moz-zoom-in;
+        }
+
+        &.notclickable {
+          cursor: default !important;
         }
 
         .cell-controll {

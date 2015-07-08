@@ -1,0 +1,56 @@
+@charset "UTF-8";
+
+@font-face {
+  font-family: "edl-tbl-font";
+  src:url("fonts/edl-tbl-font.eot");
+  src:url("fonts/edl-tbl-font.eot?#iefix") format("embedded-opentype"),
+    url("fonts/edl-tbl-font.woff") format("woff"),
+    url("fonts/edl-tbl-font.ttf") format("truetype"),
+    url("fonts/edl-tbl-font.svg#edl-tbl-font") format("svg");
+  font-weight: normal;
+  font-style: normal;
+
+}
+
+[data-icon]:before {
+  font-family: "edl-tbl-font" !important;
+  content: attr(data-icon);
+  font-style: normal !important;
+  font-weight: normal !important;
+  font-variant: normal !important;
+  text-transform: none !important;
+  speak: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+[class^="tbl-iconfont-"]:before,
+[class*=" tbl-iconfont-"]:before {
+  font-family: "edl-tbl-font" !important;
+  font-style: normal !important;
+  font-weight: normal !important;
+  font-variant: normal !important;
+  text-transform: none !important;
+  speak: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.tbl-iconfont {
+  display: inline-block;
+  vertical-align: super;
+}
+.tbl-iconfont:before {
+  vertical-align: middle;
+}
+.tbl-iconfont-delete:before {
+  content: "a";
+}
+.tbl-iconfont-export:before {
+  content: "b";
+}
+.tbl-iconfont-pen:before {
+  content: "c";
+}

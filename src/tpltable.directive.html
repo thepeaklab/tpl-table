@@ -19,22 +19,22 @@
   <thead class="tpltable__head">
     <tr>
       <th ng-repeat="column in vm.opts.columns">{{column.name}}</th>
-      <th ng-if="vm.opts.editable" class="edit">edit.</th>
+      <th ng-if="vm.opts.actions" class="edit">Aktionen</th>
     </tr>
   </thead>
 
   <tbody class="tpltable__body">
 
     <tr class="tpltable__row--placeholder" ng-if="!vm.opts.entries || !vm.opts.entries.length">
-      <td colspan="{{vm.opts.entrieValuesOrder.length + (vm.opts.editable ? 1 : 0)}}">
+      <td colspan="{{vm.opts.entrieValuesOrder.length + (vm.opts.actions ? 1 : 0)}}">
         <span ng-if="!vm.opts.loading">{{vm.opts.noDataAvailableText}}</span>
         <loadingpoints ng-if="vm.opts.loading"></loadingpoints>
       </td>
     </tr>
 
-    <tr ng-if="vm.opts.entries && vm.opts.entries.length" ng-repeat="row in vm.opts.entries" ng-style="vm.editableCell[0]===$index && {'background-color': vm.opts.colors.primaryColor, 'color': vm.opts.colors.primaryFontColor}" ng-class="{'clickable': vm.opts.onRowClick, 'notclickable': !vm.opts.onRowClick || vm.editableCell[0]!==null}" ng-click="!vm.opts.onRowClick || vm.editableCell[0]!==null || vm.opts.onRowClick($index)">
+    <tr ng-if="vm.opts.entries && vm.opts.entries.length" ng-repeat="row in vm.opts.entries">
 
-      <td ng-repeat="cell in vm.opts.entrieValuesOrder" ng-mouseleave="hover=false" ng-mouseenter="hover=true">
+      <td ng-repeat="cell in vm.opts.entrieValuesOrder" ng-mouseleave="hover=false" ng-mouseenter="hover=true" ng-style="vm.editableCell[0]===$parent.$index && {'background-color': vm.opts.colors.primaryColor, 'color': vm.opts.colors.primaryFontColor}" ng-class="{'clickable': vm.opts.onRowClick, 'notclickable': !vm.opts.onRowClick || vm.editableCell[0]!==null}" ng-click="!vm.opts.onRowClick || vm.editableCell[0]!==null || vm.opts.onRowClick($parent.$index)">
 
         <div  ng-if="(vm.editableCell[0]!==$parent.$index || vm.editableCell[1]!==$index) || !vm.opts.columns[$index].editable">
           <!-- TEXT -->
@@ -55,15 +55,16 @@
         </span>
 
         <div class="cell-controll edit" ng-if="vm.opts.columns[$index].editable && hover" ng-click="toggleEditCell($event, $parent.$parent.$index, $index)" ng-style="hoverEdit && {'background-color': vm.opts.colors.primaryColor, 'color': vm.opts.colors.primaryFontColor}" ng-mouseenter="hoverEdit=true" ng-mouseleave="hoverEdit=false">
-          <div ng-if="hover" class="iconfont iconfont-pen"></div>
+          <div ng-if="hover" class="iconfont tbl-iconfont-pen"></div>
         </div>
         <div class="cell-controll save" ng-if="vm.opts.columns[$index].editable && vm.editableCell[0]===$parent.$index && vm.editableCell[1]===$index" ng-style="{'background-color': vm.opts.colors.secondaryColor, 'color': vm.opts.colors.secondaryFontColor}" ng-click="$parent.hover=false;saveEditedColumn()">
           <div  class="iconfont iconfont-check"></div>
         </div>
       </td>
 
-      <td ng-if="vm.opts.editable" class="edit" ng-class="{'active': vm.editableCell[1]===$parent.$index}" ng-click="!vm.opts.onEditBtnClick || vm.editableCell[0]!==null || vm.opts.onEditBtnClick($index)">
-        Edit
+      <td ng-if="vm.opts.actions" class="edit">
+        <span ng-if="vm.opts.onEditBtnClick" class="tbl-iconfont tbl-iconfont-pen" ng-click="!vm.opts.onEditBtnClick || vm.editableCell[0]!==null || vm.opts.onEditBtnClick($index)"></span>
+        <span ng-if="vm.opts.onDeleteBtnClick" class="tbl-iconfont tbl-iconfont-delete" ng-click="!vm.opts.onDeleteBtnClick || vm.editableCell[0]!==null || vm.opts.onDeleteBtnClick($index)"></span>
       </td>
 
     </tr>

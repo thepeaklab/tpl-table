@@ -50,22 +50,22 @@ angular.module('tpl.table').run(['$templateCache', function($templateCache) {
     "  <thead class=\"tpltable__head\">\n" +
     "    <tr>\n" +
     "      <th ng-repeat=\"column in vm.opts.columns\">{{column.name}}</th>\n" +
-    "      <th ng-if=\"vm.opts.editable\" class=\"edit\">edit.</th>\n" +
+    "      <th ng-if=\"vm.opts.actions\" class=\"edit\">Aktionen</th>\n" +
     "    </tr>\n" +
     "  </thead>\n" +
     "\n" +
     "  <tbody class=\"tpltable__body\">\n" +
     "\n" +
     "    <tr class=\"tpltable__row--placeholder\" ng-if=\"!vm.opts.entries || !vm.opts.entries.length\">\n" +
-    "      <td colspan=\"{{vm.opts.entrieValuesOrder.length + (vm.opts.editable ? 1 : 0)}}\">\n" +
+    "      <td colspan=\"{{vm.opts.entrieValuesOrder.length + (vm.opts.actions ? 1 : 0)}}\">\n" +
     "        <span ng-if=\"!vm.opts.loading\">{{vm.opts.noDataAvailableText}}</span>\n" +
     "        <loadingpoints ng-if=\"vm.opts.loading\"></loadingpoints>\n" +
     "      </td>\n" +
     "    </tr>\n" +
     "\n" +
-    "    <tr ng-if=\"vm.opts.entries && vm.opts.entries.length\" ng-repeat=\"row in vm.opts.entries\" ng-style=\"vm.editableCell[0]===$index && {'background-color': vm.opts.colors.primaryColor, 'color': vm.opts.colors.primaryFontColor}\" ng-class=\"{'clickable': vm.opts.onRowClick, 'notclickable': !vm.opts.onRowClick || vm.editableCell[0]!==null}\" ng-click=\"!vm.opts.onRowClick || vm.editableCell[0]!==null || vm.opts.onRowClick($index)\">\n" +
+    "    <tr ng-if=\"vm.opts.entries && vm.opts.entries.length\" ng-repeat=\"row in vm.opts.entries\">\n" +
     "\n" +
-    "      <td ng-repeat=\"cell in vm.opts.entrieValuesOrder\" ng-mouseleave=\"hover=false\" ng-mouseenter=\"hover=true\">\n" +
+    "      <td ng-repeat=\"cell in vm.opts.entrieValuesOrder\" ng-mouseleave=\"hover=false\" ng-mouseenter=\"hover=true\" ng-style=\"vm.editableCell[0]===$parent.$index && {'background-color': vm.opts.colors.primaryColor, 'color': vm.opts.colors.primaryFontColor}\" ng-class=\"{'clickable': vm.opts.onRowClick, 'notclickable': !vm.opts.onRowClick || vm.editableCell[0]!==null}\" ng-click=\"!vm.opts.onRowClick || vm.editableCell[0]!==null || vm.opts.onRowClick($parent.$index)\">\n" +
     "\n" +
     "        <div  ng-if=\"(vm.editableCell[0]!==$parent.$index || vm.editableCell[1]!==$index) || !vm.opts.columns[$index].editable\">\n" +
     "          <!-- TEXT -->\n" +
@@ -86,15 +86,16 @@ angular.module('tpl.table').run(['$templateCache', function($templateCache) {
     "        </span>\n" +
     "\n" +
     "        <div class=\"cell-controll edit\" ng-if=\"vm.opts.columns[$index].editable && hover\" ng-click=\"toggleEditCell($event, $parent.$parent.$index, $index)\" ng-style=\"hoverEdit && {'background-color': vm.opts.colors.primaryColor, 'color': vm.opts.colors.primaryFontColor}\" ng-mouseenter=\"hoverEdit=true\" ng-mouseleave=\"hoverEdit=false\">\n" +
-    "          <div ng-if=\"hover\" class=\"iconfont iconfont-pen\"></div>\n" +
+    "          <div ng-if=\"hover\" class=\"iconfont tbl-iconfont-pen\"></div>\n" +
     "        </div>\n" +
     "        <div class=\"cell-controll save\" ng-if=\"vm.opts.columns[$index].editable && vm.editableCell[0]===$parent.$index && vm.editableCell[1]===$index\" ng-style=\"{'background-color': vm.opts.colors.secondaryColor, 'color': vm.opts.colors.secondaryFontColor}\" ng-click=\"$parent.hover=false;saveEditedColumn()\">\n" +
     "          <div  class=\"iconfont iconfont-check\"></div>\n" +
     "        </div>\n" +
     "      </td>\n" +
     "\n" +
-    "      <td ng-if=\"vm.opts.editable\" class=\"edit\" ng-class=\"{'active': vm.editableCell[1]===$parent.$index}\" ng-click=\"!vm.opts.onEditBtnClick || vm.editableCell[0]!==null || vm.opts.onEditBtnClick($index)\">\n" +
-    "        Edit\n" +
+    "      <td ng-if=\"vm.opts.actions\" class=\"edit\">\n" +
+    "        <span ng-if=\"vm.opts.onEditBtnClick\" class=\"tbl-iconfont tbl-iconfont-pen\" ng-click=\"!vm.opts.onEditBtnClick || vm.editableCell[0]!==null || vm.opts.onEditBtnClick($index)\"></span>\n" +
+    "        <span ng-if=\"vm.opts.onDeleteBtnClick\" class=\"tbl-iconfont tbl-iconfont-delete\" ng-click=\"!vm.opts.onDeleteBtnClick || vm.editableCell[0]!==null || vm.opts.onDeleteBtnClick($index)\"></span>\n" +
     "      </td>\n" +
     "\n" +
     "    </tr>\n" +

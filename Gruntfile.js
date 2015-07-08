@@ -96,6 +96,18 @@ module.exports = function(grunt) {
         }
       }
     },
+    copy: {
+      dist: {
+        files: [
+          {
+            expand: true,
+            flatten: true,
+            src: '<%= yo.src %>/fonts/*',
+            dest: '<%= yo.dist %>/fonts/'
+          }
+        ]
+      }
+    }
     // githooks: {
     //   all: {
     //     // Will run the jshint and test:unit tasks at every commit
@@ -105,7 +117,7 @@ module.exports = function(grunt) {
   });
 
   grunt.registerTask('test', ['jshint', 'karma:unit']);
-  grunt.registerTask('build', ['clean:dist', 'ngtemplates', 'compass:dist', 'concat:css', 'cssmin', 'concat:js', 'ngmin:dist', 'uglify:dist']);
+  grunt.registerTask('build', ['clean:dist', 'ngtemplates', 'compass:dist', 'concat:css', 'cssmin', 'concat:js', 'ngmin:dist', 'uglify:dist', 'copy:dist']);
   grunt.registerTask('release', ['test', 'bump-only', 'build', 'bump-commit']);
   grunt.registerTask('default', ['build']);
 };

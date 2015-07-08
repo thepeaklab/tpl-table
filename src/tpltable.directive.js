@@ -48,7 +48,7 @@
         vm.opts.id = vm.opts.id || 'tpltable';
         vm.opts.loading = vm.opts.loading || false;
         vm.opts.noDataAvailableText = vm.opts.noDataAvailableText || 'No Data Available ...';
-        vm.opts.editable = vm.opts.editable || false;
+        vm.opts.actions = vm.opts.actions || false;
         vm.opts.searchModel = vm.opts.searchModel !== undefined ? vm.opts.searchModel : null;
         vm.opts.paginationModel = vm.opts.paginationModel || null;
         vm.opts.pageCount = vm.opts.pageCount || null;
@@ -57,6 +57,7 @@
         vm.opts.entrieValuesOrder = vm.opts.entrieValuesOrder || null;
         vm.opts.onRowClick = vm.opts.onRowClick || null;
         vm.opts.onEditBtnClick = vm.opts.onEditBtnClick || null;
+        vm.opts.onDeleteBtnClick = vm.opts.onDeleteBtnClick || null;
         vm.opts.columns = vm.opts.columns || [
                                               {
                                                 name : '',
