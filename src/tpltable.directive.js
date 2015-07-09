@@ -56,6 +56,7 @@
         vm.opts.entries = vm.opts.entries || [];
         vm.opts.entrieValuesOrder = vm.opts.entrieValuesOrder || null;
         vm.opts.onRowClick = vm.opts.onRowClick || null;
+        vm.opts.onAssignBtnClick = vm.opts.onAssignBtnClick || null;
         vm.opts.onEditBtnClick = vm.opts.onEditBtnClick || null;
         vm.opts.onDeleteBtnClick = vm.opts.onDeleteBtnClick || null;
         vm.opts.columns = vm.opts.columns || [
