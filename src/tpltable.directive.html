@@ -18,7 +18,7 @@
 
   <thead class="tpltable__head">
     <tr>
-      <th ng-repeat="column in vm.opts.columns">{{column.name}}</th>
+      <th ng-repeat="column in vm.opts.columns" ng-if="!column.ngIf || column.ngIf()">{{column.name}}</th>
       <th ng-if="vm.opts.actions" class="edit">Aktionen</th>
     </tr>
   </thead>
@@ -34,7 +34,7 @@
 
     <tr ng-if="vm.opts.entries && vm.opts.entries.length" ng-repeat="row in vm.opts.entries">
 
-      <td ng-repeat="cell in vm.opts.entrieValuesOrder" ng-mouseleave="hover=false" ng-mouseenter="hover=true" ng-style="vm.editableCell[0]===$parent.$index && {'background-color': vm.opts.colors.primaryColor, 'color': vm.opts.colors.primaryFontColor}" ng-class="{'clickable': vm.opts.onRowClick, 'notclickable': !vm.opts.onRowClick || vm.editableCell[0]!==null}" ng-click="!vm.opts.onRowClick || vm.editableCell[0]!==null || vm.opts.onRowClick($parent.$index)">
+      <td ng-repeat="cell in vm.opts.entrieValuesOrder" ng-mouseleave="hover=false" ng-mouseenter="hover=true" ng-style="vm.editableCell[0]===$parent.$index && {'background-color': vm.opts.colors.primaryColor, 'color': vm.opts.colors.primaryFontColor}" ng-class="{'clickable': vm.opts.onRowClick, 'notclickable': !vm.opts.onRowClick || vm.editableCell[0]!==null}" ng-click="!vm.opts.onRowClick || vm.editableCell[0]!==null || vm.opts.onRowClick($parent.$index)" ng-if="!vm.opts.columns[$index].ngIf || vm.opts.columns[$index].ngIf()">
 
         <div  ng-if="(vm.editableCell[0]!==$parent.$index || vm.editableCell[1]!==$index) || !vm.opts.columns[$index].editable">
           <!-- TEXT -->
