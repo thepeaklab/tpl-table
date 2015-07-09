@@ -1,7 +1,7 @@
 @font-face {
   font-family: "edl-tbl-font";
-  src: url("/content/fonts/edl-tbl-font.eot");
-  src: url("/content/fonts/edl-tbl-font.eot?#iefix") format("embedded-opentype"), url("/content/fonts/edl-tbl-font.woff") format("woff"), url("/content/fonts/edl-tbl-font.ttf") format("truetype"), url("/content/fonts/edl-tbl-font.svg#edl-tbl-font") format("svg");
+  src: url("/fonts/edl-tbl-font.eot");
+  src: url("/fonts/edl-tbl-font.eot?#iefix") format("embedded-opentype"), url("/fonts/edl-tbl-font.woff") format("woff"), url("/fonts/edl-tbl-font.ttf") format("truetype"), url("/fonts/edl-tbl-font.svg#edl-tbl-font") format("svg");
   font-weight: normal;
   font-style: normal;
 }
@@ -198,8 +198,8 @@ loadingpoints div#rect1 {
 
 @font-face {
   font-family: "edl-tbl-font";
-  src: url("/content/fonts/edl-tbl-font.eot");
-  src: url("/content/fonts/edl-tbl-font.eot?#iefix") format("embedded-opentype"), url("/content/fonts/edl-tbl-font.woff") format("woff"), url("/content/fonts/edl-tbl-font.ttf") format("truetype"), url("/content/fonts/edl-tbl-font.svg#edl-tbl-font") format("svg");
+  src: url("/fonts/edl-tbl-font.eot");
+  src: url("/fonts/edl-tbl-font.eot?#iefix") format("embedded-opentype"), url("/fonts/edl-tbl-font.woff") format("woff"), url("/fonts/edl-tbl-font.ttf") format("truetype"), url("/fonts/edl-tbl-font.svg#edl-tbl-font") format("svg");
   font-weight: normal;
   font-style: normal;
 }

@@ -102,8 +102,8 @@ module.exports = function(grunt) {
           {
             expand: true,
             flatten: true,
-            src: '<%= yo.src %>/content/fonts/*',
-            dest: '<%= yo.dist %>/content/fonts/'
+            src: '<%= yo.src %>/fonts/*',
+            dest: '<%= yo.dist %>/fonts/'
           }
         ]
       }
