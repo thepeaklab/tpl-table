@@ -33,7 +33,7 @@ angular.module('tpl.table').run(['$templateCache', function($templateCache) {
     "<div class=\"top-row\" ng-if=\"vm.opts.entriesPerPageCount || vm.opts.searchModel\">\n" +
     "\n" +
     "  <div class=\"elementsperside__select prettyselect\" ng-if=\"vm.opts.entriesPerPageCount\">\n" +
-    "    <select class=\"top-row__entry-count input-sm\" ng-model=\"vm.opts.entriesPerPageCount\" ng-options=\"o as o for o in vm.POSSIBLE_RANGE_VALUES\" ng-style=\"{'color': vm.opts.colors.secondaryColor}\" />\n" +
+    "    <select class=\"top-row__entry-count input-sm\" ng-model=\"vm.opts.entriesPerPageCount\" ng-options=\"o as o for o in vm.POSSIBLE_RANGE_VALUES\" ng-style=\"{'color': vm.opts.colors.secondaryColor}\"></select>\n" +
     "  </div>\n" +
     "  <span class=\"elementsperside__label\" ng-if=\"vm.opts.entriesPerPageCount\">\n" +
     "    {{ 'TABLE_ENTRIES_PER_SITE' | translate }} {{dataOrder}}\n" +
@@ -103,6 +103,7 @@ angular.module('tpl.table').run(['$templateCache', function($templateCache) {
     "        <span ng-if=\"vm.opts.onAssignBtnClick\" class=\"tbl-iconfont tbl-iconfont-export\" ng-click=\"!vm.opts.onAssignBtnClick || vm.editableCell[0]!==null || vm.opts.onAssignBtnClick($index)\"></span>\n" +
     "        <span ng-if=\"vm.opts.onEditBtnClick\" class=\"tbl-iconfont tbl-iconfont-pen\" ng-click=\"!vm.opts.onEditBtnClick || vm.editableCell[0]!==null || vm.opts.onEditBtnClick($index)\"></span>\n" +
     "        <span ng-if=\"vm.opts.onDeleteBtnClick\" class=\"tbl-iconfont tbl-iconfont-delete\" ng-click=\"!vm.opts.onDeleteBtnClick || vm.editableCell[0]!==null || vm.opts.onDeleteBtnClick($index)\"></span>\n" +
+    "        <span ng-if=\"vm.opts.onAddBtnClick\" class=\"tbl-iconfont tbl-iconfont-add\" ng-click=\"!vm.opts.onAddBtnClick || vm.editableCell[0] !== null || vm.opts.onAddBtnClick($index)\"></span>\n" +
     "      </td>\n" +
     "\n" +
     "    </tr>\n" +

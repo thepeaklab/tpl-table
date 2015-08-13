@@ -59,6 +59,11 @@
   content: "c";
 }
 
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/christian\.elies\/dev\/tpl-table\/src\/fonts\.scss}line{font-family:\0000358}}
+.tbl-iconfont-pen:before {
+  content: "+";
+}
+
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/christian\.elies\/dev\/tpl-table\/src\/loading-points\.directive\.scss}line{font-family:\000033}}
 loadingpoints {
   display: block;
@@ -255,6 +260,11 @@ loadingpoints div#rect1 {
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/christian\.elies\/dev\/tpl-table\/src\/fonts\.scss}line{font-family:\0000354}}
 .tbl-iconfont-pen:before {
   content: "c";
+}
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/christian\.elies\/dev\/tpl-table\/src\/fonts\.scss}line{font-family:\0000358}}
+.tbl-iconfont-pen:before {
+  content: "+";
 }
 
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/christian\.elies\/dev\/tpl-table\/src\/tpltable\.directive\.scss}line{font-family:\0000313}}
