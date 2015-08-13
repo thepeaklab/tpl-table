@@ -71,7 +71,7 @@ angular.module('tpl.table').run(['$templateCache', function($templateCache) {
     "          <!-- TEXT -->\n" +
     "          <div class=\"cell__text\" ng-if=\"vm.opts.columns[$index].content === vm.POSSIBLE_CONTENT_TYPES[0]\">\n" +
     "            <span>\n" +
-    "              {{row[cell]}} {{columnValues[$index]}}\n" +
+    "              {{cell.indexOf('.') !== -1 ? vm.getCellValue(row, cell) : row[cell]}} {{columnValues[$index]}}\n" +
     "            </span>\n" +
     "          </div>\n" +
     "          <!-- IMAGE -->\n" +

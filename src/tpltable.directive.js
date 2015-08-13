@@ -45,6 +45,8 @@
 
         vm.editableCell = [null, null];
 
+        vm.getCellValue = getCellValue;
+
         vm.opts.id = vm.opts.id || 'tpltable';
         vm.opts.loading = vm.opts.loading || false;
         vm.opts.noDataAvailableText = vm.opts.noDataAvailableText || 'No Data Available ...';
@@ -218,5 +220,23 @@
           vm.editableCell[0] = null;
           vm.editableCell[1] = null;
         };
+
+        function getCellValue(row, cell) {
+          var value = null;
+          var levels = cell.split('.');
+          var levelsMap = {
+            2: function() {
+              return value = row[levels[0]][levels[1]];
+            },
+            3: function() {
+              return value = row[levels[0]][levels[1]][levels[2]];
+            },
+            4: function() {
+              return value = row[levels[0]][levels[1]][levels[2]][levels[3]];
+            }
+          };
+
+          return levelsMap[levels.length] ? levelsMap[levels.length]() : '';
+        }
       }]);
 }());
