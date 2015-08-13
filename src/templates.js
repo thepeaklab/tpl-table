@@ -77,7 +77,7 @@ angular.module('tpl.table').run(['$templateCache', function($templateCache) {
     "              {{cell.indexOf('.') !== -1 ? vm.getCellValue(row, cell) : row[cell]}} {{columnValues[$index]}}\n" +
     "            </span>\n" +
     "            <span ng-if=\"vm.opts.columns[$index].translate\">\n" +
-    "              {{(cell.indexOf('.') !== -1 ? vm.getCellValue(row, cell) : row[cell]}}) | translate}} {{columnValues[$index]}}\n" +
+    "              {{(cell.indexOf('.') !== -1 ? vm.getCellValue(row, cell) : row[cell]) | translate}} {{columnValues[$index]}}\n" +
     "            </span>\n" +
     "          </div>\n" +
     "          <!-- IMAGE -->\n" +
