@@ -46,7 +46,7 @@
               {{cell.indexOf('.') !== -1 ? vm.getCellValue(row, cell) : row[cell]}} {{columnValues[$index]}}
             </span>
             <span ng-if="vm.opts.columns[$index].translate">
-              {{(cell.indexOf('.') !== -1 ? vm.getCellValue(row, cell) : row[cell]}} {{columnValues[$index]) | translate}}
+              {{(cell.indexOf('.') !== -1 ? vm.getCellValue(row, cell) : row[cell]}}) | translate}} {{columnValues[$index]}}
             </span>
           </div>
           <!-- IMAGE -->
