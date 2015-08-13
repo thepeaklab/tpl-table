@@ -49,7 +49,10 @@ angular.module('tpl.table').run(['$templateCache', function($templateCache) {
     "\n" +
     "  <thead class=\"tpltable__head\">\n" +
     "    <tr>\n" +
-    "      <th ng-repeat=\"column in vm.opts.columns\" ng-if=\"!column.ngIf || column.ngIf()\">{{column.name}}</th>\n" +
+    "      <th ng-repeat=\"column in vm.opts.columns\" ng-if=\"!column.ngIf || column.ngIf()\">\n" +
+    "        <span ng-if=\"!column.translate\">{{column.name}}</span>\n" +
+    "        <span ng-if=\"column.translate\">{{column.name | translate}}</span>\n" +
+    "      </th>\n" +
     "      <th ng-if=\"vm.opts.actions\" class=\"edit\">Aktionen</th>\n" +
     "    </tr>\n" +
     "  </thead>\n" +
@@ -70,8 +73,11 @@ angular.module('tpl.table').run(['$templateCache', function($templateCache) {
     "        <div ng-if=\"(vm.editableCell[0]!==$parent.$index || vm.editableCell[1]!==$index) || !vm.opts.columns[$index].editable\">\n" +
     "          <!-- TEXT -->\n" +
     "          <div class=\"cell__text\" ng-if=\"vm.opts.columns[$index].content === vm.POSSIBLE_CONTENT_TYPES[0]\">\n" +
-    "            <span>\n" +
+    "            <span ng-if=\"!vm.opts.columns[$index].translate\">\n" +
     "              {{cell.indexOf('.') !== -1 ? vm.getCellValue(row, cell) : row[cell]}} {{columnValues[$index]}}\n" +
+    "            </span>\n" +
+    "            <span ng-if=\"vm.opts.columns[$index].translate\">\n" +
+    "              {{(cell.indexOf('.') !== -1 ? vm.getCellValue(row, cell) : row[cell]}} {{columnValues[$index]) | translate}}\n" +
     "            </span>\n" +
     "          </div>\n" +
     "          <!-- IMAGE -->\n" +
