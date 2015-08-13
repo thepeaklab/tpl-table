@@ -61,7 +61,7 @@ angular.module('tpl.table').run(['$templateCache', function($templateCache) {
     "\n" +
     "    <tr class=\"tpltable__row--placeholder\" ng-if=\"!vm.opts.entries || !vm.opts.entries.length\">\n" +
     "      <td colspan=\"{{vm.opts.entrieValuesOrder.length + (vm.opts.actions ? 1 : 0)}}\">\n" +
-    "        <span ng-if=\"!vm.opts.loading\">{{vm.opts.noDataAvailableText}}</span>\n" +
+    "        <span ng-if=\"!vm.opts.loading\">{{vm.opts.noDataAvailableText | translate}}</span>\n" +
     "        <loadingpoints ng-if=\"vm.opts.loading\"></loadingpoints>\n" +
     "      </td>\n" +
     "    </tr>\n" +

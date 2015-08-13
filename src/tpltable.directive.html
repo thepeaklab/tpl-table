@@ -30,7 +30,7 @@
 
     <tr class="tpltable__row--placeholder" ng-if="!vm.opts.entries || !vm.opts.entries.length">
       <td colspan="{{vm.opts.entrieValuesOrder.length + (vm.opts.actions ? 1 : 0)}}">
-        <span ng-if="!vm.opts.loading">{{vm.opts.noDataAvailableText}}</span>
+        <span ng-if="!vm.opts.loading">{{vm.opts.noDataAvailableText | translate}}</span>
         <loadingpoints ng-if="vm.opts.loading"></loadingpoints>
       </td>
     </tr>
