@@ -59,8 +59,8 @@
   content: "c";
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/david\/Development\/Projects\/directives\/tpl-table\/src\/fonts\.scss}line{font-family:\0000358}}
-.tbl-iconfont-pen:before {
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/david\/Development\/Projects\/directives\/tpl-table\/src\/fonts\.scss}line{font-family:\0000357}}
+.iconfont-add:before {
   content: "+";
 }
 
@@ -262,8 +262,8 @@ loadingpoints div#rect1 {
   content: "c";
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/david\/Development\/Projects\/directives\/tpl-table\/src\/fonts\.scss}line{font-family:\0000358}}
-.tbl-iconfont-pen:before {
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/david\/Development\/Projects\/directives\/tpl-table\/src\/fonts\.scss}line{font-family:\0000357}}
+.iconfont-add:before {
   content: "+";
 }
 
