@@ -60,7 +60,7 @@
 }
 
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/david\/Development\/Projects\/directives\/tpl-table\/src\/fonts\.scss}line{font-family:\0000357}}
-.iconfont-add:before {
+.tbl-iconfont-add:before {
   content: "+";
 }
 
@@ -263,7 +263,7 @@ loadingpoints div#rect1 {
 }
 
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/david\/Development\/Projects\/directives\/tpl-table\/src\/fonts\.scss}line{font-family:\0000357}}
-.iconfont-add:before {
+.tbl-iconfont-add:before {
   content: "+";
 }
 
