@@ -61,6 +61,7 @@
         vm.opts.onAssignBtnClick = vm.opts.onAssignBtnClick || null;
         vm.opts.onEditBtnClick = vm.opts.onEditBtnClick || null;
         vm.opts.onDeleteBtnClick = vm.opts.onDeleteBtnClick || null;
+        vm.opts.onAddBtnClick = vm.opts.onAddBtnClick || null;
         vm.opts.columns = vm.opts.columns || [
                                               {
                                                 name : '',
@@ -222,17 +223,16 @@
         };
 
         function getCellValue(row, cell) {
-          var value = null;
           var levels = cell.split('.');
           var levelsMap = {
             2: function() {
-              return value = row[levels[0]][levels[1]];
+              return row[levels[0]][levels[1]];
             },
             3: function() {
-              return value = row[levels[0]][levels[1]][levels[2]];
+              return row[levels[0]][levels[1]][levels[2]];
             },
             4: function() {
-              return value = row[levels[0]][levels[1]][levels[2]][levels[3]];
+              return row[levels[0]][levels[1]][levels[2]][levels[3]];
             }
           };
 
