@@ -115,8 +115,12 @@
       vm.opts.colors.secondaryColor = vm.opts.colors.secondaryColor || '004894';
       vm.opts.colors.primaryFontColor = vm.opts.colors.primaryFontColor || '333333';
       vm.opts.colors.secondaryFontColor = vm.opts.colors.secondaryFontColor || 'ffffff';
-      $scope.$watch('vm.opts.searchModel', function (newVal) {
-        if (newVal || newVal === '' || newVal === 0) {
+      $scope.$watch('vm.opts.searchModel', function (newVal, oldVal) {
+        // if (newVal || newVal === '' || newVal === 0) {
+        //   vm.opts.paginationModel = 1;
+        //   refreshPagination();
+        // }
+        if (oldVal === '' && newVal !== oldVal) {
           vm.opts.paginationModel = 1;
           refreshPagination();
         }
