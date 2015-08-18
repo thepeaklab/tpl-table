@@ -30,10 +30,12 @@
       };
     }])
 
-    .controller('TplTableCtrl', ['$scope', '$rootScope', '$document', '$timeout',
-      function TplTableCtrl($scope, $rootScope, $document, $timeout) {
+    .controller('TplTableCtrl', ['$scope', '$rootScope', '$document', '$timeout', 'tplTableService',
+      function TplTableCtrl($scope, $rootScope, $document, $timeout, tplTableService) {
 
         var vm = this;
+
+        var initialLoad = true;
 
         var MAX_PAGINATION_BUTTONS = 5;
 
@@ -93,21 +95,66 @@
         vm.opts.colors.primaryFontColor = vm.opts.colors.primaryFontColor || '333333';
         vm.opts.colors.secondaryFontColor = vm.opts.colors.secondaryFontColor || 'ffffff';
 
+        vm.opts = tplTableService.addTable(vm.opts);
+
+        $scope.$on('$destroy', function() {
+          tplTableService.setStateBeforeDetail(vm.opts.id, {
+            actualPage: vm.opts.paginationModel - 1,
+            actualSearch: vm.opts.searchModel
+          });
+        });
+
         $scope.$watch('vm.opts.searchModel', function(newVal, oldVal) {
           // if (newVal || newVal === '' || newVal === 0) {
           //   vm.opts.paginationModel = 1;
           //   refreshPagination();
           // }
-          if (oldVal === '' && newVal !== oldVal) {
+          if (oldVal === '' && newVal !== oldVal) { // Search started
+            initialLoad = false;
+            tplTableService.setStateBeforeSearch(vm.opts.id, vm.opts.paginationModel - 1);
+
             vm.opts.paginationModel = 1;
             refreshPagination();
+
+            if (vm.opts.paginationModel === 1) { // from page 1
+              vm.opts.pageAndSearchChangeMethod();
+            }
+          } else if (newVal === '' && !initialLoad) { // Search ended
+            var state = tplTableService.getStateBeforeSearch(vm.opts.id);
+            vm.opts.paginationModel = state.pageBeforeSearch + 1;
+
+            if (vm.opts.paginationModel === 1) { // from page 1
+              vm.opts.pageAndSearchChangeMethod();
+            }
+          } else if (newVal !== oldVal) { // New search after search started
+            vm.opts.pageAndSearchChangeMethod();
+          } else if (newVal === oldVal) { // Return to list from detail view
           }
         });
 
-        $scope.$watch('vm.opts.entriesPerPageCount', function(newVal) {
-          if (newVal) {
+        $scope.$watch('vm.opts.paginationModel', function(newVal, oldVal) {
+          if (newVal === oldVal || newVal !== oldVal) { // Init, new page, search start or search end
+            var state = tplTableService.getStateBeforeDetail(vm.opts.id);
+            if (state.actualPage) { // Return to list from detail view
+              vm.opts.paginationModel = state.actualPage + 1;
+              // vm.opts.searchModel = state.actualSearch;
+              tplTableService.setStateBeforeDetail(vm.opts.id, {
+                actualPage: null,
+                actualSearch: null
+              });
+            } else if (!initialLoad) {
+              vm.opts.pageAndSearchChangeMethod();
+            }
+          }
+          initialLoad = false;
+        });
+
+        $scope.$watch('vm.opts.entriesPerPageCount', function(newVal, oldVal) {
+          if (newVal !== oldVal) {
             vm.opts.paginationModel = 1;
             resetEdit();
+
+            vm.opts.pageAndSearchChangeMethod();
           }
         });
 
