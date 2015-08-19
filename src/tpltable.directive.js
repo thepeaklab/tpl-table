@@ -109,44 +109,65 @@
           //   vm.opts.paginationModel = 1;
           //   refreshPagination();
           // }
-          if (oldVal === '' && newVal !== oldVal) { // Search started
-            initialLoad = false;
+          if ((oldVal === '' || !oldVal) && newVal !== oldVal) { // Search started
             tplTableService.setStateBeforeSearch(vm.opts.id, vm.opts.paginationModel - 1);
 
-            vm.opts.paginationModel = 1;
-            refreshPagination();
-
             if (vm.opts.paginationModel === 1) { // from page 1
               vm.opts.pageAndSearchChangeMethod();
+            } else {
+              vm.opts.paginationModel = 1;
+              refreshPagination();
             }
-          } else if (newVal === '' && !initialLoad) { // Search ended
+          } else if ((newVal === '' || !newVal) && !initialLoad) { // Search ended
             var state = tplTableService.getStateBeforeSearch(vm.opts.id);
-            vm.opts.paginationModel = state.pageBeforeSearch + 1;
-
-            if (vm.opts.paginationModel === 1) { // from page 1
-              vm.opts.pageAndSearchChangeMethod();
+            if (state.pageBeforeSearch >= 0) {
+              if (vm.opts.paginationModel === 1 && (state.pageBeforeSearch + 1) === vm.opts.paginationModel) { // from page 1
+                vm.opts.pageAndSearchChangeMethod();
+              }
+              vm.opts.paginationModel = state.pageBeforeSearch + 1;
+              tplTableService.setStateBeforeSearch(vm.opts.id, null);
             }
           } else if (newVal !== oldVal) { // New search after search started
-            vm.opts.pageAndSearchChangeMethod();
-          } else if (newVal === oldVal) { // Return to list from detail view
+            if (vm.opts.paginationModel === 1) {
+              vm.opts.pageAndSearchChangeMethod();
+            } else {
+              vm.opts.paginationModel = 1;
+              refreshPagination();
+            }
+          } else if (newVal === oldVal) { // Init or returned to list
           }
+          initialLoad = false;
         });
 
         $scope.$watch('vm.opts.paginationModel', function(newVal, oldVal) {
-          if (newVal === oldVal || newVal !== oldVal) { // Init, new page, search start or search end
-            var state = tplTableService.getStateBeforeDetail(vm.opts.id);
-            if (state.actualPage) { // Return to list from detail view
-              vm.opts.paginationModel = state.actualPage + 1;
-              // vm.opts.searchModel = state.actualSearch;
-              tplTableService.setStateBeforeDetail(vm.opts.id, {
-                actualPage: null,
-                actualSearch: null
-              });
-            } else if (!initialLoad) {
+          if (newVal === oldVal || newVal !== oldVal) { // Init, new page, search start or search end, returned to list
+
+            if (vm.opts.searchModel !== '') { // Check for active search
+              if (newVal === oldVal) { // Returned to list
+                  var state = tplTableService.getStateBeforeDetail(vm.opts.id);
+                  if (state.actualPage >= 0) {
+                    vm.opts.paginationModel = state.actualPage + 1;
+
+                    if (state.actualSearch) {
+                      vm.opts.searchModel = state.actualSearch;
+                      vm.searchInput = vm.opts.searchModel;
+                    }
+
+                    tplTableService.setStateBeforeDetail(vm.opts.id, {
+                      actualPage: null,
+                      actualSearch: null
+                    });
+                  } else { // or search started from page 1
+                    vm.opts.pageAndSearchChangeMethod();
+                  }
+              } else { // or search started
+                vm.opts.pageAndSearchChangeMethod();
+              }
+            } else if (!initialLoad) { // Returned to list without search
               vm.opts.pageAndSearchChangeMethod();
             }
+            initialLoad = false;
           }
-          initialLoad = false;
         });
 
         $scope.$watch('vm.opts.entriesPerPageCount', function(newVal, oldVal) {
