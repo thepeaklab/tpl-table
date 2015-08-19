@@ -33,7 +33,7 @@
       }
 
       function getStateBeforeDetail(id) {
-        return {actualPage: tables[id].pageObj.actualPage};
+        return {actualPage: tables[id].pageObj.actualPage, actualSearch: tables[id].pageObj.actualSearch};
       }
 
       function setStateBeforeSearch(id, stateBeforeSearch) {
