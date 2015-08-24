@@ -111,13 +111,23 @@ module.exports = function(grunt) {
       }
     },
     copy: {
-      dist: {
+      distFonts: {
         files: [
           {
             expand: true,
             flatten: true,
             src: '<%= yo.src %>/fonts/*',
             dest: '<%= yo.dist %>/fonts/'
+          }
+        ]
+      },
+      distImages: {
+        files: [
+          {
+            expand: true,
+            flatten: true,
+            src: '<%= yo.src %>/images/*.png',
+            dest: '<%= yo.dist %>/images/'
           }
         ]
       }
@@ -131,7 +141,7 @@ module.exports = function(grunt) {
   });
 
   grunt.registerTask('test', ['jshint', 'karma:unit']);
-  grunt.registerTask('build', ['clean:dist', 'sprite', 'ngtemplates', 'compass:dist', 'concat:css', 'cssmin', 'concat:js', 'ngmin:dist', 'uglify:dist', 'copy:dist']);
+  grunt.registerTask('build', ['clean:dist', 'sprite', 'ngtemplates', 'compass:dist', 'concat:css', 'cssmin', 'concat:js', 'ngmin:dist', 'uglify:dist', 'copy:distFonts', 'copy:distImages']);
   grunt.registerTask('release', ['test', 'bump-only', 'build', 'bump-commit']);
   grunt.registerTask('default', ['build']);
 };
