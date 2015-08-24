@@ -103,7 +103,7 @@ angular.module('tpl.table').run(['$templateCache', function($templateCache) {
     "        <span ng-if=\"vm.opts.onAssignBtnClick\" class=\"tbl-iconfont tbl-iconfont-export\" ng-click=\"!vm.opts.onAssignBtnClick || vm.editableCell[0]!==null || vm.opts.onAssignBtnClick($index)\"></span>\n" +
     "        <span ng-if=\"vm.opts.onEditBtnClick\" class=\"tbl-iconfont tbl-iconfont-pen\" ng-click=\"!vm.opts.onEditBtnClick || vm.editableCell[0]!==null || vm.opts.onEditBtnClick($index)\"></span>\n" +
     "        <span ng-if=\"vm.opts.onDeleteBtnClick\" class=\"tbl-iconfont tbl-iconfont-delete\" ng-click=\"!vm.opts.onDeleteBtnClick || vm.editableCell[0]!==null || vm.opts.onDeleteBtnClick($index)\"></span>\n" +
-    "        <span ng-if=\"vm.opts.onAddBtnClick\" class=\"tbl-iconfont tbl-iconfont-add\" ng-click=\"!vm.opts.onAddBtnClick || vm.editableCell[0] !== null || vm.opts.onAddBtnClick($index)\"></span>\n" +
+    "        <span ng-if=\"vm.opts.onAddBtnClick\" class=\"tbl-iconfont icon-cal-button\" ng-click=\"!vm.opts.onAddBtnClick || vm.editableCell[0] !== null || vm.opts.onAddBtnClick($index)\"></span>\n" +
     "      </td>\n" +
     "\n" +
     "    </tr>\n" +
