@@ -10,6 +10,13 @@ $table-color-grey: #fafafa;
 
 tpl-table {
 
+  .icon {
+    display: inline-block;
+    vertical-align: baseline !important;
+    margin-left: 2px;
+    margin-right: 2px;
+  }
+
   .top-row {
     height: 30px;
     vertical-align: middle;
