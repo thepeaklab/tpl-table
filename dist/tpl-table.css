@@ -288,9 +288,8 @@ tpl-table .top-row {
   vertical-align: middle;
   color: #5c5c5c;
   font-size: 12px;
-  width: 145px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/david\/Development\/Projects\/directives\/tpl-table\/src\/tpltable\.directive\.scss}line{font-family:\0000328}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/david\/Development\/Projects\/directives\/tpl-table\/src\/tpltable\.directive\.scss}line{font-family:\0000327}}
 tpl-table .top-row .elementsperside__label {
   height: 28px;
   line-height: 28px;
@@ -300,7 +299,7 @@ tpl-table .top-row .elementsperside__label {
   margin-top: -22px;
   margin-left: 5px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/david\/Development\/Projects\/directives\/tpl-table\/src\/tpltable\.directive\.scss}line{font-family:\0000340}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/david\/Development\/Projects\/directives\/tpl-table\/src\/tpltable\.directive\.scss}line{font-family:\0000339}}
 tpl-table .top-row__entry-count {
   float: left;
   height: 30px;
@@ -308,13 +307,13 @@ tpl-table .top-row__entry-count {
   border-radius: 0 !important;
   background-color: #fff;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/david\/Development\/Projects\/directives\/tpl-table\/src\/tpltable\.directive\.scss}line{font-family:\0000348}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/david\/Development\/Projects\/directives\/tpl-table\/src\/tpltable\.directive\.scss}line{font-family:\0000347}}
 tpl-table .top-row form {
   float: right;
   height: 30px;
   line-height: 28px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/david\/Development\/Projects\/directives\/tpl-table\/src\/tpltable\.directive\.scss}line{font-family:\0000354}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/david\/Development\/Projects\/directives\/tpl-table\/src\/tpltable\.directive\.scss}line{font-family:\0000353}}
 tpl-table .top-row__search {
   float: right;
   height: 30px;
@@ -324,6 +323,7 @@ tpl-table .top-row__search {
   font-size: 12px;
   font-weight: 200;
   padding-left: 10px;
+  width: 145px;
 }
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/david\/Development\/Projects\/directives\/tpl-table\/src\/tpltable\.directive\.scss}line{font-family:\0000366}}
 tpl-table .bottom-row {

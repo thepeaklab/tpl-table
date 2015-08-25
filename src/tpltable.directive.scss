@@ -22,7 +22,6 @@ tpl-table {
     vertical-align: middle;
     color: $font-color-darkgrey;
     font-size: 12px;
-    width: 145px;
 
     .elementsperside {
       &__label {
@@ -60,6 +59,7 @@ tpl-table {
       font-size: 12px;
       font-weight: 200;
       padding-left: 10px;
+      width: 145px;
     }
   }
 
