@@ -30,8 +30,8 @@
       };
     }])
 
-    .controller('TplTableCtrl', ['$scope', '$rootScope', '$document', '$timeout', 'tplTableService',
-      function TplTableCtrl($scope, $rootScope, $document, $timeout, tplTableService) {
+    .controller('TplTableCtrl', ['$scope', '$rootScope', '$document', '$timeout', 'tplTableService', '$log',
+      function TplTableCtrl($scope, $rootScope, $document, $timeout, tplTableService, $log) {
 
         var vm = this;
 
@@ -64,6 +64,7 @@
         vm.opts.onEditBtnClick = vm.opts.onEditBtnClick || null;
         vm.opts.onDeleteBtnClick = vm.opts.onDeleteBtnClick || null;
         vm.opts.onAddBtnClick = vm.opts.onAddBtnClick || null;
+        vm.opts.pageAndSearchChangeMethod = vm.opts.onAddBtnClick || function() {$log.info('tbl-table: no pageAndSearchChanged-method given');};
         vm.opts.columns = vm.opts.columns || [
                                               {
                                                 name : '',
