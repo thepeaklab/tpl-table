@@ -60,6 +60,7 @@
         vm.opts.entries = vm.opts.entries || [];
         vm.opts.entrieValuesOrder = vm.opts.entrieValuesOrder || null;
         vm.opts.onRowClick = vm.opts.onRowClick || null;
+        // removed since version 1.2 and replaced by the 'actions'-object
         // vm.opts.onAssignBtnClick = vm.opts.onAssignBtnClick || null;
         // vm.opts.onEditBtnClick = vm.opts.onEditBtnClick || null;
         // vm.opts.onDeleteBtnClick = vm.opts.onDeleteBtnClick || null;
@@ -67,23 +68,23 @@
         vm.opts.actions = vm.opts.actions || {
                                                 add: {
                                                   'function': null,
-                                                  'if': false
+                                                  'if': function(){return false;}
                                                 },
                                                 delete: {
                                                   'function': null,
-                                                  'if': false
+                                                  'if': function(){return false;}
                                                 },
                                                 assign: {
                                                   'function': null,
-                                                  'if': false
+                                                  'if': function(){return false;}
                                                 },
                                                 edit: {
                                                   'function': null,
-                                                  'if': false
+                                                  'if': function(){return false;}
                                                 },
                                                 confirm: {
                                                   'function': null,
-                                                  'if': false
+                                                  'if': function(){return false;}
                                                 }
                                               };
         vm.opts.pageAndSearchChangeMethod = vm.opts.onAddBtnClick || function() {$log.info('tbl-table: no pageAndSearchChanged-method given');};
