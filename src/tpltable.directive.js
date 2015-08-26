@@ -52,7 +52,7 @@
         vm.opts.id = vm.opts.id || 'tpltable';
         vm.opts.loading = vm.opts.loading || false;
         vm.opts.noDataAvailableText = vm.opts.noDataAvailableText || 'No Data Available ...';
-        vm.opts.actions = vm.opts.actions || false;
+        vm.opts.showActionsColumn = vm.opts.showActionsColumn || false;
         vm.opts.searchModel = vm.opts.searchModel !== undefined ? vm.opts.searchModel : null;
         vm.opts.paginationModel = vm.opts.paginationModel || null;
         vm.opts.pageCount = vm.opts.pageCount || null;

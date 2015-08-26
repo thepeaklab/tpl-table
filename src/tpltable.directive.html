@@ -68,7 +68,7 @@
         </div>
       </td>
 
-      <td ng-if="vm.opts.actions" class="edit">
+      <td ng-if="vm.opts.showActionsColumn" class="edit">
         <span ng-if="vm.opts.actions.assign.function && vm.opts.actions.assign.if" class="tbl-iconfont tbl-iconfont-export" ng-click="!vm.opts.actions.assign.function || vm.editableCell[0]!==null || vm.opts.actions.assign.function($index)"></span>
         <span ng-if="vm.opts.actions.edit.function && vm.opts.actions.edit.if" class="tbl-iconfont tbl-iconfont-pen" ng-click="!vm.opts.actions.edit.function || vm.editableCell[0]!==null || vm.opts.actions.edit.function($index)"></span>
         <span ng-if="vm.opts.actions.delete.function && vm.opts.actions.delete.if" class="tbl-iconfont tbl-iconfont-delete" ng-click="!vm.opts.actions.delete.function || vm.editableCell[0]!==null || vm.opts.actions.delete.function($index)"></span>
