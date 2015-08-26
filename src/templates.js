@@ -53,7 +53,7 @@ angular.module('tpl.table').run(['$templateCache', function($templateCache) {
     "        <span ng-if=\"!column.translateColumn\">{{column.name}}</span>\n" +
     "        <span ng-if=\"column.translateColumn\">{{column.name | translate}}</span>\n" +
     "      </th>\n" +
-    "      <th ng-if=\"vm.opts.actions\" class=\"edit\">Aktionen</th>\n" +
+    "      <th ng-if=\"vm.opts.showActionsColumn\" class=\"edit\">Aktionen</th>\n" +
     "    </tr>\n" +
     "  </thead>\n" +
     "\n" +
