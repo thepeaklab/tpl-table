@@ -100,10 +100,11 @@ angular.module('tpl.table').run(['$templateCache', function($templateCache) {
     "      </td>\n" +
     "\n" +
     "      <td ng-if=\"vm.opts.actions\" class=\"edit\">\n" +
-    "        <span ng-if=\"vm.opts.onAssignBtnClick\" class=\"tbl-iconfont tbl-iconfont-export\" ng-click=\"!vm.opts.onAssignBtnClick || vm.editableCell[0]!==null || vm.opts.onAssignBtnClick($index)\"></span>\n" +
-    "        <span ng-if=\"vm.opts.onEditBtnClick\" class=\"tbl-iconfont tbl-iconfont-pen\" ng-click=\"!vm.opts.onEditBtnClick || vm.editableCell[0]!==null || vm.opts.onEditBtnClick($index)\"></span>\n" +
-    "        <span ng-if=\"vm.opts.onDeleteBtnClick\" class=\"tbl-iconfont tbl-iconfont-delete\" ng-click=\"!vm.opts.onDeleteBtnClick || vm.editableCell[0]!==null || vm.opts.onDeleteBtnClick($index)\"></span>\n" +
-    "        <span ng-if=\"vm.opts.onAddBtnClick\" class=\"icon icon-cal-button\" ng-click=\"!vm.opts.onAddBtnClick || vm.editableCell[0] !== null || vm.opts.onAddBtnClick($index)\"></span>\n" +
+    "        <span ng-if=\"vm.opts.actions.assign.function && vm.opts.actions.assign.if\" class=\"tbl-iconfont tbl-iconfont-export\" ng-click=\"!vm.opts.actions.assign.function || vm.editableCell[0]!==null || vm.opts.actions.assign.function($index)\"></span>\n" +
+    "        <span ng-if=\"vm.opts.actions.edit.function && vm.opts.actions.edit.if\" class=\"tbl-iconfont tbl-iconfont-pen\" ng-click=\"!vm.opts.actions.edit.function || vm.editableCell[0]!==null || vm.opts.actions.edit.function($index)\"></span>\n" +
+    "        <span ng-if=\"vm.opts.actions.delete.function && vm.opts.actions.delete.if\" class=\"tbl-iconfont tbl-iconfont-delete\" ng-click=\"!vm.opts.actions.delete.function || vm.editableCell[0]!==null || vm.opts.actions.delete.function($index)\"></span>\n" +
+    "        <span ng-if=\"vm.opts.actions.add.function && vm.opts.actions.add.if\" class=\"icon icon-cal-button\" ng-click=\"!vm.opts.actions.add.function || vm.editableCell[0] !== null || vm.opts.actions.add.function($index)\"></span>\n" +
+    "        <span ng-if=\"vm.opts.actions.confirm.function && vm.opts.actions.confirm.if\" class=\"iconfont iconfont-check\" ng-click=\"!vm.opts.actions.confirm.function ||  vm.editableCell[0]!=null || vm.opts.actions.confirm.function($index)\"></span>\n" +
     "      </td>\n" +
     "\n" +
     "    </tr>\n" +
