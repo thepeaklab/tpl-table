@@ -155,7 +155,8 @@
       vm.opts.colors.secondaryColor = vm.opts.colors.secondaryColor || '004894';
       vm.opts.colors.primaryFontColor = vm.opts.colors.primaryFontColor || '333333';
       vm.opts.colors.secondaryFontColor = vm.opts.colors.secondaryFontColor || 'ffffff';
-      vm.opts = tplTableService.addTable(vm.opts);
+      //vm.opts = tplTableService.addTable(angular.copy(vm.opts));
+      tplTableService.addTable(angular.copy(vm.opts));
       scopeListenerManager.saveAddListener($scope, $scope.$on('$destroy', function () {
         tplTableService.setStateBeforeDetail(vm.opts.id, {
           actualPage: vm.opts.paginationModel - 1,
@@ -367,9 +368,9 @@
       };
     return exports;
     function addTable(table) {
-      if (tables[table.id]) {
-        return tables[table.id];
-      }
+      // if (tables[table.id]) {
+      //   return tables[table.id];
+      // }
       tables[table.id] = table;
       tables[table.id].pageObj = {
         actualPage: null,

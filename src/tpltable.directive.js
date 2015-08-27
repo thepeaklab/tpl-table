@@ -120,7 +120,9 @@
         vm.opts.colors.primaryFontColor = vm.opts.colors.primaryFontColor || '333333';
         vm.opts.colors.secondaryFontColor = vm.opts.colors.secondaryFontColor || 'ffffff';
 
-        vm.opts = tplTableService.addTable(vm.opts);
+        //vm.opts = tplTableService.addTable(angular.copy(vm.opts));
+        tplTableService.addTable(angular.copy(vm.opts));
+
 
         scopeListenerManager.saveAddListener($scope, $scope.$on('$destroy', function() {
           tplTableService.setStateBeforeDetail(vm.opts.id, {

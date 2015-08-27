@@ -19,9 +19,9 @@
       return exports;
 
       function addTable(table) {
-        if (tables[table.id]) {
-          return tables[table.id];
-        }
+        // if (tables[table.id]) {
+        //   return tables[table.id];
+        // }
         tables[table.id] = table;
         tables[table.id].pageObj = {actualPage: null, pageBeforeSearch: null};
         return table;
