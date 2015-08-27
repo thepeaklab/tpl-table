@@ -5,7 +5,7 @@
     "dist/tpl-table.js"
   ],
   "dependencies": {
-
+    "tpl.scope-listener-manager": "http://stash.thepeaklab.biz:7990/scm/open/scope-listener-manager.git"
   },
   "devDependencies": {
     "angular": "latest"

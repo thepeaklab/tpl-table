@@ -9,7 +9,7 @@
       /* 3rd party modules */
 
       /* own modules */
-
+      'tpl.scope-listener-manager'
 
     ]);
 })();

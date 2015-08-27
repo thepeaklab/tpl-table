@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  angular.module('tpl.table', []);
+  angular.module('tpl.table', ['tpl.scope-listener-manager']);
 }());
 (function () {
   'use strict';
@@ -34,15 +34,15 @@
     '$timeout',
     function ($timeout) {
       return {
-        link: function (scope, element, attrs) {
-          scope.$watch(attrs.focusMe, function (value) {
+        link: function (scope, element, attrs, scopeListenerManager) {
+          scopeListenerManager.saveAddListener(scope, scope.$watch(attrs.focusMe, function (value) {
             if (value === true) {
               $timeout(function () {
                 element[0].focus();
                 scope[attrs.focusMe] = false;
               });
             }
-          });
+          }));
         }
       };
     }
@@ -53,7 +53,8 @@
     '$timeout',
     'tplTableService',
     '$log',
-    function TplTableCtrl($scope, $rootScope, $document, $timeout, tplTableService, $log) {
+    'scopeListenerManager',
+    function TplTableCtrl($scope, $rootScope, $document, $timeout, tplTableService, $log, scopeListenerManager) {
       var vm = this;
       var initialLoad = true;
       var MAX_PAGINATION_BUTTONS = 5;
@@ -155,13 +156,13 @@
       vm.opts.colors.primaryFontColor = vm.opts.colors.primaryFontColor || '333333';
       vm.opts.colors.secondaryFontColor = vm.opts.colors.secondaryFontColor || 'ffffff';
       vm.opts = tplTableService.addTable(vm.opts);
-      $scope.$on('$destroy', function () {
+      scopeListenerManager.saveAddListener($scope, $scope.$on('$destroy', function () {
         tplTableService.setStateBeforeDetail(vm.opts.id, {
           actualPage: vm.opts.paginationModel - 1,
           actualSearch: vm.opts.searchModel
         });
-      });
-      $scope.$watch('vm.opts.searchModel', function (newVal, oldVal) {
+      }));
+      scopeListenerManager.saveAddListener($scope, $scope.$watch('vm.opts.searchModel', function (newVal, oldVal) {
         // if (newVal || newVal === '' || newVal === 0) {
         //   vm.opts.paginationModel = 1;
         //   refreshPagination();
@@ -198,8 +199,8 @@
         } else if (newVal === oldVal) {
         }
         initialLoad = false;
-      });
-      $scope.$watch('vm.opts.paginationModel', function (newVal, oldVal) {
+      }));
+      scopeListenerManager.saveAddListener($scope, $scope.$watch('vm.opts.paginationModel', function (newVal, oldVal) {
         if (newVal === oldVal || newVal !== oldVal) {
           // Init, new page, search start or search end, returned to list
           if (vm.opts.searchModel !== '') {
@@ -231,21 +232,21 @@
           }
           initialLoad = false;
         }
-      });
-      $scope.$watch('vm.opts.entriesPerPageCount', function (newVal, oldVal) {
+      }));
+      scopeListenerManager.saveAddListener($scope, $scope.$watch('vm.opts.entriesPerPageCount', function (newVal, oldVal) {
         if (newVal !== oldVal) {
           vm.opts.paginationModel = 1;
           resetEdit();
           vm.opts.pageAndSearchChangeMethod();
         }
-      });
-      $scope.$watch('vm.opts.pageCount', function (newVal) {
+      }));
+      scopeListenerManager.saveAddListener($scope, $scope.$watch('vm.opts.pageCount', function (newVal) {
         if (newVal || newVal === 0) {
           refreshPagination();
           resetEdit();
         }
-      });
-      $scope.$watchCollection('vm.opts.columns', function (newVal) {
+      }));
+      scopeListenerManager.saveAddListener($scope, $scope.$watchCollection('vm.opts.columns', function (newVal) {
         if (newVal && newVal.length) {
           angular.forEach(newVal, function (column) {
             if (column.content && column.content !== '') {
@@ -260,7 +261,7 @@
             }
           });
         }
-      });
+      }));
       var refreshPagination = function refreshPagination() {
         var calculatedStart = vm.opts.paginationModel - (MAX_PAGINATION_BUTTONS - 1) / 2;
         if (calculatedStart > 0) {
