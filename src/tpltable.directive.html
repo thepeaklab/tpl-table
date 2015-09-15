@@ -1,5 +1,5 @@
 
-<div class="top-row" ng-if="(vm.opts.entriesPerPageCount && !vm.opts.showPagination || vm.opts.searchModel)">
+<div class="top-row" ng-if="(vm.opts.entriesPerPageCount && !vm.opts.showPagination) || vm.opts.searchModel">
 
   <div class="elementsperside__select prettyselect" ng-if="vm.opts.entriesPerPageCount && vm.opts.showPagination">
     <select class="top-row__entry-count input-sm" ng-model="vm.opts.entriesPerPageCount" ng-options="o as o for o in vm.POSSIBLE_RANGE_VALUES" ng-style="{'color': vm.opts.colors.secondaryColor}"></select>
