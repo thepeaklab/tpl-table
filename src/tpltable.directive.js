@@ -54,6 +54,7 @@
         vm.opts.noDataAvailableText = vm.opts.noDataAvailableText || 'No Data Available ...';
         vm.opts.actions = vm.opts.actions || false;
         vm.opts.searchModel = vm.opts.searchModel !== undefined ? vm.opts.searchModel : null;
+        vm.opts.showPagination = vm.opts.showPagination !== null || vm.opts.showPagination !== undefined ? vm.opts.showPagination : true;
         vm.opts.paginationModel = vm.opts.paginationModel || null;
         vm.opts.pageCount = vm.opts.pageCount || null;
         vm.opts.entriesPerPageCount = vm.opts.entriesPerPageCount || null;
@@ -171,7 +172,7 @@
         });
 
         $scope.$watch('vm.opts.entriesPerPageCount', function(newVal, oldVal) {
-          if (newVal !== oldVal) {
+          if ((newVal || newVal === 0) && newVal !== oldVal) {
             vm.opts.paginationModel = 1;
             resetEdit();
 
