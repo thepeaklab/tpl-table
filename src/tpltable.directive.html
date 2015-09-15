@@ -1,10 +1,10 @@
 
-<div class="top-row" ng-if="vm.opts.entriesPerPageCount || vm.opts.searchModel">
+<div class="top-row" ng-if="(vm.opts.entriesPerPageCount && !vm.opts.showPagination || vm.opts.searchModel ">
 
-  <div class="elementsperside__select prettyselect" ng-if="vm.opts.entriesPerPageCount">
+  <div class="elementsperside__select prettyselect" ng-if="vm.opts.entriesPerPageCount && vm.opts.showPagination">
     <select class="top-row__entry-count input-sm" ng-model="vm.opts.entriesPerPageCount" ng-options="o as o for o in vm.POSSIBLE_RANGE_VALUES" ng-style="{'color': vm.opts.colors.secondaryColor}"></select>
   </div>
-  <span class="elementsperside__label" ng-if="vm.opts.entriesPerPageCount">
+  <span class="elementsperside__label" ng-if="vm.opts.entriesPerPageCount && vm.opts.showPagination">
     {{ 'TABLE_ENTRIES_PER_SITE' | translate }} {{dataOrder}}
   </span>
 
@@ -81,7 +81,7 @@
 
 </table>
 
-<div class="bottom-row" ng-if="vm.opts.paginationModel">
+<div class="bottom-row" ng-if="vm.opts.paginationModel && vm.opts.showPagination">
   <div class="paginator">
 
     <div class="paginator__first" ng-class="{'inactive': vm.opts.paginationModel === 1}"
