@@ -89,7 +89,7 @@
                                                   'if': function(){return false;}
                                                 }
                                               };
-        vm.opts.pageAndSearchChangeMethod = vm.opts.onAddBtnClick || function() {$log.info('tbl-table: no pageAndSearchChanged-method given');};
+        vm.opts.pageAndSearchChangeMethod = vm.opts.pageAndSearchChangeMethod || function() {$log.info('tbl-table: no pageAndSearchChangeMethod given');};
         vm.opts.columns = vm.opts.columns || [
                                               {
                                                 name : '',
