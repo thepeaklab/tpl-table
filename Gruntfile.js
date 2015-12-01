@@ -74,6 +74,20 @@ module.exports = function(grunt) {
         }
       }
     },
+    sprite: {
+      all: {
+        src: '<%= yo.src %>/images/sprites/*.png',
+        dest: '<%= yo.src %>/images/sprites.png',
+        destCss: '<%= yo.src %>/sprites.scss',
+        cssFormat: 'css',
+        cssVarMap: function(sprite) {
+          if (sprite.name.indexOf('--hover') >= 0) {
+            sprite.name = sprite.name.replace('--hover', ':hover') + ', .icon-' + sprite.name +
+            ', .icon-' + sprite.name.replace('--hover', '') + '.hover';
+          }
+        }
+      }
+    },
     compass: {
       options: {
         sassDir: '<%= yo.src %>',
@@ -97,13 +111,23 @@ module.exports = function(grunt) {
       }
     },
     copy: {
-      dist: {
+      distFonts: {
         files: [
           {
             expand: true,
             flatten: true,
             src: '<%= yo.src %>/fonts/*',
             dest: '<%= yo.dist %>/fonts/'
+          }
+        ]
+      },
+      distImages: {
+        files: [
+          {
+            expand: true,
+            flatten: true,
+            src: '<%= yo.src %>/images/*.png',
+            dest: '<%= yo.dist %>/images/'
           }
         ]
       }
@@ -117,7 +141,7 @@ module.exports = function(grunt) {
   });
 
   grunt.registerTask('test', ['jshint', 'karma:unit']);
-  grunt.registerTask('build', ['clean:dist', 'ngtemplates', 'compass:dist', 'concat:css', 'cssmin', 'concat:js', 'ngmin:dist', 'uglify:dist', 'copy:dist']);
+  grunt.registerTask('build', ['clean:dist', 'sprite', 'ngtemplates', 'compass:dist', 'concat:css', 'cssmin', 'concat:js', 'ngmin:dist', 'uglify:dist', 'copy:distFonts', 'copy:distImages']);
   grunt.registerTask('release', ['test', 'bump-only', 'build', 'bump-commit']);
   grunt.registerTask('default', ['build']);
 };

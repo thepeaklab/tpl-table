@@ -17,21 +17,22 @@
 
     .directive('focusMe', ['$timeout', function($timeout) {
       return {
-        link: function(scope, element, attrs) {
-          scope.$watch(attrs.focusMe, function(value) {
+        link: function(scope, element, attrs, scopeListenerManager) {
+          scopeListenerManager.saveAddListener(scope, scope.$watch(attrs.focusMe, function(value) {
             if(value === true) {
               $timeout(function() {
                 element[0].focus();
                 scope[attrs.focusMe] = false;
               });
             }
-          });
+          }));
         }
       };
     }])
 
-    .controller('TplTableCtrl', ['$scope', '$rootScope', '$document', '$timeout', 'tplTableService',
-      function TplTableCtrl($scope, $rootScope, $document, $timeout, tplTableService) {
+    .controller('TplTableCtrl', ['$scope', '$rootScope', '$document', '$timeout', 'tplTableService', '$log',
+      'scopeListenerManager',
+      function TplTableCtrl($scope, $rootScope, $document, $timeout, tplTableService, $log, scopeListenerManager) {
 
         var vm = this;
 
@@ -52,19 +53,43 @@
         vm.opts.id = vm.opts.id || 'tpltable';
         vm.opts.loading = vm.opts.loading || false;
         vm.opts.noDataAvailableText = vm.opts.noDataAvailableText || 'No Data Available ...';
-        vm.opts.actions = vm.opts.actions || false;
+        vm.opts.showActionsColumn = vm.opts.showActionsColumn || false;
         vm.opts.searchModel = vm.opts.searchModel !== undefined ? vm.opts.searchModel : null;
-        vm.opts.showPagination = vm.opts.showPagination !== null || vm.opts.showPagination !== undefined ? vm.opts.showPagination : true;
+        vm.opts.showPagination = vm.opts.showPagination !== null && vm.opts.showPagination !== undefined ? vm.opts.showPagination : true;
         vm.opts.paginationModel = vm.opts.paginationModel || null;
         vm.opts.pageCount = vm.opts.pageCount || null;
         vm.opts.entriesPerPageCount = vm.opts.entriesPerPageCount || null;
         vm.opts.entries = vm.opts.entries || [];
         vm.opts.entrieValuesOrder = vm.opts.entrieValuesOrder || null;
         vm.opts.onRowClick = vm.opts.onRowClick || null;
-        vm.opts.onAssignBtnClick = vm.opts.onAssignBtnClick || null;
-        vm.opts.onEditBtnClick = vm.opts.onEditBtnClick || null;
-        vm.opts.onDeleteBtnClick = vm.opts.onDeleteBtnClick || null;
-        vm.opts.onAddBtnClick = vm.opts.onAddBtnClick || null;
+        // removed since version 1.2 and replaced by the 'actions'-object
+        // vm.opts.onAssignBtnClick = vm.opts.onAssignBtnClick || null;
+        // vm.opts.onEditBtnClick = vm.opts.onEditBtnClick || null;
+        // vm.opts.onDeleteBtnClick = vm.opts.onDeleteBtnClick || null;
+        // vm.opts.onAddBtnClick = vm.opts.onAddBtnClick || null;
+        vm.opts.actions = vm.opts.actions || {
+                                                add: {
+                                                  'function': null,
+                                                  'if': function(){return false;}
+                                                },
+                                                delete: {
+                                                  'function': null,
+                                                  'if': function(){return false;}
+                                                },
+                                                assign: {
+                                                  'function': null,
+                                                  'if': function(){return false;}
+                                                },
+                                                edit: {
+                                                  'function': null,
+                                                  'if': function(){return false;}
+                                                },
+                                                confirm: {
+                                                  'function': null,
+                                                  'if': function(){return false;}
+                                                }
+                                              };
+        vm.opts.pageAndSearchChangeMethod = vm.opts.onAddBtnClick || function() {$log.info('tbl-table: no pageAndSearchChanged-method given');};
         vm.opts.columns = vm.opts.columns || [
                                               {
                                                 name : '',
@@ -96,16 +121,18 @@
         vm.opts.colors.primaryFontColor = vm.opts.colors.primaryFontColor || '333333';
         vm.opts.colors.secondaryFontColor = vm.opts.colors.secondaryFontColor || 'ffffff';
 
-        vm.opts = tplTableService.addTable(vm.opts);
+        //vm.opts = tplTableService.addTable(angular.copy(vm.opts));
+        tplTableService.addTable(angular.copy(vm.opts));
 
-        $scope.$on('$destroy', function() {
+
+        scopeListenerManager.saveAddListener($scope, $scope.$on('$destroy', function() {
           tplTableService.setStateBeforeDetail(vm.opts.id, {
             actualPage: vm.opts.paginationModel - 1,
             actualSearch: vm.opts.searchModel
           });
-        });
+        }));
 
-        $scope.$watch('vm.opts.searchModel', function(newVal, oldVal) {
+        scopeListenerManager.saveAddListener($scope, $scope.$watch('vm.opts.searchModel', function(newVal, oldVal) {
           // if (newVal || newVal === '' || newVal === 0) {
           //   vm.opts.paginationModel = 1;
           //   refreshPagination();
@@ -138,9 +165,9 @@
           } else if (newVal === oldVal) { // Init or returned to list
           }
           initialLoad = false;
-        });
+        }));
 
-        $scope.$watch('vm.opts.paginationModel', function(newVal, oldVal) {
+        scopeListenerManager.saveAddListener($scope, $scope.$watch('vm.opts.paginationModel', function(newVal, oldVal) {
           if (newVal === oldVal || newVal !== oldVal) { // Init, new page, search start or search end, returned to list
 
             if (vm.opts.searchModel !== '') { // Check for active search
@@ -169,25 +196,24 @@
             }
             initialLoad = false;
           }
-        });
+        }));
 
-        $scope.$watch('vm.opts.entriesPerPageCount', function(newVal, oldVal) {
+        scopeListenerManager.saveAddListener($scope, $scope.$watch('vm.opts.entriesPerPageCount', function(newVal, oldVal) {
           if ((newVal || newVal === 0) && newVal !== oldVal) {
             vm.opts.paginationModel = 1;
             resetEdit();
-
             vm.opts.pageAndSearchChangeMethod();
           }
-        });
+        }));
 
-        $scope.$watch('vm.opts.pageCount', function(newVal) {
+        scopeListenerManager.saveAddListener($scope, $scope.$watch('vm.opts.pageCount', function(newVal) {
           if (newVal || newVal === 0) {
             refreshPagination();
             resetEdit();
           }
-        });
+        }));
 
-        $scope.$watchCollection('vm.opts.columns', function(newVal) {
+        scopeListenerManager.saveAddListener($scope, $scope.$watchCollection('vm.opts.columns', function(newVal) {
           if (newVal && newVal.length) {
 
             angular.forEach(newVal, function(column) {
@@ -206,7 +232,7 @@
             });
 
           }
-        });
+        }));
 
         var refreshPagination = function refreshPagination() {
           var calculatedStart = vm.opts.paginationModel - ((MAX_PAGINATION_BUTTONS - 1) / 2);

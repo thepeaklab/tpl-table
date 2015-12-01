@@ -30,12 +30,12 @@ angular.module('tpl.table').run(['$templateCache', function($templateCache) {
 
   $templateCache.put('src/tpltable.directive.html',
     "\n" +
-    "<div class=\"top-row\" ng-if=\"vm.opts.entriesPerPageCount || vm.opts.searchModel\">\n" +
+    "<div class=\"top-row\" ng-if=\"(vm.opts.entriesPerPageCount && vm.opts.showPagination) || vm.opts.searchModel\">\n" +
     "\n" +
-    "  <div class=\"elementsperside__select prettyselect\" ng-if=\"vm.opts.entriesPerPageCount\">\n" +
+    "  <div class=\"elementsperside__select prettyselect\" ng-if=\"vm.opts.entriesPerPageCount && vm.opts.showPagination\">\n" +
     "    <select class=\"top-row__entry-count input-sm\" ng-model=\"vm.opts.entriesPerPageCount\" ng-options=\"o as o for o in vm.POSSIBLE_RANGE_VALUES\" ng-style=\"{'color': vm.opts.colors.secondaryColor}\"></select>\n" +
     "  </div>\n" +
-    "  <span class=\"elementsperside__label\" ng-if=\"vm.opts.entriesPerPageCount\">\n" +
+    "  <span class=\"elementsperside__label\" ng-if=\"vm.opts.entriesPerPageCount && vm.opts.showPagination\">\n" +
     "    {{ 'TABLE_ENTRIES_PER_SITE' | translate }} {{dataOrder}}\n" +
     "  </span>\n" +
     "\n" +
@@ -53,7 +53,7 @@ angular.module('tpl.table').run(['$templateCache', function($templateCache) {
     "        <span ng-if=\"!column.translateColumn\">{{column.name}}</span>\n" +
     "        <span ng-if=\"column.translateColumn\">{{column.name | translate}}</span>\n" +
     "      </th>\n" +
-    "      <th ng-if=\"vm.opts.actions\" class=\"edit\">Aktionen</th>\n" +
+    "      <th ng-if=\"vm.opts.showActionsColumn\" class=\"edit\">Aktionen</th>\n" +
     "    </tr>\n" +
     "  </thead>\n" +
     "\n" +
@@ -99,11 +99,12 @@ angular.module('tpl.table').run(['$templateCache', function($templateCache) {
     "        </div>\n" +
     "      </td>\n" +
     "\n" +
-    "      <td ng-if=\"vm.opts.actions\" class=\"edit\">\n" +
-    "        <span ng-if=\"vm.opts.onAssignBtnClick\" class=\"tbl-iconfont tbl-iconfont-export\" ng-click=\"!vm.opts.onAssignBtnClick || vm.editableCell[0]!==null || vm.opts.onAssignBtnClick($index)\"></span>\n" +
-    "        <span ng-if=\"vm.opts.onEditBtnClick\" class=\"tbl-iconfont tbl-iconfont-pen\" ng-click=\"!vm.opts.onEditBtnClick || vm.editableCell[0]!==null || vm.opts.onEditBtnClick($index)\"></span>\n" +
-    "        <span ng-if=\"vm.opts.onDeleteBtnClick\" class=\"tbl-iconfont tbl-iconfont-delete\" ng-click=\"!vm.opts.onDeleteBtnClick || vm.editableCell[0]!==null || vm.opts.onDeleteBtnClick($index)\"></span>\n" +
-    "        <span ng-if=\"vm.opts.onAddBtnClick\" class=\"tbl-iconfont tbl-iconfont-add\" ng-click=\"!vm.opts.onAddBtnClick || vm.editableCell[0] !== null || vm.opts.onAddBtnClick($index)\"></span>\n" +
+    "      <td ng-if=\"vm.opts.showActionsColumn\" class=\"edit\">\n" +
+    "        <span ng-if=\"vm.opts.actions.assign.function && vm.opts.actions.assign.if($index)\" class=\"tbl-iconfont tbl-iconfont-export\" ng-click=\"!vm.opts.actions.assign.function || vm.editableCell[0]!==null || vm.opts.actions.assign.function($index)\"></span>\n" +
+    "        <span ng-if=\"vm.opts.actions.edit.function && vm.opts.actions.edit.if($index)\" class=\"tbl-iconfont tbl-iconfont-pen\" ng-click=\"!vm.opts.actions.edit.function || vm.editableCell[0]!==null || vm.opts.actions.edit.function($index)\"></span>\n" +
+    "        <span ng-if=\"vm.opts.actions.delete.function && vm.opts.actions.delete.if($index)\" class=\"tbl-iconfont tbl-iconfont-delete\" ng-click=\"!vm.opts.actions.delete.function || vm.editableCell[0]!==null || vm.opts.actions.delete.function($index)\"></span>\n" +
+    "        <span ng-if=\"vm.opts.actions.add.function && vm.opts.actions.add.if($index)\" class=\"icon icon-cal-button\" ng-click=\"!vm.opts.actions.add.function || vm.editableCell[0] !== null || vm.opts.actions.add.function($index)\"></span>\n" +
+    "        <span ng-if=\"vm.opts.actions.confirm.function && vm.opts.actions.confirm.if($index)\" class=\"iconfont iconfont-check\" ng-click=\"!vm.opts.actions.confirm.function ||  vm.editableCell[0]!=null || vm.opts.actions.confirm.function($index)\"></span>\n" +
     "      </td>\n" +
     "\n" +
     "    </tr>\n" +
@@ -111,7 +112,7 @@ angular.module('tpl.table').run(['$templateCache', function($templateCache) {
     "\n" +
     "</table>\n" +
     "\n" +
-    "<div class=\"bottom-row\" ng-if=\"vm.opts.paginationModel\">\n" +
+    "<div class=\"bottom-row\" ng-if=\"vm.opts.paginationModel && vm.opts.showPagination\">\n" +
     "  <div class=\"paginator\">\n" +
     "\n" +
     "    <div class=\"paginator__first\" ng-class=\"{'inactive': vm.opts.paginationModel === 1}\"\n" +
