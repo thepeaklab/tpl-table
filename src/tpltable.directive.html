@@ -37,7 +37,7 @@
 
     <tr ng-if="vm.opts.entries && vm.opts.entries.length" ng-repeat="row in vm.opts.entries">
 
-      <td ng-repeat="cell in vm.opts.entrieValuesOrder" ng-mouseleave="hover=false" ng-mouseenter="hover=true" ng-style="vm.editableCell[0]===$parent.$parent.$index && {'background-color': vm.opts.colors.primaryColor, 'color': vm.opts.colors.primaryFontColor}" ng-class="{'clickable': vm.opts.onRowClick, 'notclickable': !vm.opts.onRowClick || vm.editableCell[0]!==null}" ng-click="!vm.opts.onRowClick || vm.editableCell[0]!==null || vm.opts.onRowClick($parent.$parent.$index)" ng-if="!vm.opts.columns[$index].ngIf || vm.opts.columns[$index].ngIf()">
+      <td ng-repeat="cell in vm.opts.entrieValuesOrder" ng-mouseleave="hover=false" ng-mouseenter="hover=true" ng-style="vm.editableCell[1]===$parent.$index && vm.editableCell[0]===$parent.$parent.$index && {'background-color': vm.opts.colors.primaryColor, 'color': vm.opts.colors.primaryFontColor}" ng-class="{'clickable': vm.opts.onRowClick, 'notclickable': !vm.opts.onRowClick || vm.editableCell[0]!==null}" ng-click="!vm.opts.onRowClick || vm.editableCell[0]!==null || vm.opts.onRowClick($parent.$parent.$index)" ng-if="!vm.opts.columns[$index].ngIf || vm.opts.columns[$index].ngIf()">
 
         <div ng-if="(vm.editableCell[0]!==$parent.$index || vm.editableCell[1]!==$index) || !vm.opts.columns[$index].editable">
           <!-- TEXT -->
@@ -56,14 +56,19 @@
           <!-- OTHER ??? -->
         </div>
 
-        <span ng-if="vm.editableCell[1]===$index && vm.editableCell[0]===$parent.$index && vm.opts.columns[$index].editable">
-          <input type="text" class="edit-input" ng-model="vm.tempEditColumnCopy[cell]" focus-me="vm.editableCell[1]===$index && vm.editableCell[0]===$parent.$parent.$index" ng-click="$event.stopPropagation()" ng-keyup="$event.keyCode == 13 && saveEditedColumn()"/> {{columnValues[$index]}}
+        <span ng-if="vm.editableCell[0]===$parent.$parent.$parent.$index && vm.editableCell[1]===$index && vm.opts.columns[$index].editable">
+          <input type="text" class="edit-input" ng-model="vm.tempEditColumnCopy[cell]" focus-me="vm.editableCell[0]===$parent.$parent.$parent.$index && vm.editableCell[1]===$index" ng-click="$event.stopPropagation()" ng-keyup="$event.keyCode == 13 && saveEditedColumn()"/> {{columnValues[$index]}}
         </span>
 
-        <div class="cell-controll edit" ng-if="vm.opts.columns[$index].editable && hover" ng-click="toggleEditCell($event, $parent.$parent.$index, $index)" ng-style="hoverEdit && {'background-color': vm.opts.colors.primaryColor, 'color': vm.opts.colors.primaryFontColor}" ng-mouseenter="hoverEdit=true" ng-mouseleave="hoverEdit=false">
+        <div class="cell-controll unit" ng-if="vm.opts.columns[$index].unit && !hover">
+          <span>
+            {{ vm.opts.columns[$index].unit }}
+          </span>
+        </div>
+        <div class="cell-controll edit" ng-if="vm.opts.columns[$index].editable && hover" ng-click="toggleEditCell($event, $parent.$parent.$parent.$parent.$index, $index)" ng-style="hoverEdit && {'background-color': vm.opts.colors.primaryColor, 'color': vm.opts.colors.primaryFontColor}" ng-mouseenter="hoverEdit=true" ng-mouseleave="hoverEdit=false">
           <div ng-if="hover" class="iconfont tbl-iconfont-pen"></div>
         </div>
-        <div class="cell-controll save" ng-if="vm.opts.columns[$index].editable && vm.editableCell[0]===$parent.$index && vm.editableCell[1]===$index" ng-style="{'background-color': vm.opts.colors.secondaryColor, 'color': vm.opts.colors.secondaryFontColor}" ng-click="$parent.hover=false;saveEditedColumn()">
+        <div class="cell-controll save" ng-if="vm.opts.columns[$index].editable && vm.editableCell[0]===$parent.$parent.$parent.$index && vm.editableCell[1]===$index" ng-style="{'background-color': vm.opts.colors.secondaryColor, 'color': vm.opts.colors.secondaryFontColor}" ng-click="$parent.hover=false;saveEditedColumn()">
           <div  class="iconfont iconfont-check"></div>
         </div>
       </td>
