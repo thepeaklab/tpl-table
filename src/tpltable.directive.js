@@ -15,9 +15,9 @@
       };
     })
 
-    .directive('focusMe', ['$timeout', function($timeout) {
+    .directive('focusMe', ['$timeout', 'scopeListenerManager', function($timeout, scopeListenerManager) {
       return {
-        link: function(scope, element, attrs, scopeListenerManager) {
+        link: function(scope, element, attrs) {
           scopeListenerManager.saveAddListener(scope, scope.$watch(attrs.focusMe, function(value) {
             if(value === true) {
               $timeout(function() {
