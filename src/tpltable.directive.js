@@ -94,21 +94,25 @@
                                               {
                                                 name : '',
                                                 editable : true,
+                                                unit: null,
                                                 content: vm.POSSIBLE_CONTENT_TYPES[vm.CONTENT_TYPE_TEXT]
                                               },
                                               {
                                                 name : '',
                                                 editable : true,
+                                                unit: null,
                                                 content: vm.POSSIBLE_CONTENT_TYPES[vm.CONTENT_TYPE_TEXT]
                                               },
                                               {
                                                 name : '',
                                                 editable : true,
+                                                unit: null,
                                                 content: vm.POSSIBLE_CONTENT_TYPES[vm.CONTENT_TYPE_TEXT]
                                               },
                                               {
                                                 name : '',
                                                 editable : true,
+                                                unit: null,
                                                 content: vm.POSSIBLE_CONTENT_TYPES[vm.CONTENT_TYPE_TEXT]
                                               }
                                              ];
@@ -325,13 +329,13 @@
           var levels = cell.split('.');
           var levelsMap = {
             2: function() {
-              return row[levels[0]][levels[1]];
+              return row[levels[0]] ? row[levels[0]][levels[1]] : '-';
             },
             3: function() {
-              return row[levels[0]][levels[1]][levels[2]];
+              return row[levels[0]] ? (row[levels[0]][levels[1]] ? row[levels[0]][levels[1]][levels[2]] : '-') : '-';
             },
             4: function() {
-              return row[levels[0]][levels[1]][levels[2]][levels[3]];
+              return row[levels[0]] ? (row[levels[0]][levels[1]] ? (row[levels[0]][levels[1]][levels[2]] ? row[levels[0]][levels[1]][levels[2]][levels[3]] : '-') : '-') : '-';
             }
           };
 
