@@ -68,7 +68,7 @@ angular.module('tpl.table').run(['$templateCache', function($templateCache) {
     "\n" +
     "    <tr ng-if=\"vm.opts.entries && vm.opts.entries.length\" ng-repeat=\"row in vm.opts.entries\">\n" +
     "\n" +
-    "      <td ng-repeat=\"cell in vm.opts.entrieValuesOrder\" ng-mouseleave=\"hover=false\" ng-mouseenter=\"hover=true\" ng-style=\"vm.editableCell[0]===$parent.$parent.$index && {'background-color': vm.opts.colors.primaryColor, 'color': vm.opts.colors.primaryFontColor}\" ng-class=\"{'clickable': vm.opts.onRowClick, 'notclickable': !vm.opts.onRowClick || vm.editableCell[0]!==null}\" ng-click=\"!vm.opts.onRowClick || vm.editableCell[0]!==null || vm.opts.onRowClick($parent.$parent.$index)\" ng-if=\"!vm.opts.columns[$index].ngIf || vm.opts.columns[$index].ngIf()\">\n" +
+    "      <td ng-repeat=\"cell in vm.opts.entrieValuesOrder\" ng-mouseleave=\"hover=false\" ng-mouseenter=\"hover=true\" ng-style=\"vm.editableCell[1]===$parent.$index && vm.editableCell[0]===$parent.$parent.$index && {'background-color': vm.opts.colors.primaryColor, 'color': vm.opts.colors.primaryFontColor}\" ng-class=\"{'clickable': vm.opts.onRowClick, 'notclickable': !vm.opts.onRowClick || vm.editableCell[0]!==null}\" ng-click=\"!vm.opts.onRowClick || vm.editableCell[0]!==null || vm.opts.onRowClick($parent.$parent.$index)\" ng-if=\"!vm.opts.columns[$index].ngIf || vm.opts.columns[$index].ngIf()\">\n" +
     "\n" +
     "        <div ng-if=\"(vm.editableCell[0]!==$parent.$index || vm.editableCell[1]!==$index) || !vm.opts.columns[$index].editable\">\n" +
     "          <!-- TEXT -->\n" +
@@ -87,14 +87,19 @@ angular.module('tpl.table').run(['$templateCache', function($templateCache) {
     "          <!-- OTHER ??? -->\n" +
     "        </div>\n" +
     "\n" +
-    "        <span ng-if=\"vm.editableCell[1]===$index && vm.editableCell[0]===$parent.$index && vm.opts.columns[$index].editable\">\n" +
-    "          <input type=\"text\" class=\"edit-input\" ng-model=\"vm.tempEditColumnCopy[cell]\" focus-me=\"vm.editableCell[1]===$index && vm.editableCell[0]===$parent.$parent.$index\" ng-click=\"$event.stopPropagation()\" ng-keyup=\"$event.keyCode == 13 && saveEditedColumn()\"/> {{columnValues[$index]}}\n" +
+    "        <span ng-if=\"vm.editableCell[0]===$parent.$parent.$parent.$index && vm.editableCell[1]===$index && vm.opts.columns[$index].editable\">\n" +
+    "          <input type=\"text\" class=\"edit-input\" ng-model=\"vm.tempEditColumnCopy[cell]\" focus-me=\"vm.editableCell[0]===$parent.$parent.$parent.$index && vm.editableCell[1]===$index\" ng-click=\"$event.stopPropagation()\" ng-keyup=\"$event.keyCode == 13 && saveEditedColumn()\"/> {{columnValues[$index]}}\n" +
     "        </span>\n" +
     "\n" +
-    "        <div class=\"cell-controll edit\" ng-if=\"vm.opts.columns[$index].editable && hover\" ng-click=\"toggleEditCell($event, $parent.$parent.$index, $index)\" ng-style=\"hoverEdit && {'background-color': vm.opts.colors.primaryColor, 'color': vm.opts.colors.primaryFontColor}\" ng-mouseenter=\"hoverEdit=true\" ng-mouseleave=\"hoverEdit=false\">\n" +
+    "        <div class=\"cell-controll unit\" ng-if=\"vm.opts.columns[$index].unit && !hover\">\n" +
+    "          <span>\n" +
+    "            {{ vm.opts.columns[$index].unit }}\n" +
+    "          </span>\n" +
+    "        </div>\n" +
+    "        <div class=\"cell-controll edit\" ng-if=\"vm.opts.columns[$index].editable && hover\" ng-click=\"toggleEditCell($event, $parent.$parent.$parent.$parent.$index, $index)\" ng-style=\"hoverEdit && {'background-color': vm.opts.colors.primaryColor, 'color': vm.opts.colors.primaryFontColor}\" ng-mouseenter=\"hoverEdit=true\" ng-mouseleave=\"hoverEdit=false\">\n" +
     "          <div ng-if=\"hover\" class=\"iconfont tbl-iconfont-pen\"></div>\n" +
     "        </div>\n" +
-    "        <div class=\"cell-controll save\" ng-if=\"vm.opts.columns[$index].editable && vm.editableCell[0]===$parent.$index && vm.editableCell[1]===$index\" ng-style=\"{'background-color': vm.opts.colors.secondaryColor, 'color': vm.opts.colors.secondaryFontColor}\" ng-click=\"$parent.hover=false;saveEditedColumn()\">\n" +
+    "        <div class=\"cell-controll save\" ng-if=\"vm.opts.columns[$index].editable && vm.editableCell[0]===$parent.$parent.$parent.$index && vm.editableCell[1]===$index\" ng-style=\"{'background-color': vm.opts.colors.secondaryColor, 'color': vm.opts.colors.secondaryFontColor}\" ng-click=\"$parent.hover=false;saveEditedColumn()\">\n" +
     "          <div  class=\"iconfont iconfont-check\"></div>\n" +
     "        </div>\n" +
     "      </td>\n" +

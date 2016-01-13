@@ -94,21 +94,25 @@
                                               {
                                                 name : '',
                                                 editable : true,
+                                                unit: null,
                                                 content: vm.POSSIBLE_CONTENT_TYPES[vm.CONTENT_TYPE_TEXT]
                                               },
                                               {
                                                 name : '',
                                                 editable : true,
+                                                unit: null,
                                                 content: vm.POSSIBLE_CONTENT_TYPES[vm.CONTENT_TYPE_TEXT]
                                               },
                                               {
                                                 name : '',
                                                 editable : true,
+                                                unit: null,
                                                 content: vm.POSSIBLE_CONTENT_TYPES[vm.CONTENT_TYPE_TEXT]
                                               },
                                               {
                                                 name : '',
                                                 editable : true,
+                                                unit: null,
                                                 content: vm.POSSIBLE_CONTENT_TYPES[vm.CONTENT_TYPE_TEXT]
                                               }
                                              ];
