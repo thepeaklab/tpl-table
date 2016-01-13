@@ -7,3 +7,5 @@
 - Font option
 - Custom classes: for example custom select class
 - Automatic set loading
+- Catch null values
+- Column value filter
