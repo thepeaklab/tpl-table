@@ -131,7 +131,8 @@
 
           tplTableService.addTable(angular.copy(vm.opts));
           // RESTORE STATE
-          vm.opts.searchModel = vm.opts.pageObj.actualSearch;
+          var stateBeforeDetail = tplTableService.getStateBeforeDetail(vm.opts.id);
+          vm.opts.searchModel = stateBeforeDetail.actualSearch;
 
 
           setupListeners();

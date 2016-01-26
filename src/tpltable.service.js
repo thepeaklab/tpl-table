@@ -27,8 +27,6 @@
           pageBeforeSearch: oldTableOpts && oldTableOpts.pageObj ? oldTableOpts.pageObj.pageBeforeSearch : null
         };
         tables[newTableOpts.id] = newTableOpts;
-
-        return newTableOpts;
       }
 
       function setStateBeforeDetail(id, state) {
