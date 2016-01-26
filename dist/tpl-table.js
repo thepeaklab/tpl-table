@@ -383,9 +383,9 @@
       var oldTableOpts = angular.copy(tables[newTableOpts.id]);
       tables[newTableOpts.id] = newTableOpts;
       tables[newTableOpts.id].pageObj = {
-        actualPage: oldTableOpts.pageObj.actualPage,
-        actualSearch: oldTableOpts.pageObj.actualSearch,
-        pageBeforeSearch: oldTableOpts.pageObj.pageBeforeSearch
+        actualPage: oldTableOpts && oldTableOpts.pageObj ? oldTableOpts.pageObj.actualPage : null,
+        actualSearch: oldTableOpts && oldTableOpts.pageObj ? oldTableOpts.pageObj.actualSearch : '',
+        pageBeforeSearch: oldTableOpts && oldTableOpts.pageObj ? oldTableOpts.pageObj.pageBeforeSearch : null
       };
       return newTableOpts;
     }
