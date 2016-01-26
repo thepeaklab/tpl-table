@@ -130,6 +130,8 @@
 
 
           tplTableService.addTable(angular.copy(vm.opts));
+          // RESTORE STATE
+          vm.opts.searchModel = vm.opts.pageObj.actualSearch;
 
 
           setupListeners();
@@ -173,8 +175,7 @@
                 vm.opts.paginationModel = 1;
                 refreshPagination();
               }
-            } else if (newVal === oldVal) { // Init or returned to list
-            }
+            } else if (newVal === oldVal) {} // Init or returned to list
             initialLoad = false;
           }));
 
