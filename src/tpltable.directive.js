@@ -130,9 +130,17 @@
 
 
           tplTableService.addTable(angular.copy(vm.opts));
+
           // RESTORE STATE
           var stateBeforeDetail = tplTableService.getStateBeforeDetail(vm.opts.id);
-          vm.opts.searchModel = stateBeforeDetail.actualSearch;
+          if (stateBeforeDetail) {
+            var actualSearch = String(stateBeforeDetail.actualSearch);
+            vm.opts.searchModel = actualSearch.length ? actualSearch : vm.opts.searchModel;
+
+            if (actualSearch.length) {
+              vm.opts.paginationModel = Number(stateBeforeDetail.actualPage) >= 0 ? stateBeforeDetail.actualPage + 1 : vm.opts.paginationModel;
+            }
+          }
 
 
           setupListeners();
