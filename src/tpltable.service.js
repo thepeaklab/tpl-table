@@ -21,12 +21,13 @@
       function addTable(newTableOpts) {
         var oldTableOpts = angular.copy(tables[newTableOpts.id]);
 
-        tables[newTableOpts.id] = newTableOpts;
-        tables[newTableOpts.id].pageObj = {
+        newTableOpts.pageObj = {
           actualPage: oldTableOpts && oldTableOpts.pageObj ? oldTableOpts.pageObj.actualPage : null,
           actualSearch: oldTableOpts && oldTableOpts.pageObj ? oldTableOpts.pageObj.actualSearch : '',
           pageBeforeSearch: oldTableOpts && oldTableOpts.pageObj ? oldTableOpts.pageObj.pageBeforeSearch : null
         };
+        tables[newTableOpts.id] = newTableOpts;
+
         return newTableOpts;
       }
 
