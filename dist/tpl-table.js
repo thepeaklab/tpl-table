@@ -164,6 +164,8 @@
         vm.opts.colors.primaryFontColor = vm.opts.colors.primaryFontColor || '333333';
         vm.opts.colors.secondaryFontColor = vm.opts.colors.secondaryFontColor || 'ffffff';
         tplTableService.addTable(angular.copy(vm.opts));
+        // RESTORE STATE
+        vm.opts.searchModel = vm.opts.pageObj.actualSearch;
         setupListeners();
       }
       function setupListeners() {
@@ -209,6 +211,7 @@
             }
           } else if (newVal === oldVal) {
           }
+          // Init or returned to list
           initialLoad = false;
         }));
         scopeListenerManager.saveAddListener($scope, $scope.$watch('vm.opts.paginationModel', function (newVal, oldVal) {
@@ -381,12 +384,12 @@
     return exports;
     function addTable(newTableOpts) {
       var oldTableOpts = angular.copy(tables[newTableOpts.id]);
-      tables[newTableOpts.id] = newTableOpts;
-      tables[newTableOpts.id].pageObj = {
+      newTableOpts.pageObj = {
         actualPage: oldTableOpts && oldTableOpts.pageObj ? oldTableOpts.pageObj.actualPage : null,
         actualSearch: oldTableOpts && oldTableOpts.pageObj ? oldTableOpts.pageObj.actualSearch : '',
         pageBeforeSearch: oldTableOpts && oldTableOpts.pageObj ? oldTableOpts.pageObj.pageBeforeSearch : null
       };
+      tables[newTableOpts.id] = newTableOpts;
       return newTableOpts;
     }
     function setStateBeforeDetail(id, state) {
