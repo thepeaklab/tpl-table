@@ -18,13 +18,16 @@
 
       return exports;
 
-      function addTable(table) {
-        // if (tables[table.id]) {
-        //   return tables[table.id];
-        // }
-        tables[table.id] = table;
-        tables[table.id].pageObj = {actualPage: null, pageBeforeSearch: null};
-        return table;
+      function addTable(newTableOpts) {
+        var oldTableOpts = angular.copy(tables[newTableOpts.id]);
+
+        tables[newTableOpts.id] = newTableOpts;
+        tables[newTableOpts.id].pageObj = {
+          actualPage: oldTableOpts.pageObj.actualPage,
+          actualSearch: oldTableOpts.pageObj.actualSearch,
+          pageBeforeSearch: oldTableOpts.pageObj.pageBeforeSearch
+        };
+        return newTableOpts;
       }
 
       function setStateBeforeDetail(id, state) {
