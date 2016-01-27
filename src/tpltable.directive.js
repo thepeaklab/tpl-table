@@ -131,17 +131,19 @@
 
           tplTableService.addTable(angular.copy(vm.opts));
 
-          // RESTORE STATE
+          // RESTORE STATE BEFORE DETAIL
           var stateBeforeDetail = tplTableService.getStateBeforeDetail(vm.opts.id);
           if (stateBeforeDetail) {
-            var actualSearch = String(stateBeforeDetail.actualSearch);
-            vm.opts.searchModel = actualSearch.length ? actualSearch : vm.opts.searchModel;
-
+            var actualSearch = String(stateBeforeDetail.actualSearch) || '';
             if (actualSearch.length) {
-              vm.opts.paginationModel = Number(stateBeforeDetail.actualPage) >= 0 ? stateBeforeDetail.actualPage + 1 : vm.opts.paginationModel;
+              vm.opts.searchModel = actualSearch;
+
+              var actualPage = Number(stateBeforeDetail.actualPage);
+              if (actualPage >= 0) {
+                vm.opts.paginationModel = stateBeforeDetail.actualPage + 1;
+              }
             }
           }
-
 
           setupListeners();
         }
