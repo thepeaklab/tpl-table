@@ -35,7 +35,7 @@
       }
 
       function getStateBeforeDetail(id) {
-        return {actualPage: tables[id].pageObj.actualPage, actualSearch: tables[id].pageObj.actualSearch};
+        return {actualPage: tables[id].pageObj ? tables[id].pageObj.actualPage : null, actualSearch: tables[id].pageObj ? tables[id].pageObj.actualSearch : ''};
       }
 
       function setStateBeforeSearch(id, stateBeforeSearch) {
@@ -43,7 +43,7 @@
       }
 
       function getStateBeforeSearch(id) {
-        return {pageBeforeSearch: tables[id].pageObj.pageBeforeSearch};
+        return {pageBeforeSearch: tables[id].pageObj ? tables[id].pageObj.pageBeforeSearch : null};
       }
     }
 })();

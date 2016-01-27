@@ -155,10 +155,6 @@
           }));
 
           scopeListenerManager.saveAddListener($scope, $scope.$watch('vm.opts.searchModel', function(newVal, oldVal) {
-            // if (newVal || newVal === '' || newVal === 0) {
-            //   vm.opts.paginationModel = 1;
-            //   refreshPagination();
-            // }
             if ((oldVal === '' || !oldVal) && newVal !== oldVal) { // Search started
               tplTableService.setStateBeforeSearch(vm.opts.id, vm.opts.paginationModel - 1);
 
