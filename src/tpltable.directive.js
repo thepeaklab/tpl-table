@@ -183,14 +183,15 @@
                     vm.opts.pageAndSearchChangeMethod();
                   }
                   vm.opts.paginationModel = state.pageBeforeSearch + 1;
+
+                  if (state.entriesPerPageCountBeforeSearch >= 0) {
+                    vm.opts.entriesPerPageCount = state.entriesPerPageCountBeforeSearch;
+                  }
+
                   tplTableService.setStateBeforeSearch(vm.opts.id, {
                     pageBeforeSearch: null,
                     entriesPerPageCountBeforeSearch: null
                   });
-                }
-
-                if (state.entriesPerPageCountBeforeSearch >= 0) {
-                  vm.opts.entriesPerPageCount = state.entriesPerPageCountBeforeSearch;
                 }
               }
             } else if (newVal !== oldVal) { // New search after search started
