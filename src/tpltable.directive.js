@@ -137,11 +137,11 @@
             var actualSearch = String(stateBeforeDetail.actualSearch) || '';
             if (actualSearch.length) {
               vm.opts.searchModel = actualSearch;
+            }
 
-              var actualPage = Number(stateBeforeDetail.actualPage);
-              if (actualPage >= 0) {
-                vm.opts.paginationModel = stateBeforeDetail.actualPage + 1;
-              }
+            var actualPage = Number(stateBeforeDetail.actualPage);
+            if (actualPage >= 0) {
+              vm.opts.paginationModel = stateBeforeDetail.actualPage + 1;
             }
           }
 
