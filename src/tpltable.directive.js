@@ -145,7 +145,7 @@
             }
 
             var actualEntriesPerPageCount = Number(stateBeforeDetail.actualEntriesPerPageCount);
-            if (actualEntriesPerPageCount >= 0) {
+            if (actualEntriesPerPageCount > 0) {
               vm.opts.entriesPerPageCount = actualEntriesPerPageCount;
             }
           }
@@ -184,7 +184,7 @@
                   }
                   vm.opts.paginationModel = state.pageBeforeSearch + 1;
 
-                  if (state.entriesPerPageCountBeforeSearch >= 0) {
+                  if (state.entriesPerPageCountBeforeSearch > 0) {
                     vm.opts.entriesPerPageCount = state.entriesPerPageCountBeforeSearch;
                   }
 
@@ -220,7 +220,7 @@
                           vm.searchInput = vm.opts.searchModel;
                         }
 
-                        if (state.actualEntriesPerPageCount >= 0) {
+                        if (state.actualEntriesPerPageCount > 0) {
                           vm.opts.entriesPerPageCount = state.actualEntriesPerPageCount;
                         }
 
