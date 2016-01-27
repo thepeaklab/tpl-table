@@ -176,7 +176,7 @@
             vm.opts.paginationModel = stateBeforeDetail.actualPage + 1;
           }
           var actualEntriesPerPageCount = Number(stateBeforeDetail.actualEntriesPerPageCount);
-          if (actualEntriesPerPageCount >= 0) {
+          if (actualEntriesPerPageCount > 0) {
             vm.opts.entriesPerPageCount = actualEntriesPerPageCount;
           }
         }
@@ -214,7 +214,7 @@
                   vm.opts.pageAndSearchChangeMethod();
                 }
                 vm.opts.paginationModel = state.pageBeforeSearch + 1;
-                if (state.entriesPerPageCountBeforeSearch >= 0) {
+                if (state.entriesPerPageCountBeforeSearch > 0) {
                   vm.opts.entriesPerPageCount = state.entriesPerPageCountBeforeSearch;
                 }
                 tplTableService.setStateBeforeSearch(vm.opts.id, {
@@ -251,7 +251,7 @@
                       vm.opts.searchModel = state.actualSearch;
                       vm.searchInput = vm.opts.searchModel;
                     }
-                    if (state.actualEntriesPerPageCount >= 0) {
+                    if (state.actualEntriesPerPageCount > 0) {
                       vm.opts.entriesPerPageCount = state.actualEntriesPerPageCount;
                     }
                     tplTableService.setStateBeforeDetail(vm.opts.id, {
