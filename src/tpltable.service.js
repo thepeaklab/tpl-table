@@ -35,6 +35,9 @@
       }
 
       function getStateBeforeDetail(id) {
+        if (!id || !tables[id]) {
+          return null;
+        }
         return {actualPage: tables[id].pageObj ? tables[id].pageObj.actualPage : null, actualSearch: tables[id].pageObj ? tables[id].pageObj.actualSearch : ''};
       }
 
@@ -43,6 +46,9 @@
       }
 
       function getStateBeforeSearch(id) {
+        if (!id || !tables[id]) {
+          return null;
+        }
         return {pageBeforeSearch: tables[id].pageObj ? tables[id].pageObj.pageBeforeSearch : null};
       }
     }
