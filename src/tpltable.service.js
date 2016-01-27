@@ -32,6 +32,7 @@
       function setStateBeforeDetail(id, state) {
         tables[id].pageObj.actualPage = state.actualPage;
         tables[id].pageObj.actualSearch = state.actualSearch;
+        tables[id].pageObj.actualEntriesPerPageCount = state.actualEntriesPerPageCount;
       }
 
       function getStateBeforeDetail(id) {
@@ -42,7 +43,8 @@
       }
 
       function setStateBeforeSearch(id, stateBeforeSearch) {
-        tables[id].pageObj.pageBeforeSearch = stateBeforeSearch;
+        tables[id].pageObj.pageBeforeSearch = stateBeforeSearch.pageBeforeSearch;
+        tables[id].pageObj.entriesPerPageCountBeforeSearch = stateBeforeSearch.entriesPerPageCountBeforeSearch;
       }
 
       function getStateBeforeSearch(id) {

@@ -143,6 +143,11 @@
             if (actualPage >= 0) {
               vm.opts.paginationModel = stateBeforeDetail.actualPage + 1;
             }
+
+            var actualEntriesPerPageCount = Number(stateBeforeDetail.actualEntriesPerPageCount);
+            if (actualEntriesPerPageCount >= 0) {
+              vm.opts.entriesPerPageCount = actualEntriesPerPageCount;
+            }
           }
 
           setupListeners();
@@ -152,13 +157,17 @@
           scopeListenerManager.saveAddListener($scope, $scope.$on('$destroy', function() {
             tplTableService.setStateBeforeDetail(vm.opts.id, {
               actualPage: vm.opts.paginationModel - 1,
-              actualSearch: vm.opts.searchModel
+              actualSearch: vm.opts.searchModel,
+              actualEntriesPerPageCount: vm.opts.entriesPerPageCount
             });
           }));
 
           scopeListenerManager.saveAddListener($scope, $scope.$watch('vm.opts.searchModel', function(newVal, oldVal) {
             if ((oldVal === '' || !oldVal) && newVal !== oldVal) { // Search started
-              tplTableService.setStateBeforeSearch(vm.opts.id, vm.opts.paginationModel - 1);
+              tplTableService.setStateBeforeSearch(vm.opts.id, {
+                pageBeforeSearch: vm.opts.paginationModel - 1,
+                entriesPerPageCountBeforeSearch: vm.opts.entriesPerPageCount
+              });
 
               if (vm.opts.paginationModel === 1) { // from page 1
                 vm.opts.pageAndSearchChangeMethod();
@@ -168,12 +177,21 @@
               }
             } else if ((newVal === '' || !newVal) && !initialLoad) { // Search ended
               var state = tplTableService.getStateBeforeSearch(vm.opts.id);
-              if (state.pageBeforeSearch >= 0) {
-                if (vm.opts.paginationModel === 1 && (state.pageBeforeSearch + 1) === vm.opts.paginationModel) { // from page 1
-                  vm.opts.pageAndSearchChangeMethod();
+              if (state) {
+                if (state.pageBeforeSearch >= 0) {
+                  if (vm.opts.paginationModel === 1 && (state.pageBeforeSearch + 1) === vm.opts.paginationModel) { // from page 1
+                    vm.opts.pageAndSearchChangeMethod();
+                  }
+                  vm.opts.paginationModel = state.pageBeforeSearch + 1;
+                  tplTableService.setStateBeforeSearch(vm.opts.id, {
+                    pageBeforeSearch: null,
+                    entriesPerPageCountBeforeSearch: null
+                  });
                 }
-                vm.opts.paginationModel = state.pageBeforeSearch + 1;
-                tplTableService.setStateBeforeSearch(vm.opts.id, null);
+
+                if (state.entriesPerPageCountBeforeSearch >= 0) {
+                  vm.opts.entriesPerPageCount = state.entriesPerPageCountBeforeSearch;
+                }
               }
             } else if (newVal !== oldVal) { // New search after search started
               if (vm.opts.paginationModel === 1) {
@@ -192,20 +210,27 @@
               if (vm.opts.searchModel !== '') { // Check for active search
                 if (newVal === oldVal) { // Returned to list
                     var state = tplTableService.getStateBeforeDetail(vm.opts.id);
-                    if (state.actualPage >= 0) {
-                      vm.opts.paginationModel = state.actualPage + 1;
+                    if (state) {
+                      if (state.actualPage >= 0) {
+                        vm.opts.paginationModel = state.actualPage + 1;
 
-                      if (state.actualSearch) {
-                        vm.opts.searchModel = state.actualSearch;
-                        vm.searchInput = vm.opts.searchModel;
+                        if (state.actualSearch) {
+                          vm.opts.searchModel = state.actualSearch;
+                          vm.searchInput = vm.opts.searchModel;
+                        }
+
+                        if (state.actualEntriesPerPageCount >= 0) {
+                          vm.opts.entriesPerPageCount = state.actualEntriesPerPageCount;
+                        }
+
+                        tplTableService.setStateBeforeDetail(vm.opts.id, {
+                          actualPage: null,
+                          actualSearch: null,
+                          actualEntriesPerPageCount: null
+                        });
+                      } else {
+                        vm.opts.pageAndSearchChangeMethod();
                       }
-
-                      tplTableService.setStateBeforeDetail(vm.opts.id, {
-                        actualPage: null,
-                        actualSearch: null
-                      });
-                    } else { // or search started from page 1
-                      vm.opts.pageAndSearchChangeMethod();
                     }
                 } else { // or search started
                   vm.opts.pageAndSearchChangeMethod();
