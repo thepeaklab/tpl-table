@@ -214,13 +214,13 @@
                   vm.opts.pageAndSearchChangeMethod();
                 }
                 vm.opts.paginationModel = state.pageBeforeSearch + 1;
+                if (state.entriesPerPageCountBeforeSearch >= 0) {
+                  vm.opts.entriesPerPageCount = state.entriesPerPageCountBeforeSearch;
+                }
                 tplTableService.setStateBeforeSearch(vm.opts.id, {
                   pageBeforeSearch: null,
                   entriesPerPageCountBeforeSearch: null
                 });
-              }
-              if (state.entriesPerPageCountBeforeSearch >= 0) {
-                vm.opts.entriesPerPageCount = state.entriesPerPageCountBeforeSearch;
               }
             }
           } else if (newVal !== oldVal) {
@@ -414,7 +414,9 @@
       newTableOpts.pageObj = {
         actualPage: oldTableOpts && oldTableOpts.pageObj ? oldTableOpts.pageObj.actualPage : null,
         actualSearch: oldTableOpts && oldTableOpts.pageObj ? oldTableOpts.pageObj.actualSearch : '',
-        pageBeforeSearch: oldTableOpts && oldTableOpts.pageObj ? oldTableOpts.pageObj.pageBeforeSearch : null
+        actualEntriesPerPageCount: oldTableOpts && oldTableOpts.pageObj ? oldTableOpts.pageObj.actualEntriesPerPageCount : null,
+        pageBeforeSearch: oldTableOpts && oldTableOpts.pageObj ? oldTableOpts.pageObj.pageBeforeSearch : null,
+        entriesPerPageCountBeforeSearch: oldTableOpts && oldTableOpts.pageObj ? oldTableOpts.pageObj.entriesPerPageCountBeforeSearch : null
       };
       tables[newTableOpts.id] = newTableOpts;
     }
@@ -429,7 +431,8 @@
       }
       return {
         actualPage: tables[id].pageObj ? tables[id].pageObj.actualPage : null,
-        actualSearch: tables[id].pageObj ? tables[id].pageObj.actualSearch : ''
+        actualSearch: tables[id].pageObj ? tables[id].pageObj.actualSearch : '',
+        actualEntriesPerPageCount: tables[id].pageObj ? tables[id].pageObj.actualEntriesPerPageCount : null
       };
     }
     function setStateBeforeSearch(id, stateBeforeSearch) {
@@ -440,7 +443,10 @@
       if (!id || !tables[id]) {
         return null;
       }
-      return { pageBeforeSearch: tables[id].pageObj ? tables[id].pageObj.pageBeforeSearch : null };
+      return {
+        pageBeforeSearch: tables[id].pageObj ? tables[id].pageObj.pageBeforeSearch : null,
+        entriesPerPageCountBeforeSearch: tables[id].pageObj ? tables[id].pageObj.entriesPerPageCountBeforeSearch : null
+      };
     }
   }
 }());
