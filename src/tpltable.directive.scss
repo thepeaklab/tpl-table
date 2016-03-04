@@ -133,20 +133,26 @@ tpl-table {
 
   width: 100%;
 
-  border: 1px solid $border-color-grey;
+  //border: 1px solid $border-color-grey;
+  border: 0;
 
   &__head {
-    border: 1px solid $border-color-grey;
+    //border: 1px solid $border-color-grey;
+    border-left: 0;
+    border-right: 0;
+    border-top: 0;
     border-bottom: 2px solid $border-color-grey;
 
     tr {
-      border: 1px solid $border-color-grey;
+      //border: 1px solid $border-color-grey;
+      border: 0;
       height: 36px;
       line-height: 36px;
 
 
       th {
-        border: 1px solid $border-color-grey;
+        border: 0;
+        //border: 1px solid $border-color-grey;
         line-height: 36px;
         height: 36px;
         padding: 0 10px;
@@ -160,7 +166,8 @@ tpl-table {
   &__body {
 
     tr {
-      border: 1px solid $border-color-grey;
+      border: 0;
+      //border: 1px solid $border-color-grey;
       height: 36px;
       line-height: 36px;
 
@@ -184,7 +191,8 @@ tpl-table {
       }
 
       td {
-        border: 1px solid $border-color-grey;
+        border: 0;
+        //border: 1px solid $border-color-grey;
         line-height: 36px;
         height: 36px;
         padding: 0 10px;
