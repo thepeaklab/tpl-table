@@ -33,211 +33,254 @@
     .controller('TplTableCtrl', ['$scope', '$rootScope', '$document', '$timeout', 'tplTableService', '$log',
       'scopeListenerManager',
       function TplTableCtrl($scope, $rootScope, $document, $timeout, tplTableService, $log, scopeListenerManager) {
-
         var vm = this;
 
         var initialLoad = true;
-
         var MAX_PAGINATION_BUTTONS = 5;
 
-        vm.POSSIBLE_RANGE_VALUES = [10, 25, 50, 100];
-
-        vm.POSSIBLE_CONTENT_TYPES = ['TEXT', 'IMAGE'];
-        vm.CONTENT_TYPE_TEXT = 0;
-        vm.CONTENT_TYPE_IMAGE = 1;
-
-        vm.editableCell = [null, null];
 
         vm.getCellValue = getCellValue;
 
-        vm.opts.id = vm.opts.id || 'tpltable';
-        vm.opts.loading = vm.opts.loading || false;
-        vm.opts.noDataAvailableText = vm.opts.noDataAvailableText || 'No Data Available ...';
-        vm.opts.showActionsColumn = vm.opts.showActionsColumn || false;
-        vm.opts.searchModel = vm.opts.searchModel !== undefined ? vm.opts.searchModel : null;
-        vm.opts.showPagination = vm.opts.showPagination !== null && vm.opts.showPagination !== undefined ? vm.opts.showPagination : true;
-        vm.opts.paginationModel = vm.opts.paginationModel || null;
-        vm.opts.pageCount = vm.opts.pageCount || null;
-        vm.opts.entriesPerPageCount = vm.opts.entriesPerPageCount || null;
-        vm.opts.entries = vm.opts.entries || [];
-        vm.opts.entrieValuesOrder = vm.opts.entrieValuesOrder || null;
-        vm.opts.onRowClick = vm.opts.onRowClick || null;
-        // removed since version 1.2 and replaced by the 'actions'-object
-        // vm.opts.onAssignBtnClick = vm.opts.onAssignBtnClick || null;
-        // vm.opts.onEditBtnClick = vm.opts.onEditBtnClick || null;
-        // vm.opts.onDeleteBtnClick = vm.opts.onDeleteBtnClick || null;
-        // vm.opts.onAddBtnClick = vm.opts.onAddBtnClick || null;
-        vm.opts.actions = vm.opts.actions || {
-                                                add: {
-                                                  'function': null,
-                                                  'if': function(){return false;}
+
+        init();
+
+        function init() {
+          vm.POSSIBLE_RANGE_VALUES = [10, 25, 50, 100];
+
+          vm.POSSIBLE_CONTENT_TYPES = ['TEXT', 'IMAGE'];
+          vm.CONTENT_TYPE_TEXT = 0;
+          vm.CONTENT_TYPE_IMAGE = 1;
+
+          vm.editableCell = [null, null];
+
+          vm.opts.id = vm.opts.id || 'tpltable';
+          vm.opts.loading = vm.opts.loading || false;
+          vm.opts.noDataAvailableText = vm.opts.noDataAvailableText || 'No Data Available ...';
+          vm.opts.showActionsColumn = vm.opts.showActionsColumn || false;
+          vm.opts.searchModel = vm.opts.searchModel !== undefined ? vm.opts.searchModel : null;
+          vm.opts.showPagination = vm.opts.showPagination !== null && vm.opts.showPagination !== undefined ? vm.opts.showPagination : true;
+          vm.opts.paginationModel = vm.opts.paginationModel || null;
+          vm.opts.pageCount = vm.opts.pageCount || null;
+          vm.opts.entriesPerPageCount = vm.opts.entriesPerPageCount || null;
+          vm.opts.entries = vm.opts.entries || [];
+          vm.opts.entrieValuesOrder = vm.opts.entrieValuesOrder || null;
+          vm.opts.onRowClick = vm.opts.onRowClick || null;
+          // removed since version 1.2 and replaced by the 'actions'-object
+          // vm.opts.onAssignBtnClick = vm.opts.onAssignBtnClick || null;
+          // vm.opts.onEditBtnClick = vm.opts.onEditBtnClick || null;
+          // vm.opts.onDeleteBtnClick = vm.opts.onDeleteBtnClick || null;
+          // vm.opts.onAddBtnClick = vm.opts.onAddBtnClick || null;
+          vm.opts.actions = vm.opts.actions || {
+                                                  add: {
+                                                    'function': null,
+                                                    'if': function(){return false;}
+                                                  },
+                                                  delete: {
+                                                    'function': null,
+                                                    'if': function(){return false;}
+                                                  },
+                                                  assign: {
+                                                    'function': null,
+                                                    'if': function(){return false;}
+                                                  },
+                                                  edit: {
+                                                    'function': null,
+                                                    'if': function(){return false;}
+                                                  },
+                                                  confirm: {
+                                                    'function': null,
+                                                    'if': function(){return false;}
+                                                  }
+                                                };
+          vm.opts.pageAndSearchChangeMethod = vm.opts.pageAndSearchChangeMethod || function() {$log.info('tbl-table: no pageAndSearchChangeMethod given');};
+          vm.opts.columns = vm.opts.columns || [
+                                                {
+                                                  name : '',
+                                                  editable : true,
+                                                  unit: null,
+                                                  content: vm.POSSIBLE_CONTENT_TYPES[vm.CONTENT_TYPE_TEXT]
                                                 },
-                                                delete: {
-                                                  'function': null,
-                                                  'if': function(){return false;}
+                                                {
+                                                  name : '',
+                                                  editable : true,
+                                                  unit: null,
+                                                  content: vm.POSSIBLE_CONTENT_TYPES[vm.CONTENT_TYPE_TEXT]
                                                 },
-                                                assign: {
-                                                  'function': null,
-                                                  'if': function(){return false;}
+                                                {
+                                                  name : '',
+                                                  editable : true,
+                                                  unit: null,
+                                                  content: vm.POSSIBLE_CONTENT_TYPES[vm.CONTENT_TYPE_TEXT]
                                                 },
-                                                edit: {
-                                                  'function': null,
-                                                  'if': function(){return false;}
-                                                },
-                                                confirm: {
-                                                  'function': null,
-                                                  'if': function(){return false;}
+                                                {
+                                                  name : '',
+                                                  editable : true,
+                                                  unit: null,
+                                                  content: vm.POSSIBLE_CONTENT_TYPES[vm.CONTENT_TYPE_TEXT]
                                                 }
-                                              };
-        vm.opts.pageAndSearchChangeMethod = vm.opts.pageAndSearchChangeMethod || function() {$log.info('tbl-table: no pageAndSearchChangeMethod given');};
-        vm.opts.columns = vm.opts.columns || [
-                                              {
-                                                name : '',
-                                                editable : true,
-                                                unit: null,
-                                                content: vm.POSSIBLE_CONTENT_TYPES[vm.CONTENT_TYPE_TEXT]
-                                              },
-                                              {
-                                                name : '',
-                                                editable : true,
-                                                unit: null,
-                                                content: vm.POSSIBLE_CONTENT_TYPES[vm.CONTENT_TYPE_TEXT]
-                                              },
-                                              {
-                                                name : '',
-                                                editable : true,
-                                                unit: null,
-                                                content: vm.POSSIBLE_CONTENT_TYPES[vm.CONTENT_TYPE_TEXT]
-                                              },
-                                              {
-                                                name : '',
-                                                editable : true,
-                                                unit: null,
-                                                content: vm.POSSIBLE_CONTENT_TYPES[vm.CONTENT_TYPE_TEXT]
-                                              }
-                                             ];
+                                               ];
 
-        vm.paginationStart = 1;
-        vm.paginationEnd = 1;
-        vm.opts.colors = vm.opts.colors || {};
-        vm.opts.colors.primaryColor = vm.opts.colors.primaryColor || 'e8f7fe';
-        vm.opts.colors.secondaryColor = vm.opts.colors.secondaryColor || '004894';
-        vm.opts.colors.primaryFontColor = vm.opts.colors.primaryFontColor || '333333';
-        vm.opts.colors.secondaryFontColor = vm.opts.colors.secondaryFontColor || 'ffffff';
-
-        //vm.opts = tplTableService.addTable(angular.copy(vm.opts));
-        tplTableService.addTable(angular.copy(vm.opts));
+          vm.paginationStart = 1;
+          vm.paginationEnd = 1;
+          vm.opts.colors = vm.opts.colors || {};
+          vm.opts.colors.primaryColor = vm.opts.colors.primaryColor || 'e8f7fe';
+          vm.opts.colors.secondaryColor = vm.opts.colors.secondaryColor || '004894';
+          vm.opts.colors.primaryFontColor = vm.opts.colors.primaryFontColor || '333333';
+          vm.opts.colors.secondaryFontColor = vm.opts.colors.secondaryFontColor || 'ffffff';
 
 
-        scopeListenerManager.saveAddListener($scope, $scope.$on('$destroy', function() {
-          tplTableService.setStateBeforeDetail(vm.opts.id, {
-            actualPage: vm.opts.paginationModel - 1,
-            actualSearch: vm.opts.searchModel
-          });
-        }));
+          tplTableService.addTable(angular.copy(vm.opts));
 
-        scopeListenerManager.saveAddListener($scope, $scope.$watch('vm.opts.searchModel', function(newVal, oldVal) {
-          // if (newVal || newVal === '' || newVal === 0) {
-          //   vm.opts.paginationModel = 1;
-          //   refreshPagination();
-          // }
-          if ((oldVal === '' || !oldVal) && newVal !== oldVal) { // Search started
-            tplTableService.setStateBeforeSearch(vm.opts.id, vm.opts.paginationModel - 1);
-
-            if (vm.opts.paginationModel === 1) { // from page 1
-              vm.opts.pageAndSearchChangeMethod();
-            } else {
-              vm.opts.paginationModel = 1;
-              refreshPagination();
+          // RESTORE STATE BEFORE DETAIL
+          var stateBeforeDetail = tplTableService.getStateBeforeDetail(vm.opts.id);
+          if (stateBeforeDetail) {
+            var actualSearch = String(stateBeforeDetail.actualSearch) || '';
+            if (actualSearch.length) {
+              vm.opts.searchModel = actualSearch;
             }
-          } else if ((newVal === '' || !newVal) && !initialLoad) { // Search ended
-            var state = tplTableService.getStateBeforeSearch(vm.opts.id);
-            if (state.pageBeforeSearch >= 0) {
-              if (vm.opts.paginationModel === 1 && (state.pageBeforeSearch + 1) === vm.opts.paginationModel) { // from page 1
-                vm.opts.pageAndSearchChangeMethod();
-              }
-              vm.opts.paginationModel = state.pageBeforeSearch + 1;
-              tplTableService.setStateBeforeSearch(vm.opts.id, null);
+
+            var actualPage = Number(stateBeforeDetail.actualPage);
+            if (actualPage >= 0) {
+              vm.opts.paginationModel = stateBeforeDetail.actualPage + 1;
             }
-          } else if (newVal !== oldVal) { // New search after search started
-            if (vm.opts.paginationModel === 1) {
-              vm.opts.pageAndSearchChangeMethod();
-            } else {
-              vm.opts.paginationModel = 1;
-              refreshPagination();
+
+            var actualEntriesPerPageCount = Number(stateBeforeDetail.actualEntriesPerPageCount);
+            if (actualEntriesPerPageCount > 0) {
+              vm.opts.entriesPerPageCount = actualEntriesPerPageCount;
             }
-          } else if (newVal === oldVal) { // Init or returned to list
           }
-          initialLoad = false;
-        }));
 
-        scopeListenerManager.saveAddListener($scope, $scope.$watch('vm.opts.paginationModel', function(newVal, oldVal) {
-          if (newVal === oldVal || newVal !== oldVal) { // Init, new page, search start or search end, returned to list
+          setupListeners();
+        }
 
-            if (vm.opts.searchModel !== '') { // Check for active search
-              if (newVal === oldVal) { // Returned to list
-                  var state = tplTableService.getStateBeforeDetail(vm.opts.id);
-                  if (state.actualPage >= 0) {
-                    vm.opts.paginationModel = state.actualPage + 1;
+        function setupListeners() {
+          scopeListenerManager.saveAddListener($scope, $scope.$on('$destroy', function() {
+            tplTableService.setStateBeforeDetail(vm.opts.id, {
+              actualPage: vm.opts.paginationModel - 1,
+              actualSearch: vm.opts.searchModel,
+              actualEntriesPerPageCount: vm.opts.entriesPerPageCount
+            });
+          }));
 
-                    if (state.actualSearch) {
-                      vm.opts.searchModel = state.actualSearch;
-                      vm.searchInput = vm.opts.searchModel;
-                    }
+          scopeListenerManager.saveAddListener($scope, $scope.$watch('vm.opts.searchModel', function(newVal, oldVal) {
+            if ((oldVal === '' || !oldVal) && newVal !== oldVal) { // Search started
+              tplTableService.setStateBeforeSearch(vm.opts.id, {
+                pageBeforeSearch: vm.opts.paginationModel - 1,
+                entriesPerPageCountBeforeSearch: vm.opts.entriesPerPageCount
+              });
 
-                    tplTableService.setStateBeforeDetail(vm.opts.id, {
-                      actualPage: null,
-                      actualSearch: null
-                    });
-                  } else { // or search started from page 1
+              if (vm.opts.paginationModel === 1) { // from page 1
+                vm.opts.pageAndSearchChangeMethod();
+              } else {
+                vm.opts.paginationModel = 1;
+                refreshPagination();
+              }
+            } else if ((newVal === '' || !newVal) && !initialLoad) { // Search ended
+              var state = tplTableService.getStateBeforeSearch(vm.opts.id);
+              if (state) {
+                if (state.pageBeforeSearch >= 0) {
+                  if (vm.opts.paginationModel === 1 && (state.pageBeforeSearch + 1) === vm.opts.paginationModel) { // from page 1
                     vm.opts.pageAndSearchChangeMethod();
                   }
-              } else { // or search started
+                  vm.opts.paginationModel = state.pageBeforeSearch + 1;
+
+                  if (state.entriesPerPageCountBeforeSearch > 0) {
+                    vm.opts.entriesPerPageCount = state.entriesPerPageCountBeforeSearch;
+                  }
+
+                  tplTableService.setStateBeforeSearch(vm.opts.id, {
+                    pageBeforeSearch: null,
+                    entriesPerPageCountBeforeSearch: null
+                  });
+                }
+              }
+            } else if (newVal !== oldVal) { // New search after search started
+              if (vm.opts.paginationModel === 1) {
+                vm.opts.pageAndSearchChangeMethod();
+              } else {
+                vm.opts.paginationModel = 1;
+                refreshPagination();
+              }
+            } else if (newVal === oldVal) {} // Init or returned to list
+            initialLoad = false;
+          }));
+
+          scopeListenerManager.saveAddListener($scope, $scope.$watch('vm.opts.paginationModel', function(newVal, oldVal) {
+            if (newVal === oldVal || newVal !== oldVal) { // Init, new page, search start or search end, returned to list
+
+              if (vm.opts.searchModel !== '') { // Check for active search
+                if (newVal === oldVal) { // Returned to list
+                    var state = tplTableService.getStateBeforeDetail(vm.opts.id);
+                    if (state) {
+                      if (state.actualPage >= 0) {
+                        vm.opts.paginationModel = state.actualPage + 1;
+
+                        if (state.actualSearch) {
+                          vm.opts.searchModel = state.actualSearch;
+                          vm.searchInput = vm.opts.searchModel;
+                        }
+
+                        if (state.actualEntriesPerPageCount > 0) {
+                          vm.opts.entriesPerPageCount = state.actualEntriesPerPageCount;
+                        }
+
+                        tplTableService.setStateBeforeDetail(vm.opts.id, {
+                          actualPage: null,
+                          actualSearch: null,
+                          actualEntriesPerPageCount: null
+                        });
+                      } else {
+                        vm.opts.pageAndSearchChangeMethod();
+                      }
+                    }
+                } else { // or search started
+                  vm.opts.pageAndSearchChangeMethod();
+                }
+              } else if (!initialLoad) { // Returned to list without search
                 vm.opts.pageAndSearchChangeMethod();
               }
-            } else if (!initialLoad) { // Returned to list without search
+              initialLoad = false;
+            }
+          }));
+
+          scopeListenerManager.saveAddListener($scope, $scope.$watch('vm.opts.entriesPerPageCount', function(newVal, oldVal) {
+            if ((newVal || newVal === 0) && newVal !== oldVal) {
+              vm.opts.paginationModel = 1;
+              resetEdit();
               vm.opts.pageAndSearchChangeMethod();
             }
-            initialLoad = false;
-          }
-        }));
+          }));
 
-        scopeListenerManager.saveAddListener($scope, $scope.$watch('vm.opts.entriesPerPageCount', function(newVal, oldVal) {
-          if ((newVal || newVal === 0) && newVal !== oldVal) {
-            vm.opts.paginationModel = 1;
-            resetEdit();
-            vm.opts.pageAndSearchChangeMethod();
-          }
-        }));
+          scopeListenerManager.saveAddListener($scope, $scope.$watch('vm.opts.pageCount', function(newVal) {
+            if (newVal || newVal === 0) {
+              refreshPagination();
+              resetEdit();
+            }
+          }));
 
-        scopeListenerManager.saveAddListener($scope, $scope.$watch('vm.opts.pageCount', function(newVal) {
-          if (newVal || newVal === 0) {
-            refreshPagination();
-            resetEdit();
-          }
-        }));
+          scopeListenerManager.saveAddListener($scope, $scope.$watchCollection('vm.opts.columns', function(newVal) {
+            if (newVal && newVal.length) {
 
-        scopeListenerManager.saveAddListener($scope, $scope.$watchCollection('vm.opts.columns', function(newVal) {
-          if (newVal && newVal.length) {
+              angular.forEach(newVal, function(column) {
+                if (column.content && column.content !== '') {
 
-            angular.forEach(newVal, function(column) {
-              if (column.content && column.content !== '') {
+                  var contentString = column.content.toUpperCase();
+                  if (vm.POSSIBLE_CONTENT_TYPES.indexOf(contentString) < 0) {
+                    column.content = vm.POSSIBLE_CONTENT_TYPES[vm.CONTENT_TYPE_TEXT];
+                  } else {
+                    column.content = contentString;
+                  }
 
-                var contentString = column.content.toUpperCase();
-                if (vm.POSSIBLE_CONTENT_TYPES.indexOf(contentString) < 0) {
-                  column.content = vm.POSSIBLE_CONTENT_TYPES[vm.CONTENT_TYPE_TEXT];
                 } else {
-                  column.content = contentString;
+                  column.content = vm.POSSIBLE_CONTENT_TYPES[vm.CONTENT_TYPE_TEXT];
                 }
+              });
 
-              } else {
-                column.content = vm.POSSIBLE_CONTENT_TYPES[vm.CONTENT_TYPE_TEXT];
-              }
-            });
+            }
+          }));
+        }
 
-          }
-        }));
-
+        // FUNCTIONS
         var refreshPagination = function refreshPagination() {
           var calculatedStart = vm.opts.paginationModel - ((MAX_PAGINATION_BUTTONS - 1) / 2);
           if (calculatedStart > 0) {
