@@ -59,7 +59,7 @@ angular.module('tpl.table').run(['$templateCache', function($templateCache) {
     "\n" +
     "  <tbody class=\"tpltable__body\">\n" +
     "\n" +
-    "    <tr class=\"tpltable__row--placeholder\" ng-if=\"!vm.opts.entries || !vm.opts.entries.length\">\n" +
+    "    <tr class=\"tpltable__row--placeholder\" ng-if=\"!vm.opts.entries || !vm.opts.entries.length || vm.opts.loading\">\n" +
     "      <td colspan=\"{{vm.opts.entrieValuesOrder.length + (vm.opts.actions ? 1 : 0)}}\">\n" +
     "        <span ng-if=\"!vm.opts.loading\">{{vm.opts.noDataAvailableText | translate}}</span>\n" +
     "        <loadingpoints ng-if=\"vm.opts.loading\"></loadingpoints>\n" +
@@ -102,9 +102,9 @@ angular.module('tpl.table').run(['$templateCache', function($templateCache) {
     "      <td ng-if=\"vm.opts.showActionsColumn\" class=\"edit\">\n" +
     "        <span ng-if=\"vm.opts.actions.assign.function && vm.opts.actions.assign.if($index)\" class=\"tbl-iconfont tbl-iconfont-export\" ng-click=\"!vm.opts.actions.assign.function || vm.editableCell[0]!==null || vm.opts.actions.assign.function($index)\"></span>\n" +
     "        <span ng-if=\"vm.opts.actions.edit.function && vm.opts.actions.edit.if($index)\" class=\"tbl-iconfont tbl-iconfont-pen\" ng-click=\"!vm.opts.actions.edit.function || vm.editableCell[0]!==null || vm.opts.actions.edit.function($index)\"></span>\n" +
-    "        <span ng-if=\"vm.opts.actions.delete.function && vm.opts.actions.delete.if($index)\" class=\"tbl-iconfont tbl-iconfont-delete\" ng-click=\"!vm.opts.actions.delete.function || vm.editableCell[0]!==null || vm.opts.actions.delete.function($index)\"></span>\n" +
     "        <span ng-if=\"vm.opts.actions.add.function && vm.opts.actions.add.if($index)\" class=\"icon icon-cal-button\" ng-click=\"!vm.opts.actions.add.function || vm.editableCell[0] !== null || vm.opts.actions.add.function($index)\"></span>\n" +
     "        <span ng-if=\"vm.opts.actions.confirm.function && vm.opts.actions.confirm.if($index)\" class=\"iconfont iconfont-check\" ng-click=\"!vm.opts.actions.confirm.function ||  vm.editableCell[0]!=null || vm.opts.actions.confirm.function($index)\"></span>\n" +
+    "        <span ng-if=\"vm.opts.actions.delete.function && vm.opts.actions.delete.if($index)\" class=\"tbl-iconfont tbl-iconfont-delete\" ng-click=\"!vm.opts.actions.delete.function || vm.editableCell[0]!==null || vm.opts.actions.delete.function($index)\"></span>\n" +
     "      </td>\n" +
     "\n" +
     "    </tr>\n" +
