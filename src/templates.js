@@ -30,7 +30,7 @@ angular.module('tpl.table').run(['$templateCache', function($templateCache) {
 
   $templateCache.put('src/tpltable.directive.html',
     "\n" +
-    "<div class=\"top-row\">\n" +
+    "<div class=\"top-row\" ng-if=\"(vm.opts.entriesPerPageCount && vm.opts.showPagination) || vm.opts.searchModel\">\n" +
     "\n" +
     "  <div class=\"elementsperside__select prettyselect\" ng-if=\"vm.opts.entriesPerPageCount && vm.opts.showPagination\">\n" +
     "    <select class=\"top-row__entry-count input-sm\" ng-model=\"vm.opts.entriesPerPageCount\" ng-options=\"o as o for o in vm.POSSIBLE_RANGE_VALUES\" ng-style=\"{'color': vm.opts.colors.secondaryColor}\"></select>\n" +

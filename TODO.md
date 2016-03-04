@@ -9,4 +9,3 @@
 - Automatic set loading
 - Catch null values
 - Column value filter
-- Catch pageAndSearchChangeMethod not set
