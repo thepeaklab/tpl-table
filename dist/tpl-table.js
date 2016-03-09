@@ -167,7 +167,7 @@
         // RESTORE STATE BEFORE DETAIL
         var stateBeforeDetail = tplTableService.getStateBeforeDetail(vm.opts.id);
         if (stateBeforeDetail) {
-          var actualSearch = String(stateBeforeDetail.actualSearch) || '';
+          var actualSearch = stateBeforeDetail.actualSearch || '';
           if (actualSearch.length) {
             vm.opts.searchModel = actualSearch;
           }

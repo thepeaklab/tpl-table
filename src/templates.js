@@ -30,7 +30,7 @@ angular.module('tpl.table').run(['$templateCache', function($templateCache) {
 
   $templateCache.put('src/tpltable.directive.html',
     "\n" +
-    "<div class=\"top-row\" ng-if=\"(vm.opts.entriesPerPageCount && vm.opts.showPagination) || vm.opts.searchModel\">\n" +
+    "<div class=\"top-row\">\n" +
     "\n" +
     "  <div class=\"elementsperside__select prettyselect\" ng-if=\"vm.opts.entriesPerPageCount && vm.opts.showPagination\">\n" +
     "    <select class=\"top-row__entry-count input-sm\" ng-model=\"vm.opts.entriesPerPageCount\" ng-options=\"o as o for o in vm.POSSIBLE_RANGE_VALUES\" ng-style=\"{'color': vm.opts.colors.secondaryColor}\"></select>\n" +
@@ -59,7 +59,7 @@ angular.module('tpl.table').run(['$templateCache', function($templateCache) {
     "\n" +
     "  <tbody class=\"tpltable__body\">\n" +
     "\n" +
-    "    <tr class=\"tpltable__row--placeholder\" ng-if=\"!vm.opts.entries || !vm.opts.entries.length\">\n" +
+    "    <tr class=\"tpltable__row--placeholder\" ng-if=\"!vm.opts.entries || !vm.opts.entries.length || vm.opts.loading\">\n" +
     "      <td colspan=\"{{vm.opts.entrieValuesOrder.length + (vm.opts.actions ? 1 : 0)}}\">\n" +
     "        <span ng-if=\"!vm.opts.loading\">{{vm.opts.noDataAvailableText | translate}}</span>\n" +
     "        <loadingpoints ng-if=\"vm.opts.loading\"></loadingpoints>\n" +
