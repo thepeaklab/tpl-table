@@ -28,7 +28,7 @@ table.tpltable
 
     tr(ng-if="tplTableCtrl.opts.entries && tplTableCtrl.opts.entries.length" ng-repeat="row in tplTableCtrl.opts.entries")
 
-      td(ng-repeat="cell in tplTableCtrl.opts.entrieValuesOrder" ng-mouseleave="hover=false" ng-mouseenter="hover=true" ng-style="tplTableCtrl.editableCell[0]===$parent.$parent.$index && {'background-color': tplTableCtrl.opts.colors.primaryColor, 'color': tplTableCtrl.opts.colors.primaryFontColor}" ng-class="{'clickable': tplTableCtrl.opts.onRowClick, 'notclickable': !tplTableCtrl.opts.onRowClick || tplTableCtrl.editableCell[0]!==null}" ng-click="!tplTableCtrl.opts.onRowClick || tplTableCtrl.editableCell[0]!==null || tplTableCtrl.opts.onRowClick($parent.$parent.$index)" ng-if="!tplTableCtrl.opts.columns[$index].ngIf || tplTableCtrl.opts.columns[$index].ngIf()")
+      td(ng-repeat="cell in tplTableCtrl.opts.entrieValuesOrder" ng-mouseleave="hover=false" ng-mouseenter="hover=true" ng-style="tplTableCtrl.editableCell[0]===$parent.$parent.$index && {'background-color': tplTableCtrl.opts.colors.primaryColor, 'color': tplTableCtrl.opts.colors.primaryFontColor}" ng-class="{'clickable': tplTableCtrl.onRowClick, 'notclickable': !tplTableCtrl.onRowClick || tplTableCtrl.editableCell[0]!==null}" ng-click="!tplTableCtrl.onRowClick || tplTableCtrl.editableCell[0]!==null || tplTableCtrl.onRowClick($parent.$parent.$index)" ng-if="!tplTableCtrl.opts.columns[$index].ngIf || tplTableCtrl.opts.columns[$index].ngIf()")
 
         div(ng-if="(tplTableCtrl.editableCell[0]!==$parent.$parent.$parent.$index || tplTableCtrl.editableCell[1]!==$index || !tplTableCtrl.opts.columns[$index].editable)")
           //- TEXT
