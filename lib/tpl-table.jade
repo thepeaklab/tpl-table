@@ -6,7 +6,7 @@ div.top-row
   span.elementsperside__label(ng-if="tplTableCtrl.opts.entriesPerPageCount && tplTableCtrl.opts.showPagination")
     | {{ 'TABLE_ENTRIES_PER_SITE' | translate }} {{dataOrder}}
   
-  form(ng-if="tplTableCtrl.opts.searchModel!==null" ng-submit="setSearch()")
+  form(ng-if="tplTableCtrl.opts.searchModel!==null" ng-submit="tplTableCtrl.setSearch()")
     input.top-row__search(type="text" ng-model="tplTableCtrl.searchInput" placeholder="{{'TABLE_SEARCH'|translate}}")
 
 table.tpltable 
@@ -28,7 +28,7 @@ table.tpltable
 
     tr(ng-if="tplTableCtrl.opts.entries && tplTableCtrl.opts.entries.length" ng-repeat="row in tplTableCtrl.opts.entries")
 
-      td(ng-repeat="cell in tplTableCtrl.opts.entrieValuesOrder" ng-mouseleave="hover=false" ng-mouseenter="hover=true" ng-style="tplTableCtrl.editableCell[0]===$parent.$parent.$index && {'background-color': tplTableCtrl.opts.colors.primaryColor, 'color': tplTableCtrl.opts.colors.primaryFontColor}" ng-class="{'clickable': tplTableCtrl.onRowClick, 'notclickable': !tplTableCtrl.onRowClick || tplTableCtrl.editableCell[0]!==null}" ng-click="!tplTableCtrl.onRowClick || tplTableCtrl.editableCell[0]!==null || tplTableCtrl.onRowClick($parent.$parent.$index)" ng-if="!tplTableCtrl.opts.columns[$index].ngIf || tplTableCtrl.opts.columns[$index].ngIf()")
+      td(ng-repeat="cell in tplTableCtrl.opts.entrieValuesOrder" ng-mouseleave="hover=false" ng-mouseenter="hover=true" ng-style="tplTableCtrl.editableCell[0]===$parent.$parent.$index && {'background-color': tplTableCtrl.opts.colors.primaryColor, 'color': tplTableCtrl.opts.colors.primaryFontColor}" ng-class="{'clickable': tplTableCtrl.onRowClick, 'notclickable': !tplTableCtrl.onRowClick || tplTableCtrl.editableCell[0]!==null}" ng-click="!tplTableCtrl.onRowClick || tplTableCtrl.editableCell[0]!==null || tplTableCtrl.onRowClick({$index: $parent.$parent.$index})" ng-if="!tplTableCtrl.opts.columns[$index].ngIf || tplTableCtrl.opts.columns[$index].ngIf()")
 
         div(ng-if="(tplTableCtrl.editableCell[0]!==$parent.$parent.$parent.$index || tplTableCtrl.editableCell[1]!==$index || !tplTableCtrl.opts.columns[$index].editable)")
           //- TEXT
@@ -59,11 +59,11 @@ table.tpltable
           div.iconfont.iconfont-check
 
       td.edit(ng-if="tplTableCtrl.opts.showActionsColumn")
-        span.tbl-iconfont.tbl-iconfont-export(ng-if="tplTableCtrl.onAssign" ng-click="!tplTableCtrl.onAssign || tplTableCtrl.editableCell[0]!==null || tplTableCtrl.onAssign($index)")
-        span.tbl-iconfont.tbl-iconfont-pen(ng-if="tplTableCtrl.onEdit" ng-click="!tplTableCtrl.onEdit || tplTableCtrl.editableCell[0]!==null || tplTableCtrl.onEdit($index)")
-        span.tbl-iconfont.tbl-iconfont-delete(ng-if="tplTableCtrl.onDelete" ng-click="!tplTableCtrl.onDelete || tplTableCtrl.editableCell[0]!==null || tplTableCtrl.onDelete($index)")
-        span.icon.icon-cal-button(ng-if="tplTableCtrl.onAdd" ng-click="!tplTableCtrl.onAdd || tplTableCtrl.editableCell[0] !== null || tplTableCtrl.onAdd($index)")
-        span.iconfont.iconfont-check(ng-if="tplTableCtrl.onConfirm" ng-click="!tplTableCtrl.onConfirm || tplTableCtrl.editableCell[0]!=null || tplTableCtrl.onConfirm($index)")
+        span.tbl-iconfont.tbl-iconfont-export(ng-if="tplTableCtrl.onAssign" ng-click="!tplTableCtrl.onAssign || tplTableCtrl.editableCell[0]!==null || tplTableCtrl.onAssign({$index: $index})")
+        span.tbl-iconfont.tbl-iconfont-pen(ng-if="tplTableCtrl.onEdit" ng-click="!tplTableCtrl.onEdit || tplTableCtrl.editableCell[0]!==null || tplTableCtrl.onEdit({$index: $index})")
+        span.tbl-iconfont.tbl-iconfont-delete(ng-if="tplTableCtrl.onDelete" ng-click="!tplTableCtrl.onDelete || tplTableCtrl.editableCell[0]!==null || tplTableCtrl.onDelete({$index: $index})")
+        span.icon.icon-cal-button(ng-if="tplTableCtrl.onAdd" ng-click="!tplTableCtrl.onAdd || tplTableCtrl.editableCell[0] !== null || tplTableCtrl.onAdd({$index: $index})")
+        span.iconfont.iconfont-check(ng-if="tplTableCtrl.onConfirm" ng-click="!tplTableCtrl.onConfirm || tplTableCtrl.editableCell[0]!=null || tplTableCtrl.onConfirm({$index: $index})")
 
 div.bottom-row(ng-if="tplTableCtrl.opts.paginationModel && tplTableCtrl.opts.showPagination")
 
