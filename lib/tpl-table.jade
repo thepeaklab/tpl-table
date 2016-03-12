@@ -49,7 +49,7 @@ table.tpltable
 
         span(ng-if="tplTableCtrl.editableCell[1]===$index && tplTableCtrl.editableCell[0]===$parent.$index && tplTableCtrl.opts.columns[$index].editable")
           input.edit-input(type="text" ng-model="tplTableCtrl.tempEditColumnCopy[cell]" focus-me="tplTableCtrl.editableCell[1]===$index && tplTableCtrl.editableCell[0]===$parent.$parent.$index" ng-click="$event.stopPropagation()" ng-keyup="$event.keyCode == 13 && saveEditedColumn()")
-            | {{columnValues[$index]}}
+          | {{columnValues[$index]}}
         
 
         div.cell-controll.edit(ng-if="tplTableCtrl.opts.columns[$index].editable && hover" ng-click="toggleEditCell($event, $parent.$parent.$index, $index)" ng-style="hoverEdit && {'background-color': tplTableCtrl.opts.colors.primaryColor, 'color': tplTableCtrl.opts.colors.primaryFontColor}" ng-mouseenter="hoverEdit=true" ng-mouseleave="hoverEdit=false")
