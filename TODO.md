@@ -10,3 +10,5 @@
 - Catch null values
 - Column value filter
 - Catch pageAndSearchChangeMethod not set
+
+- Hide actions if no function is binded
