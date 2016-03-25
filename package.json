@@ -1,9 +1,6 @@
 {
   "name": "tpl-table",
-  "version": "1.4.0",
-  "main": [
-    "dist/tpl-table.js"
-  ],
+  "version": "1.4.1",
   "description": "tpl-table",
   "keywords": [
     "angular",
