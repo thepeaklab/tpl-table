@@ -12,3 +12,7 @@
 - Catch pageAndSearchChangeMethod not set
 
 - Hide actions if no function is binded
+
+- Pass all necessary data to events: page, entriesPerPage, search
+- How should loading work in component context?
+- How should pageCount work in component context?
