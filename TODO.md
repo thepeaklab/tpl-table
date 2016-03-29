@@ -9,9 +9,7 @@
 - Automatic set loading
 - Catch null values
 - Column value filter
-- Catch pageAndSearchChangeMethod not set
 
-- Hide actions if no function is binded
 
 - Pass all necessary data to events: page, entriesPerPage, search
 - How should loading work in component context?

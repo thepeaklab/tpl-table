@@ -28,8 +28,11 @@ tpl-table {
         height: 28px;
         line-height: 28px;
         display: inline-block;
+
+        //TODO: not working properly
         vertical-align: middle;
         position: relative;
+
         margin-top: -22px;
         margin-left: 5px;
       }
