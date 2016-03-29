@@ -11,6 +11,6 @@
 - Column value filter
 
 
-- Pass all necessary data to events: page, entriesPerPage, search
-- How should loading work in component context?
-- How should pageCount work in component context?
+- Pass all necessary data to events: page, entriesPerPage, search => not relevant for the component itself
+- How should loading work in component context? => not relevant for the component itself
+- How should pageCount work in component context? => not relevant for the component itself

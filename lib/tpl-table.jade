@@ -1,7 +1,7 @@
 div.top-row
 
   div.elementsperside__select.prettyselect(ng-if="tplTableCtrl.opts.entriesPerPageCount && tplTableCtrl.opts.showPagination")
-    select.top-row__entry-count.input-sm(ng-model="tplTableCtrl.entriesPerPageCount" ng-options="o as o for o in tplTableCtrl.POSSIBLE_RANGE_VALUES" ng-style="{'color': tplTableCtrl.opts.colors.secondaryColor}" ng-change="tplTableCtrl.setEntriesPerPageCount(tplTableCtrl.entriesPerPageCount, true)")
+    select.top-row__entry-count.input-sm(ng-model="tplTableCtrl.opts.entriesPerPageCount" ng-options="o as o for o in tplTableCtrl.POSSIBLE_RANGE_VALUES" ng-style="{'color': tplTableCtrl.opts.colors.secondaryColor}" ng-change="tplTableCtrl.entriesPerPageCount = '{{tplTableCtrl.opts.entriesPerPageCount}}'; tplTableCtrl.setEntriesPerPageCount(tplTableCtrl.opts.entriesPerPageCount, true, tplTableCtrl.entriesPerPageCount)")
 
   span.elementsperside__label(ng-if="tplTableCtrl.opts.entriesPerPageCount && tplTableCtrl.opts.showPagination")
     | {{ 'TABLE_ENTRIES_PER_SITE' | translate }} {{dataOrder}}
