@@ -42,6 +42,6 @@
   "dependencies": {
     "angular": "1.5.0",
     "angular-translate": "2.11.0",
-    "tpl.scope-listener-manager": "git+http://stash.thepeaklab.biz:7990/scm/open/scope-listener-manager.git"
+    "tpl.scope-listener-manager": "git+https://stash.thepeaklab.biz/scm/open/scope-listener-manager.git"
   }
 }
