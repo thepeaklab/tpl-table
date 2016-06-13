@@ -1,10 +1,8 @@
 let vm;
-
 const MAX_PAGINATION_BUTTONS = 5;
-
 const CONTENT_TYPE_TEXT = 0;
 
-export default class TplTableCtrl {
+class TplTableCtrl {
   constructor($scope, $rootScope, $document, $timeout, tplTableService, $log, scopeListenerManager) {
     vm = this;
 
@@ -357,3 +355,25 @@ export default class TplTableCtrl {
     }
   }
 }
+
+
+import template from './tpl-table.component.jade';
+
+const TplTableComponent = {
+  template: template(),
+  controller: TplTableCtrl,
+  controllerAs: 'tplTableCtrl',
+  bindings: {
+    tplTableOptions: '<',
+    onSearchChange: '&?',
+    onPageChange: '&?',
+    onPageSizeChange: '&?',
+    onRowClick: '&?',
+    onAdd: '&?',
+    onDelete: '&?',
+    onAssign: '&?',
+    onEdit: '&?',
+    onConfirm: '&?'
+  }
+};
+export { TplTableComponent };
