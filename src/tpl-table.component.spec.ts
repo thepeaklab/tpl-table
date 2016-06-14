@@ -1,17 +1,25 @@
 import 'angular';
 import 'angular-mocks/angular-mocks';
 
+import { TplTableComponent } from './tpl-table.component';
 
-import './tpl-table.module';
 
-describe('component: tpl-table', () => {
-  let component, scope, tableOptions, $componentController;
+angular
+.module('tpl.table.test', [])
+.component('tplTable', TplTableComponent);
 
-  beforeEach(angular.mock.module('tpl.table'));
+describe('Component: tpl-table', () => {
+  let component: any,
+      scope: angular.IScope,
+      tableOptions: any,
+      $componentController: any;
+
+  beforeEach(angular.mock.module('tpl.table.test'));
 
   beforeEach(inject((_$rootScope_, _$componentController_) => {
     scope = _$rootScope_.$new();
     $componentController = _$componentController_;
+
     tableOptions = {};
   }));
 
@@ -31,6 +39,4 @@ describe('component: tpl-table', () => {
 
     expect(component.opts.id).toBe('tpltable');
   });
-
-  // it('should')
 });

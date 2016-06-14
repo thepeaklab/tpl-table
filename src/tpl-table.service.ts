@@ -1,4 +1,6 @@
-export default class TplTableService {
+export class TplTableService {
+  private tables: any;
+
   constructor() {
     this.tables = {};
   }

@@ -1,8 +1,6 @@
-'use strict';
-
-export default function toRangeFilter() {
-  return (input) => {
-    var lowBound, highBound;
+export function toRangeFilter() {
+  return (input: any) => {
+    let lowBound, highBound;
     if (input.length === 1) {
       lowBound = 0;
       highBound = +input[0] - 1;
@@ -10,8 +8,8 @@ export default function toRangeFilter() {
       lowBound = +input[0];
       highBound = +input[1];
     }
-    var i = lowBound;
-    var result = [];
+    let i = lowBound;
+    let result: any[] = [];
     while (i <= highBound) {
       result.push(i);
       i++;
