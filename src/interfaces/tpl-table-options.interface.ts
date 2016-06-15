@@ -19,6 +19,6 @@ export interface TplTableOptions {
   columns: TplTableColumn[];
   colors?: TplTableColors;
   pageObj?: TplTablePage;
-  setPageCount: (pageCount: number) => void;
-  setColumns: (columns: TplTableColumn[]) => void;
+  setPageCount?: (pageCount: number) => void;
+  setColumns?: (columns: TplTableColumn[]) => void;
 }
