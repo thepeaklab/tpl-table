@@ -47,8 +47,8 @@ declare namespace tpl.table {
     columns: TplTableColumn[];
     colors?: TplTableColors;
     pageObj?: TplTablePage;
-    setPageCount: (pageCount: number) => void;
-    setColumns: (columns: TplTableColumn[]) => void;
+    setPageCount?: (pageCount: number) => void;
+    setColumns?: (columns: TplTableColumn[]) => void;
   }
 
   interface TplTableStateBeforeDetail {
@@ -60,6 +60,16 @@ declare namespace tpl.table {
   interface TplTableStateBeforeSearch {
     pageBeforeSearch: number;
     entriesPerPageCountBeforeSearch: number;
+  }
+
+  class TplTableService {
+    addTable(newTableOpts: TplTableOptions);
+    setColumns(tableId: string, columns: TplTableColumn[]);
+    setPageCount(tableId: string, pageCount: number);
+    getStateBeforeDetail(id: string): TplTableStateBeforeDetail;
+    setStateBeforeDetail(id: string, state: TplTableStateBeforeDetail);
+    getStateBeforeSearch(id: string): TplTableStateBeforeSearch;
+    setStateBeforeSearch(id: string, stateBeforeSearch: TplTableStateBeforeSearch);
   }
 }
 
@@ -74,4 +84,5 @@ declare module "tpl-table" {
   export type TplTableOptions = tpl.table.TplTableOptions;
   export type TplTableStateBeforeDetail = tpl.table.TplTableStateBeforeDetail;
   export type TplTableStateBeforeSearch = tpl.table.TplTableStateBeforeSearch;
+  export type TplTableService = tpl.table.TplTableService;
 }

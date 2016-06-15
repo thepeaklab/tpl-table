@@ -2,7 +2,7 @@
 coming soon ...
 
 ## Dependencies
-- tpl-table
+- angular-translate
 - tpl-scope-listener-manager
 
 
