@@ -64,6 +64,9 @@ declare namespace tpl.table {
 }
 
 declare module "tpl-table" {
+  export const LoadingPointsModule: angular.IModule;
+  export const TplTableModule: angular.IModule;
+
   export type TplTableRow = tpl.table.TplTableRow;
   export type TplTableColumn = tpl.table.TplTableColumn;
   export type TplTableColors = tpl.table.TplTableColors;
