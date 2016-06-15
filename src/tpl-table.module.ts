@@ -18,7 +18,7 @@ const TplTableModule = angular
     TranslateModule,
 
     /* own */
-    LoadingPointsModule
+    LoadingPointsModule.name
   ])
   .filter('checkmark', checkmarkFilter)
   .filter('toRange', toRangeFilter)
