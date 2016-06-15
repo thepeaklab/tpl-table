@@ -1,3 +1,74 @@
-declare namespace tpl.table {}
+declare namespace tpl.table {
+  interface TplTableRow {
+    [key: string]: any;
+  }
 
-declare module "tpl-table" {}
+  interface TplTableColumn {
+    ngIf?: () => boolean;
+    name: string;
+    editable?: boolean;
+    unit?: any;
+    content: string; // TODO: enum
+    translateColumn?: boolean;
+    translateValues?: boolean;
+    translateValuePrefix?: string;
+    maxWidth?: string;
+    maxHeight?: string;
+  }
+
+  interface TplTableColors {
+    primaryColor?: string;
+    secondaryColor?: string;
+    primaryFontColor?: string;
+    secondaryFontColor?: string;
+  }
+
+  interface TplTablePage {
+    actualPage: number;
+    actualSearch: string;
+    actualEntriesPerPageCount: number;
+    pageBeforeSearch: number;
+    entriesPerPageCountBeforeSearch: number;
+  }
+
+  interface TplTableOptions {
+    id: string;
+    loading?: boolean;
+    searchPlaceholderText: string;
+    noDataAvailableText: string;
+    showActionsColumn?: boolean;
+    searchModel?: string;
+    showPagination?: boolean;
+    paginationModel?: number;
+    pageCount?: number;
+    entriesPerPageCount?: number;
+    entries: TplTableRow[];
+    entrieValuesOrder: string[];
+    columns: TplTableColumn[];
+    colors?: TplTableColors;
+    pageObj?: TplTablePage;
+    setPageCount: (pageCount: number) => void;
+    setColumns: (columns: TplTableColumn[]) => void;
+  }
+
+  interface TplTableStateBeforeDetail {
+    actualSearch: string;
+    actualPage: number;
+    actualEntriesPerPageCount: number;
+  }
+
+  interface TplTableStateBeforeSearch {
+    pageBeforeSearch: number;
+    entriesPerPageCountBeforeSearch: number;
+  }
+}
+
+declare module "tpl-table" {
+  export type TplTableRow = tpl.table.TplTableRow;
+  export type TplTableColumn = tpl.table.TplTableColumn;
+  export type TplTableColors = tpl.table.TplTableColors;
+  export type TplTablePage = tpl.table.TplTablePage;
+  export type TplTableOptions = tpl.table.TplTableOptions;
+  export type TplTableStateBeforeDetail = tpl.table.TplTableStateBeforeDetail;
+  export type TplTableStateBeforeSearch = tpl.table.TplTableStateBeforeSearch;
+}

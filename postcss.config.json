@@ -1,0 +1,8 @@
+{
+  "use": ["postcss-import", "postcss-simple-vars", "postcss-nested", "autoprefixer"],
+  "input": "src/index.css",
+  "output": "dist/tpl-table.css",
+  "autoprefixer": {
+    "browsers": "last 4 versions"
+  }
+}

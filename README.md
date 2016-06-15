@@ -1,9 +1,17 @@
+# Setup
+coming soon ...
+
+## Dependencies
+- tpl-table
+- tpl-scope-listener-manager
+
+
 # TODO
-- Order by ?
+- Unit tests
+- Order by => should be handled out of the scope of this component
 - Entries per Page label style fix ?
 - Reset search button
 - Do search button
-- Add cursor:pointer to pagination links
 - Font option
 - Custom classes: for example custom select class
 - Automatic set loading

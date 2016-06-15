@@ -7,8 +7,8 @@ import 'tpl.scope-listener-manager/dist/tpl.scope-listener-manager';
 import { FocusMeDirective } from './focus-me.directive';
 import { LoadingPointsModule } from './loading-points';
 import { checkmarkFilter } from './tpl-table-checkmark.filter';
-import { toRangeFilter } from './tpl-table-to-range.filter';
 import { TplTableComponent } from './tpl-table.component';
+import { toRangeFilter } from './tpl-table-to-range.filter';
 import { TplTableService } from './tpl-table.service';
 
 const TplTableModule = angular

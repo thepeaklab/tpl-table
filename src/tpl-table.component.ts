@@ -1,21 +1,26 @@
 import * as angular from 'angular';
 
-let vm;
-const MAX_PAGINATION_BUTTONS: number = 5;
-const CONTENT_TYPE_TEXT: number = 0;
+import { TplTableColumn, TplTableOptions, TplTableRow, TplTableStateBeforeDetail, TplTableStateBeforeSearch } from './interfaces';
+import { TplTableService } from './tpl-table.service';
 
+const CONTENT_TYPE_TEXT: number = 0;
+const MAX_PAGINATION_BUTTONS: number = 5;
+
+let vm: TplTableCtrl;
 class TplTableCtrl {
-  editableCell: any[];
+  editableCell: number[];
   entriesPerPageCount: number;
-  onPageChange: (model: {new: any, old: any}) => {};
-  onPageSizeChange: (model: { new: any, old: any }) => {};
-  onSearchChange: (model: { new: any, old: any }) => {};
-  opts: any;
+  onPageChange: (model: {new: number, old: number}) => {};
+  onPageSizeChange: (model: { new: number, old: number }) => {};
+  onSearchChange: (model: { new: string, old: string }) => {};
+  opts: TplTableOptions;
   paginationStart: number;
   paginationEnd: number;
   POSSIBLE_CONTENT_TYPES: string[];
   POSSIBLE_RANGE_VALUES: number[];
-  tplTableOptions: any;
+  searchInput: string;
+  tempEditColumnCopy: any;
+  tplTableOptions: TplTableOptions;
 
   private $document: angular.IDocumentService;
   private $log: angular.ILogService;
@@ -23,9 +28,9 @@ class TplTableCtrl {
   private $scope: angular.IScope;
   private scopeListenerManager: any;
   private $timeout: angular.ITimeoutService;
-  private tplTableService: any;
+  private tplTableService: TplTableService;
 
-  constructor($scope: angular.IScope, $rootScope: angular.IRootScopeService, $document: angular.IDocumentService, $timeout: angular.ITimeoutService, tplTableService: any, $log: angular.ILogService, scopeListenerManager: any) {
+  constructor($scope: angular.IScope, $rootScope: angular.IRootScopeService, $document: angular.IDocumentService, $timeout: angular.ITimeoutService, tplTableService: TplTableService, $log: angular.ILogService, scopeListenerManager: any) {
     vm = this;
 
     this.$document = $document;
@@ -36,10 +41,9 @@ class TplTableCtrl {
     this.$timeout = $timeout;
     this.tplTableService = tplTableService;
 
-
-    this.POSSIBLE_RANGE_VALUES = [10, 25, 50, 100];
-    this.POSSIBLE_CONTENT_TYPES = ['TEXT', 'IMAGE'];
     this.editableCell = [null, null];
+    this.POSSIBLE_CONTENT_TYPES = ['TEXT', 'IMAGE'];
+    this.POSSIBLE_RANGE_VALUES = [10, 25, 50, 100];
   }
 
   $onInit() {
@@ -58,7 +62,7 @@ class TplTableCtrl {
   }
 
   // CONSTRUCTOR HELPER
-  checkBindings() {
+  checkBindings(): boolean {
     this.opts = this.tplTableOptions;
 
     if (this.opts) {
@@ -67,6 +71,7 @@ class TplTableCtrl {
 
       this.opts.id = this.opts.id || 'tpltable';
       this.opts.loading = this.opts.loading || false;
+      this.opts.searchPlaceholderText = this.opts.searchPlaceholderText || 'TABLE_SEARCH';
       this.opts.noDataAvailableText = this.opts.noDataAvailableText || 'No Data Available ...';
       this.opts.showActionsColumn = this.opts.showActionsColumn || false;
       this.opts.searchModel = this.opts.searchModel !== undefined ? this.opts.searchModel : null;
@@ -78,31 +83,31 @@ class TplTableCtrl {
       this.opts.entries = this.opts.entries || [];
       this.opts.entrieValuesOrder = this.opts.entrieValuesOrder || null;
       this.opts.columns = this.opts.columns || [
-                                            {
-                                              name : '',
-                                              editable : true,
-                                              unit: null,
-                                              content: this.POSSIBLE_CONTENT_TYPES[CONTENT_TYPE_TEXT]
-                                            },
-                                            {
-                                              name : '',
-                                              editable : true,
-                                              unit: null,
-                                              content: this.POSSIBLE_CONTENT_TYPES[CONTENT_TYPE_TEXT]
-                                            },
-                                            {
-                                              name : '',
-                                              editable : true,
-                                              unit: null,
-                                              content: this.POSSIBLE_CONTENT_TYPES[CONTENT_TYPE_TEXT]
-                                            },
-                                            {
-                                              name : '',
-                                              editable : true,
-                                              unit: null,
-                                              content: this.POSSIBLE_CONTENT_TYPES[CONTENT_TYPE_TEXT]
-                                            }
-                                           ];
+        {
+          name : '',
+          editable : true,
+          unit: null,
+          content: this.POSSIBLE_CONTENT_TYPES[CONTENT_TYPE_TEXT]
+        },
+        {
+          name : '',
+          editable : true,
+          unit: null,
+          content: this.POSSIBLE_CONTENT_TYPES[CONTENT_TYPE_TEXT]
+        },
+        {
+          name : '',
+          editable : true,
+          unit: null,
+          content: this.POSSIBLE_CONTENT_TYPES[CONTENT_TYPE_TEXT]
+        },
+        {
+          name : '',
+          editable : true,
+          unit: null,
+          content: this.POSSIBLE_CONTENT_TYPES[CONTENT_TYPE_TEXT]
+        }
+     ];
 
       this.paginationStart = 1;
       this.paginationEnd = 1;
@@ -117,21 +122,23 @@ class TplTableCtrl {
     return false;
   }
 
-  setupListeners() {
+  private setupListeners() {
     this.scopeListenerManager.saveAddListener(this.$scope, this.$scope.$on('$destroy', () => {
       this.saveTableStateBeforeDestroying();
     }));
   }
 
   // PUBLIC FUNCTIONS
-  toggleEditCell(event, rowIndex, columnIndex) {
+  toggleEditCell(event: Event, rowIndex: number, columnIndex: number) {
     event.stopPropagation();
-    vm.editableCell[0] = rowIndex;
-    vm.editableCell[1] = columnIndex;
-    vm.tempEditColumnCopy = angular.copy(vm.opts.entries[rowIndex]);
-    angular.forEach(vm.tempEditColumnCopy, (value, key) => {
+
+    this.editableCell[0] = rowIndex;
+    this.editableCell[1] = columnIndex;
+
+    this.tempEditColumnCopy = angular.copy(vm.opts.entries[rowIndex]);
+    angular.forEach(this.tempEditColumnCopy, (value, key) => {
       if (value === '-' || value === '--' || value === '---') {
-        vm.tempEditColumnCopy[key] = null;
+        this.tempEditColumnCopy[key] = null;
       }
     });
 
@@ -139,35 +146,36 @@ class TplTableCtrl {
   }
 
   saveEditedColumn() {
-    vm.opts.entries[vm.editableCell[0]] = vm.tempEditColumnCopy;
+    this.opts.entries[this.editableCell[0]] = this.tempEditColumnCopy;
 
-    this.$rootScope.$emit('tpltable.datarow.edited.' + vm.opts.id,
-      vm.editableCell[0],
-      vm.opts.entries[vm.editableCell[0]]);
+    this.$rootScope.$emit('tpltable.datarow.edited.' + this.opts.id,
+      this.editableCell[0],
+      this.opts.entries[this.editableCell[0]]
+    );
 
-    vm.editableCell[0] = null;
-    vm.editableCell[1] = null;
+    this.editableCell[0] = null;
+    this.editableCell[1] = null;
   }
 
-  getCellValue(row, cell) {
-    let levels = cell.split('.');
-    let levelsMap = {
+  getCellValue(row: TplTableRow, cell: string): any {
+    const LEVELS: string[] = cell.split('.');
+    const LEVELS_MAP: { [levelNumber: number]: () => any } = {
       2: () => {
-        return row[levels[0]] ? row[levels[0]][levels[1]] : '-';
+        return row[LEVELS[0]] ? row[LEVELS[0]][LEVELS[1]] : '-';
       },
       3: () => {
-        return row[levels[0]] ? (row[levels[0]][levels[1]] ? row[levels[0]][levels[1]][levels[2]] : '-') : '-';
+        return row[LEVELS[0]] ? (row[LEVELS[0]][LEVELS[1]] ? row[LEVELS[0]][LEVELS[1]][LEVELS[2]] : '-') : '-';
       },
       4: () => {
-        return row[levels[0]] ? (row[levels[0]][levels[1]] ? (row[levels[0]][levels[1]][levels[2]] ? row[levels[0]][levels[1]][levels[2]][levels[3]] : '-') : '-') : '-';
+        return row[LEVELS[0]] ? (row[LEVELS[0]][LEVELS[1]] ? (row[LEVELS[0]][LEVELS[1]][LEVELS[2]] ? row[LEVELS[0]][LEVELS[1]][LEVELS[2]][LEVELS[3]] : '-') : '-') : '-';
       }
     };
 
-    return levelsMap[levels.length] ? levelsMap[levels.length]() : '';
+    return LEVELS_MAP[LEVELS.length] ? LEVELS_MAP[LEVELS.length]() : '';
   }
 
   skipPagesForward() {
-    let calculatedPage = vm.opts.paginationModel + MAX_PAGINATION_BUTTONS;
+    let calculatedPage: number = vm.opts.paginationModel + MAX_PAGINATION_BUTTONS;
     if (calculatedPage > vm.opts.pageCount) {
       calculatedPage = vm.opts.pageCount;
     }
@@ -176,7 +184,7 @@ class TplTableCtrl {
   }
 
   skipPagesBackward() {
-    let calculatedPage = vm.opts.paginationModel - MAX_PAGINATION_BUTTONS;
+    let calculatedPage: number = vm.opts.paginationModel - MAX_PAGINATION_BUTTONS;
     if (calculatedPage <= 0) {
       calculatedPage = 1;
     }
@@ -184,87 +192,81 @@ class TplTableCtrl {
     this.setPage(calculatedPage, true);
   }
 
-  setEntriesPerPageCount(entriesPerPageCount, callback?, old?) {
-    let oldEntriesPerPageCount = old || vm.opts.entriesPerPageCount;
-    vm.opts.entriesPerPageCount = entriesPerPageCount;
+  setEntriesPerPageCount(entriesPerPageCount: number, callback?: boolean, old?: number) {
+    let oldEntriesPerPageCount = old || this.opts.entriesPerPageCount;
+    this.opts.entriesPerPageCount = entriesPerPageCount;
 
-    this.handleEntriesPerPageCount(vm.opts.entriesPerPageCount, oldEntriesPerPageCount);
+    this.handleEntriesPerPageCount(this.opts.entriesPerPageCount, oldEntriesPerPageCount);
 
-    if (callback && this.onPageSizeChange && vm.opts.entriesPerPageCount !== oldEntriesPerPageCount) {
-      this.onPageSizeChange({new: vm.opts.entriesPerPageCount, old: oldEntriesPerPageCount});
+    if (callback && this.onPageSizeChange && this.opts.entriesPerPageCount !== oldEntriesPerPageCount) {
+      this.onPageSizeChange({new: this.opts.entriesPerPageCount, old: oldEntriesPerPageCount});
     }
   }
 
-  setPage(page, callback?) {
-    let old = vm.opts.paginationModel;
-    vm.opts.paginationModel = page;
+  setPage(page: number, callback?: boolean) {
+    let old = this.opts.paginationModel;
+    this.opts.paginationModel = page;
 
     this.refreshPagination();
     this.resetEdit();
 
-    // this.handlePageChange(vm.opts.paginationModel, old);
-
-    if (callback && this.onPageChange && vm.opts.paginationModel !== old) {
-      this.onPageChange({new: vm.opts.paginationModel, old: old});
+    if (callback && this.onPageChange && this.opts.paginationModel !== old) {
+      this.onPageChange({new: this.opts.paginationModel, old: old});
     }
   }
 
-  setSearch(search, callback?) {
-    let old = vm.opts.searchModel;
+  setSearch(search: string, callback?: boolean) {
+    let old = this.opts.searchModel;
 
     if (search) {
-      vm.opts.searchModel = search;
-      vm.searchInput = search;
+      this.opts.searchModel = search;
+      this.searchInput = search;
     } else {
-      vm.opts.searchModel = vm.searchInput;
+      this.opts.searchModel = this.searchInput;
     }
 
     this.resetEdit();
 
-    this.handleSearchChange(vm.opts.searchModel, old);
+    this.handleSearchChange(this.opts.searchModel, old);
 
-    if (callback && this.onSearchChange && vm.opts.searchModel !== old) {
-      this.onSearchChange({new: vm.opts.searchModel, old: old});
+    if (callback && this.onSearchChange && this.opts.searchModel !== old) {
+      this.onSearchChange({new: this.opts.searchModel, old: old});
     }
   }
 
   // HANDLERS
-  handleEntriesPerPageCount(newVal, oldVal) {
+  private handleEntriesPerPageCount(newVal: number, oldVal: number) {
     if ((newVal || newVal === 0) && newVal !== oldVal) {
       this.setPage(1);
     }
   }
 
-  handleSearchChange(newVal, oldVal) {
+  private handleSearchChange(newVal: string, oldVal: string) {
     if ((oldVal === '' || !oldVal) && newVal !== oldVal) { // Search started
       this.saveTableStateBeforeSearch();
 
-      if (vm.opts.paginationModel !== 1) {
+      if (this.opts.paginationModel !== 1) {
         this.setPage(1);
       }
     } else if ((newVal === '' || !newVal)) { // Search ended
       this.restoreTableStateBeforeSearch();
     } else if (newVal !== oldVal) { // New search after search started
-      if (vm.opts.paginationModel !== 1) {
+      if (this.opts.paginationModel !== 1) {
         this.setPage(1);
       }
     } // Init or returned to list
   }
 
-  // handlePageChange(newVal, oldVal) {
-    // Init, new page, search start or search end, returned to list
-  // }
-
   // HELPER
-  saveTableStateBeforeSearch() {
-    this.tplTableService.setStateBeforeSearch(vm.opts.id, {
-      pageBeforeSearch: vm.opts.paginationModel - 1,
-      entriesPerPageCountBeforeSearch: vm.opts.entriesPerPageCount
+  private saveTableStateBeforeSearch() {
+    this.tplTableService.setStateBeforeSearch(this.opts.id, {
+      pageBeforeSearch: this.opts.paginationModel - 1,
+      entriesPerPageCountBeforeSearch: this.opts.entriesPerPageCount
     });
   }
 
-  restoreTableStateBeforeSearch() {
-    const state = this.tplTableService.getStateBeforeSearch(vm.opts.id);
+  private restoreTableStateBeforeSearch() {
+    const state = this.tplTableService.getStateBeforeSearch(this.opts.id);
     if (state) {
       if (state.pageBeforeSearch >= 0) {
         if (state.entriesPerPageCountBeforeSearch) {
@@ -273,7 +275,7 @@ class TplTableCtrl {
 
         this.setPage(state.pageBeforeSearch + 1);
 
-        this.tplTableService.setStateBeforeSearch(vm.opts.id, {
+        this.tplTableService.setStateBeforeSearch(this.opts.id, {
           pageBeforeSearch: null,
           entriesPerPageCountBeforeSearch: null
         });
@@ -281,15 +283,15 @@ class TplTableCtrl {
     }
   }
 
-  saveTableStateBeforeDestroying() {
-    this.tplTableService.setStateBeforeDetail(vm.opts.id, {
-      actualPage: vm.opts.paginationModel - 1,
-      actualSearch: vm.opts.searchModel,
-      actualEntriesPerPageCount: vm.opts.entriesPerPageCount
+  private saveTableStateBeforeDestroying() {
+    this.tplTableService.setStateBeforeDetail(this.opts.id, {
+      actualPage: this.opts.paginationModel - 1,
+      actualSearch: this.opts.searchModel,
+      actualEntriesPerPageCount: this.opts.entriesPerPageCount
     });
   }
 
-  restoreTableStateBeforeDestroying() {
+  private restoreTableStateBeforeDestroying(): boolean {
     const stateBeforeDetail = this.tplTableService.getStateBeforeDetail(this.opts.id);
     if (stateBeforeDetail) {
       const actualSearch = stateBeforeDetail.actualSearch || '';
@@ -307,7 +309,7 @@ class TplTableCtrl {
         this.setEntriesPerPageCount(actualEntriesPerPageCount);
       }
 
-      this.tplTableService.setStateBeforeDetail(vm.opts.id, {
+      this.tplTableService.setStateBeforeDetail(this.opts.id, {
         actualPage: null,
         actualSearch: null,
         actualEntriesPerPageCount: null
@@ -318,15 +320,15 @@ class TplTableCtrl {
     return false;
   }
 
-  refreshPagination() {
-    let calculatedStart = vm.opts.paginationModel - ((MAX_PAGINATION_BUTTONS - 1) / 2);
+  private refreshPagination() {
+    let calculatedStart: number = vm.opts.paginationModel - ((MAX_PAGINATION_BUTTONS - 1) / 2);
     if (calculatedStart > 0) {
       vm.paginationStart = calculatedStart;
     } else {
       vm.paginationStart = 1;
     }
 
-    let calculatedEnd = vm.opts.paginationModel + ((MAX_PAGINATION_BUTTONS - 1) / 2);
+    let calculatedEnd: number = vm.opts.paginationModel + ((MAX_PAGINATION_BUTTONS - 1) / 2);
     if (calculatedEnd <= vm.opts.pageCount && (calculatedEnd - vm.paginationStart) === 5) {
       vm.paginationEnd = calculatedEnd;
     } else if (vm.paginationStart + (MAX_PAGINATION_BUTTONS - 1) <= vm.opts.pageCount) {
@@ -336,39 +338,37 @@ class TplTableCtrl {
     }
   }
 
-  resetEdit(event?) {
-    this.$timeout(() => {
+  private resetEdit(event?: Event) {
+    vm.$timeout(() => {
       vm.editableCell[0] = null;
       vm.editableCell[1] = null;
       if (event) {
         event.stopPropagation();
       }
-      this.$document.find('body').unbind('click', this.resetEdit);
+      vm.$document.find('body').unbind('click', vm.resetEdit);
     }, 0);
   }
 
-  // GETTER AND SETTER
-  setPageCount(pageCount) {
+  // SETTER
+  private setPageCount(pageCount: number) {
     vm.opts.pageCount = pageCount;
 
     vm.refreshPagination();
     vm.resetEdit();
   }
 
-  setColumns(columns) {
+  private setColumns(columns: TplTableColumn[]) {
     vm.opts.columns = columns;
 
     if (vm.opts.columns && vm.opts.columns.length) {
-      angular.forEach(vm.opts.columns, (column) => {
+      angular.forEach(vm.opts.columns, (column: TplTableColumn) => {
         if (column.content && column.content !== '') {
-
-          const contentString = column.content.toUpperCase();
-          if (this.POSSIBLE_CONTENT_TYPES.indexOf(contentString) < 0) {
+          const CONTENT_STRING: string = column.content.toUpperCase();
+          if (this.POSSIBLE_CONTENT_TYPES.indexOf(CONTENT_STRING) < 0) {
             column.content = this.POSSIBLE_CONTENT_TYPES[CONTENT_TYPE_TEXT];
           } else {
-            column.content = contentString;
+            column.content = CONTENT_STRING;
           }
-
         } else {
           column.content = this.POSSIBLE_CONTENT_TYPES[CONTENT_TYPE_TEXT];
         }
@@ -399,7 +399,7 @@ const TplTableComponent = {
         <select ng-model="tplTableCtrl.opts.entriesPerPageCount" ng-options="o as o for o in tplTableCtrl.POSSIBLE_RANGE_VALUES" ng-style="{'color': tplTableCtrl.opts.colors.secondaryColor}" ng-change="tplTableCtrl.entriesPerPageCount = '{{tplTableCtrl.opts.entriesPerPageCount}}'; tplTableCtrl.setEntriesPerPageCount(tplTableCtrl.opts.entriesPerPageCount, true, tplTableCtrl.entriesPerPageCount)" class="top-row__entry-count input-sm"></select>
       </div><span ng-if="tplTableCtrl.opts.entriesPerPageCount && tplTableCtrl.opts.showPagination" class="elementsperside__label">{{ 'TABLE_ENTRIES_PER_SITE' | translate }} {{dataOrder}}</span>
       <form ng-if="tplTableCtrl.opts.searchModel!==null" ng-submit="tplTableCtrl.setSearch(tplTableCtrl.searchInput, true)">
-        <input type="text" ng-model="tplTableCtrl.searchInput" placeholder="{{'TABLE_SEARCH'|translate}}" class="top-row__search"/>
+        <input type="text" ng-model="tplTableCtrl.searchInput" placeholder="{{tplTableCtrl.opts.searchPlaceholderText|translate}}" class="top-row__search"/>
       </form>
     </div>
     <table class="tpltable">
@@ -436,9 +436,9 @@ const TplTableComponent = {
     <div ng-if="tplTableCtrl.opts.paginationModel && tplTableCtrl.opts.showPagination" class="bottom-row">
       <div class="paginator">
         <div ng-class="{'inactive': tplTableCtrl.opts.paginationModel === 1}" ng-style="tplTableCtrl.opts.paginationModel !== 1 && !pageFirstHover && {'color': tplTableCtrl.opts.colors.secondaryColor} || tplTableCtrl.opts.paginationModel !== 1 && pageFirstHover && {'color': tplTableCtrl.opts.colors.secondaryColor, 'background-color': tplTableCtrl.opts.colors.primaryColor}" ng-disabled="tplTableCtrl.opts.paginationModel === 1" ng-click="tplTableCtrl.setPage(1, true)" ng-mouseenter="pageFirstHover=true" ng-mouseleave="pageFirstHover=false" class="paginator__first">{{'TABLE_PAGING_START'|translate}}</div>
-        <div ng-if="tplTableCtrl.paginationStart &gt; 1" ng-click="tplTableCtrl.skipPagesBackward()" ng-style="pageMid1Hover && {'color': tplTableCtrl.opts.colors.secondaryColor, 'background-color': tplTableCtrl.opts.colors.primaryColor} || {'color': tplTableCtrl.opts.colors.secondaryColor}" ng-mouseenter="pageMid1Hover=true" ng-mouseleave="pageMid1Hover=false" class="paginator__mid">...</div>
+        <div ng-if="tplTableCtrl.paginationStart > 1" ng-click="tplTableCtrl.skipPagesBackward()" ng-style="pageMid1Hover && {'color': tplTableCtrl.opts.colors.secondaryColor, 'background-color': tplTableCtrl.opts.colors.primaryColor} || {'color': tplTableCtrl.opts.colors.secondaryColor}" ng-mouseenter="pageMid1Hover=true" ng-mouseleave="pageMid1Hover=false" class="paginator__mid">...</div>
         <div ng-class="{'active': i === tplTableCtrl.opts.paginationModel}" ng-repeat="i in [tplTableCtrl.paginationStart, tplTableCtrl.paginationEnd] | toRange" ng-click="tplTableCtrl.setPage(i, true)" ng-style="i !== tplTableCtrl.opts.paginationModel && !pageMidHover && {'color': tplTableCtrl.opts.colors.secondaryColor} || i !== tplTableCtrl.opts.paginationModel && pageMidHover && {'background-color': tplTableCtrl.opts.colors.primaryColor, 'color': tplTableCtrl.opts.colors.secondaryColor} || {'color': tplTableCtrl.opts.colors.secondaryFontColor, 'background-color': tplTableCtrl.opts.colors.secondaryColor}" ng-mouseenter="pageMidHover=true" ng-mouseleave="pageMidHover=false" class="paginator__mid">{{i}}</div>
-        <div ng-if="tplTableCtrl.paginationEnd &lt; tplTableCtrl.opts.pageCount" ng-click="tplTableCtrl.skipPagesForward()" ng-style="pageMid2Hover && {'color': tplTableCtrl.opts.colors.secondaryColor, 'background-color': tplTableCtrl.opts.colors.primaryColor} || {'color': tplTableCtrl.opts.colors.secondaryColor}" ng-mouseenter="pageMid2Hover=true" ng-mouseleave="pageMid2Hover=false" class="paginator__mid">...</div>
+        <div ng-if="tplTableCtrl.paginationEnd < tplTableCtrl.opts.pageCount" ng-click="tplTableCtrl.skipPagesForward()" ng-style="pageMid2Hover && {'color': tplTableCtrl.opts.colors.secondaryColor, 'background-color': tplTableCtrl.opts.colors.primaryColor} || {'color': tplTableCtrl.opts.colors.secondaryColor}" ng-mouseenter="pageMid2Hover=true" ng-mouseleave="pageMid2Hover=false" class="paginator__mid">...</div>
         <div ng-class="{'inactive': tplTableCtrl.opts.paginationModel === tplTableCtrl.opts.pageCount}" ng-style="tplTableCtrl.opts.paginationModel !== tplTableCtrl.opts.pageCount && !pageLastHover && {'color': tplTableCtrl.opts.colors.secondaryColor} || tplTableCtrl.opts.paginationModel !== tplTableCtrl.opts.pageCount && pageLastHover && {'color': tplTableCtrl.opts.colors.secondaryColor, 'background-color': tplTableCtrl.opts.colors.primaryColor}" ng-disabled="tplTableCtrl.opts.paginationModel === tplTableCtrl.opts.pageCount" ng-click="tplTableCtrl.setPage(tplTableCtrl.opts.pageCount, true)" ng-mouseenter="pageLastHover=true" ng-mouseleave="pageLastHover=false" class="paginator__last">{{'TABLE_PAGING_END'|translate}}</div>
       </div>
     </div>

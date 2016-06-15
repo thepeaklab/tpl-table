@@ -1,4 +1,4 @@
-@import 'compass/utilities/general/clearfix';
+/* @import 'compass/utilities/general/clearfix'; */
 @import 'fonts';
 
 $font-color-darkgrey: #5c5c5c;
@@ -9,7 +9,6 @@ $color-grey-light: #f5f5f5;
 $table-color-grey: #fafafa;
 
 tpl-table {
-
   .icon {
     display: inline-block;
     vertical-align: baseline !important;
@@ -29,7 +28,7 @@ tpl-table {
         line-height: 28px;
         display: inline-block;
 
-        //TODO: not working properly
+        /* TODO: not working properly */
         vertical-align: middle;
         position: relative;
 
@@ -93,9 +92,13 @@ tpl-table {
 
       &__first {
         border-right: 1px solid $border-color-grey;
+
+        cursor: pointer;
+
         &.inactive {
           color: $border-color-grey;
           cursor: default;
+
           &:hover {
             background-color: #fff;
           }
@@ -104,6 +107,8 @@ tpl-table {
 
       &__mid {
         border-right: 1px solid $border-color-grey;
+
+        cursor: pointer;
 
         &.active {
           background-color: $color-blue-dark;
@@ -116,22 +121,22 @@ tpl-table {
       }
 
       &__last {
+        cursor: pointer;
+
         &.inactive {
           color: $border-color-grey;
           cursor: default;
+
           &:hover {
             background-color: #fff;
           }
         }
       }
-
     }
-
   }
 }
 
 .tpltable {
-
   margin: 10px 0;
 
   width: 100%;
@@ -161,7 +166,6 @@ tpl-table {
   }
 
   &__body {
-
     tr {
       border: 1px solid $border-color-grey;
       height: 36px;
@@ -276,19 +280,13 @@ tpl-table {
     background-color: #fff !important;
   }
 
-}
+  .cell {
+    &__image {
+      text-align: center;
 
-.cell {
-
-  &__image {
-    text-align: center;
-
-    img {
-      margin: 10px;
+      img {
+        margin: 10px;
+      }
     }
-
   }
-
 }
-
-

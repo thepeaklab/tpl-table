@@ -20,9 +20,9 @@ var DEFAULT_PARAMS = {
   module: {
     preLoaders: [
       {
-        test: /\.js$/,
+        test: /\.tsx?$/,
         exclude: /(bower_components|node_modules|\.spec\.)/, // exclude any and all files in the node_modules folder
-        loader: 'jshint'
+        loader: 'tslint'
       }
     ],
     /**
@@ -36,10 +36,10 @@ var DEFAULT_PARAMS = {
       // Reference: https://github.com/babel/babel-loader
       // Transpile .js files using babel-loader
       // Compiles ES6 and ES7 into ES5 code
-      test: /\.js$/,
-      loader: 'ng-annotate?add=true!babel?presets[]=es2015',
+      test: /\.tsx?$/,
+      loader: 'ng-annotate?add=true!awesome-typescript-loader',
       include: [
-        path.resolve(__dirname, 'lib')
+        path.resolve(__dirname, 'src')
       ]
     }, {
       test: /\.jade$/,

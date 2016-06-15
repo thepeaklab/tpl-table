@@ -1,14 +1,17 @@
+import { TplTableColumn, TplTableOptions, TplTableStateBeforeDetail, TplTableStateBeforeSearch } from './interfaces';
+
 export class TplTableService {
-  private tables: any;
+  private tables: { [id: string]: TplTableOptions };
 
   constructor() {
     this.tables = {};
   }
 
   // TODO: check what is it good for
-  addTable(newTableOpts) {
+  addTable(newTableOpts: TplTableOptions) {
     const oldTableOpts = angular.copy(this.tables[newTableOpts.id]);
 
+    // copy pageObj of oldTableOpts to newTableOpts if present
     newTableOpts.pageObj = {
       actualPage: oldTableOpts && oldTableOpts.pageObj ? oldTableOpts.pageObj.actualPage : null,
       actualSearch: oldTableOpts && oldTableOpts.pageObj ? oldTableOpts.pageObj.actualSearch : '',
@@ -19,27 +22,27 @@ export class TplTableService {
     this.tables[newTableOpts.id] = newTableOpts;
   }
 
-  setColumns(tableId, columns) {
+  setColumns(tableId: string, columns: TplTableColumn[]) {
     let table = this.tables[tableId];
     if (table) {
       table.setColumns(columns);
     }
   }
 
-  setPageCount(tableId, pageCount) {
+  setPageCount(tableId: string, pageCount: number) {
     let table = this.tables[tableId];
     if (table) {
       table.setPageCount(pageCount);
     }
   }
 
-  setStateBeforeDetail(id, state) {
+  setStateBeforeDetail(id: string, state: TplTableStateBeforeDetail) {
     this.tables[id].pageObj.actualPage = state.actualPage;
     this.tables[id].pageObj.actualSearch = state.actualSearch;
     this.tables[id].pageObj.actualEntriesPerPageCount = state.actualEntriesPerPageCount;
   }
 
-  getStateBeforeDetail(id) {
+  getStateBeforeDetail(id: string): TplTableStateBeforeDetail {
     if (!id || !this.tables[id]) {
       return null;
     }
@@ -50,12 +53,12 @@ export class TplTableService {
     };
   }
 
-  setStateBeforeSearch(id, stateBeforeSearch) {
+  setStateBeforeSearch(id: string, stateBeforeSearch: TplTableStateBeforeSearch) {
     this.tables[id].pageObj.pageBeforeSearch = stateBeforeSearch.pageBeforeSearch;
     this.tables[id].pageObj.entriesPerPageCountBeforeSearch = stateBeforeSearch.entriesPerPageCountBeforeSearch;
   }
 
-  getStateBeforeSearch(id) {
+  getStateBeforeSearch(id: string): TplTableStateBeforeSearch {
     if (!id || !this.tables[id]) {
       return null;
     }
