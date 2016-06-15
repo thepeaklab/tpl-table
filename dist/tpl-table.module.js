@@ -16,7 +16,7 @@ var TplTableModule = angular
     'tpl.scope-listener-manager',
     TranslateModule,
     /* own */
-    loading_points_1.LoadingPointsModule
+    loading_points_1.LoadingPointsModule.name
 ])
     .filter('checkmark', tpl_table_checkmark_filter_1.checkmarkFilter)
     .filter('toRange', tpl_table_to_range_filter_1.toRangeFilter)
