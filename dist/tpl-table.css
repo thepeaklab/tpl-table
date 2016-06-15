@@ -186,6 +186,8 @@ loadingpoints div#rect1 {
 .tbl-iconfont {
   display: inline-block;
   vertical-align: super;
+
+  cursor: pointer;
 }
 
 .tbl-iconfont:before {
