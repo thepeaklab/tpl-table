@@ -71,6 +71,43 @@ declare namespace tpl.table {
     getStateBeforeSearch(id: string): TplTableStateBeforeSearch;
     setStateBeforeSearch(id: string, stateBeforeSearch: TplTableStateBeforeSearch);
   }
+
+  interface TplTablePageChangeModel {
+    model: { new: number, old: number };
+  }
+
+  interface TplTablePageSizeChangeModel {
+    model: { new: number, old: number };
+  }
+
+  interface TplTableSearchChangeModel {
+    model: { new: string, old: string };
+  }
+
+  class TplTableCtrl {
+    editableCell: number[];
+    entriesPerPageCount: number;
+    onPageChange: (TplTablePageChangeModel) => {};
+    onPageSizeChange: (TplTablePageSizeChangeModel) => {};
+    onSearchChange: (TplTableSearchChangeModel) => {};
+    opts: TplTableOptions;
+    paginationStart: number;
+    paginationEnd: number;
+    POSSIBLE_CONTENT_TYPES: string[];
+    POSSIBLE_RANGE_VALUES: number[];
+    searchInput: string;
+    tempEditColumnCopy: any;
+    tplTableOptions: TplTableOptions;
+
+    toggleEditCell(event: Event, rowIndex: number, columnIndex: number);
+    saveEditedColumn();
+    getCellValue(row: TplTableRow, cell: string): any;
+    skipPagesForward();
+    skipPagesBackward();
+    setEntriesPerPageCount(entriesPerPageCount: number, callback?: boolean, old?: number);
+    setPage(page: number, callback?: boolean);
+    setSearch(search: string, callback?: boolean);
+  }
 }
 
 declare module "tpl-table" {
@@ -85,4 +122,8 @@ declare module "tpl-table" {
   export type TplTableStateBeforeDetail = tpl.table.TplTableStateBeforeDetail;
   export type TplTableStateBeforeSearch = tpl.table.TplTableStateBeforeSearch;
   export type TplTableService = tpl.table.TplTableService;
+  export type TplTablePageChangeModel = tpl.table.TplTablePageChangeModel;
+  export type TplTablePageSizeChangeModel = tpl.table.TplTablePageSizeChangeModel;
+  export type TplTableSearchChangeModel = tpl.table.TplTableSearchChangeModel;
+  export type TplTableCtrl = tpl.table.TplTableCtrl;
 }
