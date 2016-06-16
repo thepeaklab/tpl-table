@@ -1,6 +1,6 @@
 import * as angular from 'angular';
 
-import { TplTableColumn, TplTableOptions, TplTableRow, TplTableStateBeforeDetail, TplTableStateBeforeSearch } from './interfaces';
+import { TplTableColumn, TplTableOptions, TplTablePageChangeModel, TplTablePageSizeChangeModel, TplTableRow, TplTableSearchChangeModel, TplTableStateBeforeDetail, TplTableStateBeforeSearch } from './interfaces';
 import { TplTableService } from './tpl-table.service';
 
 const CONTENT_TYPE_TEXT: number = 0;
@@ -10,9 +10,9 @@ let vm: TplTableCtrl;
 class TplTableCtrl {
   editableCell: number[];
   entriesPerPageCount: number;
-  onPageChange: (model: {new: number, old: number}) => {};
-  onPageSizeChange: (model: { new: number, old: number }) => {};
-  onSearchChange: (model: { new: string, old: string }) => {};
+  onPageChange: (TplTablePageChangeModel) => {};
+  onPageSizeChange: (TplTablePageSizeChangeModel) => {};
+  onSearchChange: (TplTableSearchChangeModel) => {};
   opts: TplTableOptions;
   paginationStart: number;
   paginationEnd: number;
@@ -62,7 +62,7 @@ class TplTableCtrl {
   }
 
   // CONSTRUCTOR HELPER
-  checkBindings(): boolean {
+  private checkBindings(): boolean {
     this.opts = this.tplTableOptions;
 
     if (this.opts) {
