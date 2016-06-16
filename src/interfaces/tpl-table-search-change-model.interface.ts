@@ -1,3 +1,4 @@
 export interface TplTableSearchChangeModel {
- model: { new: string, old: string };
+  new: string;
+  old: string;
 }

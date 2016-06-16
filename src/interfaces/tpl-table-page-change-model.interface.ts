@@ -1,3 +1,4 @@
 export interface TplTablePageChangeModel {
-  model: { new: number, old: number };
+  new: number;
+  old: number;
 }

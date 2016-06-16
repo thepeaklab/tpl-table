@@ -73,15 +73,18 @@ declare namespace tpl.table {
   }
 
   interface TplTablePageChangeModel {
-    model: { new: number, old: number };
+    new: number;
+    old: number;
   }
 
   interface TplTablePageSizeChangeModel {
-    model: { new: number, old: number };
+    new: number;
+    old: number;
   }
 
   interface TplTableSearchChangeModel {
-    model: { new: string, old: string };
+    new: string;
+    old: string;
   }
 
   class TplTableCtrl {
