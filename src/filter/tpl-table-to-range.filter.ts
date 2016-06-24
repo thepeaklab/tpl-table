@@ -1,5 +1,10 @@
-export function toRangeFilter() {
-  return (input: any) => {
+import { Pipe, PipeTransform } from '@angular/core';
+
+@Pipe({
+  name: 'to-range'
+})
+export class ToRangePipe implements PipeTransform {
+  transform(input: any): any {
     let lowBound, highBound;
     if (input.length === 1) {
       lowBound = 0;
@@ -8,6 +13,7 @@ export function toRangeFilter() {
       lowBound = +input[0];
       highBound = +input[1];
     }
+
     let i = lowBound;
     let result: any[] = [];
     while (i <= highBound) {
@@ -15,5 +21,5 @@ export function toRangeFilter() {
       i++;
     }
     return result;
-  };
+  }
 }

@@ -58,8 +58,7 @@ var DEFAULT_PARAMS = {
 var entries = {
   vendorsCore: [
     'angular',
-    'angular-translate',
-    'tpl.scope-listener-manager/dist/tpl.scope-listener-manager'
+    'angular-translate'
   ]
 };
 
@@ -111,30 +110,13 @@ var PARAMS_PER_TARGET = {
      * Reference: http://webpack.github.io/docs/configuration.html#devtool
      * Type of sourcemap to use per build type
      */
-    devtool: 'source-map'
-    // plugins: [
-    //   // Reference: https://github.com/webpack/extract-text-webpack-plugin
-    //   // Extract css files
-    //   // Disabled when in test mode or not in build mode
-    //   new ExtractTextPlugin('styles/[hash].css')
-    // ],
-    // module: {
-    //   loaders: [{
-    //     // CSS LOADER
-    //     // Reference: https://github.com/webpack/css-loader
-    //     // Allow loading css through js
-    //     //
-    //     // Reference: https://github.com/postcss/postcss-loader
-    //     // Postprocess your css with PostCSS plugins
-    //     test: /\.css$/,
-    //     // Reference: https://github.com/webpack/extract-text-webpack-plugin
-    //     // Extract css files in production builds
-    //     //
-    //     // Reference: https://github.com/webpack/style-loader
-    //     // Use style-loader in development for hot-loading
-    //     loader: ExtractTextPlugin.extract('style', 'css?sourceMap!postcss')
-    //   }]
-    // }
+    devtool: 'source-map',
+    module: {
+      loaders: [{
+        test: /\.css$/,
+        loader: 'null'
+      }]
+    }
   }
 };
 

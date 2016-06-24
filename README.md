@@ -3,25 +3,36 @@ coming soon ...
 
 ## Dependencies
 - angular-translate
-- tpl-scope-listener-manager
 
 
 # TODO
-- Unit tests
-- Order by => should be handled out of the scope of this component
-- Entries per Page label style fix ?
+
+## Angular 2 Customization
+- Input and output implementation
+- Focus me directive implementation
+- Remove translate dependency
+
+### Build
+- CSS integration
+
+## Testing
+- Implement unit tests
+
+## Features
+- Order by => out of the scope of this component?
+- Automatic set loading => out of the scope of this component?
 - Reset search button
 - Do search button
-- Font option
 - Custom classes: for example custom select class
-- Automatic set loading
-- Catch null values
-- Column value filter
-
-
 - Pass all necessary data to events: page, entriesPerPage, search => not relevant for the component itself
 - How should loading work in component context? => not relevant for the component itself
 - How should pageCount work in component context? => not relevant for the component itself
+- Font option
+
+## Bug fixes
+- Entries per Page label style fix ?
+- Catch null values
+- Column value filter
 
 
 

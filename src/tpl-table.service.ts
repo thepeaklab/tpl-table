@@ -1,5 +1,8 @@
+import { Injectable } from '@angular/core';
+
 import { TplTableColumn, TplTableOptions, TplTableStateBeforeDetail, TplTableStateBeforeSearch } from './interfaces';
 
+@Injectable()
 export class TplTableService {
   private tables: { [id: string]: TplTableOptions };
 

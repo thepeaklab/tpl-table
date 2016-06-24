@@ -1,1 +1,1 @@
-export * from './loading-points.module';
+export * from './loading-points.component';
