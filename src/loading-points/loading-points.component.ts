@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
+  selector: 'loading-points',
   template: `
     <div id="rect3"></div>
     <div id="rect2"></div>

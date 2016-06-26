@@ -1,6 +1,10 @@
 # Setup
 coming soon ...
 
+# Prerequisites
+- @angular/core
+- @angular/platform-browser
+
 ## Dependencies
 - angular-translate
 
