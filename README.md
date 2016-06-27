@@ -2,11 +2,16 @@
 coming soon ...
 
 # Prerequisites
+- @angular/common
+- @angular/compiler
 - @angular/core
 - @angular/platform-browser
+- core.js
+- lodash
+- reflect-metadata
+- zone.js
 
-## Dependencies
-- angular-translate
+
 
 
 # TODO

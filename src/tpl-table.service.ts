@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import * as _ from 'lodash';
 
 import { TplTableColumn, TplTableOptions, TplTableStateBeforeDetail, TplTableStateBeforeSearch } from './interfaces';
 
@@ -12,7 +13,7 @@ export class TplTableService {
 
   // TODO: check what is it good for
   addTable(newTableOpts: TplTableOptions) {
-    const oldTableOpts = angular.copy(this.tables[newTableOpts.id]);
+    const oldTableOpts = _.cloneDeep(this.tables[newTableOpts.id]);
 
     // copy pageObj of oldTableOpts to newTableOpts if present
     newTableOpts.pageObj = {

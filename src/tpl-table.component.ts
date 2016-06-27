@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Inject, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { DOCUMENT } from '@angular/platform-browser';
+import * as _ from 'lodash';
 
 import { CheckmarkPipe, ToRangePipe } from './filter';
 import { FocusMeDirective } from './helper';
@@ -116,7 +117,7 @@ export class TplTableComponent implements OnDestroy, OnInit {
   ///////////
   ngOnInit() {
     if (this.checkBindings()) {
-      this.tplTableService.addTable(angular.copy(this.opts));
+      this.tplTableService.addTable(_.cloneDeep(this.opts));
 
       if (this.restoreTableStateBeforeDestroying() && this.onPageChange) {
         this.onPageChange({ new: this.opts.paginationModel, old: this.opts.paginationModel }); //TODO: find a better way
@@ -477,7 +478,7 @@ export class TplTableComponent implements OnDestroy, OnInit {
     vm.opts.columns = columns;
 
     if (vm.opts.columns && vm.opts.columns.length) {
-      angular.forEach(vm.opts.columns, (column: TplTableColumn) => {
+      vm.opts.columns.forEach((column: TplTableColumn) => {
         if (column.content && column.content !== '') {
           const CONTENT_STRING: string = column.content.toUpperCase();
           if (this.POSSIBLE_CONTENT_TYPES.indexOf(CONTENT_STRING) < 0) {
