@@ -1,9 +1,11 @@
+import { TplTableColumnContentType } from './tpl-table-column-content-type.interface';
+
 export interface TplTableColumn {
   ngIf?: () => boolean;
   name: string;
   editable?: boolean;
   unit?: any;
-  content: string; // TODO: enum
+  content: TplTableColumnContentType;
   translateColumn?: boolean;
   translateValues?: boolean;
   translateValuePrefix?: string;

@@ -1,6 +1,7 @@
 export * from './tpl-table-callback.interface';
 export * from './tpl-table-colors.interface';
 export * from './tpl-table-column.interface';
+export * from './tpl-table-column-content-type.interface';
 export * from './tpl-table-options.interface';
 export * from './tpl-table-page.interface';
 export * from './tpl-table-page-change-model.interface';

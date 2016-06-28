@@ -2,7 +2,7 @@ import './tpl-table.component.css';
 
 import { Component, OnInit } from '@angular/core';
 
-import { TplTableOptions } from './interfaces';
+import { TplTableColumnContentType, TplTableOptions } from './interfaces';
 import { TplTableComponent } from './tpl-table.component';
 
 @Component({
@@ -21,7 +21,7 @@ export class RootComponent implements OnInit {
       columns: [
         {
           name: 'firstname',
-          content: 'text'
+          content: TplTableColumnContentType.TEXT
         }
       ],
       entrieValuesOrder: ['firstname'],
@@ -29,7 +29,8 @@ export class RootComponent implements OnInit {
         {
           firstname: 'Max'
         }
-      ]
+      ],
+      pageCount: 10
     }
   }
 }

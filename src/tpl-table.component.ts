@@ -2,7 +2,7 @@ import { Component, EventEmitter, Inject, Input, OnDestroy, OnInit, Output } fro
 import * as _ from 'lodash';
 
 import { FocusMeDirective } from './helper';
-import { TplTableCallback, TplTableColumn, TplTableOptions, TplTablePageChangeModel, TplTablePageSizeChangeModel, TplTableRow, TplTableSearchChangeModel, TplTableStateBeforeDetail, TplTableStateBeforeSearch } from './interfaces';
+import { TplTableCallback, TplTableColumn, TplTableColumnContentType, TplTableOptions, TplTablePageChangeModel, TplTablePageSizeChangeModel, TplTableRow, TplTableSearchChangeModel, TplTableStateBeforeDetail, TplTableStateBeforeSearch } from './interfaces';
 import { LoadingPointsComponent } from './loading-points';
 import { CheckmarkPipe, ToRangePipe, TranslatePipe } from './pipes';
 import { TplTableService } from './tpl-table.service';
@@ -19,7 +19,9 @@ let vm: TplTableComponent;
       <div class="top-row">
         <div *ngIf="opts.entriesPerPageCount && opts.showPagination" class="elementsperside__select prettyselect">
           <select [ngModel]="opts.entriesPerPageCount" [ngStyle]="{'color': opts.colors.secondaryColor}" (ngModelChange)="entriesPerPageCount = opts.entriesPerPageCount; setEntriesPerPageCount(opts.entriesPerPageCount, true, entriesPerPageCount)" class="top-row__entry-count input-sm">
-            <option *ngFor="let range of POSSIBLE_RANGE_VALUES" *ngIf="range" [value]="range">range</option>
+            <template ngFor let-range [ngForOf]="POSSIBLE_RANGE_VALUES">
+              <option *ngIf="range" [value]="range">range</option>
+            </template>
           </select>
         </div><span *ngIf="opts.entriesPerPageCount && opts.showPagination" class="elementsperside__label">{{ 'TABLE_ENTRIES_PER_SITE' | translate }} {{dataOrder}}</span>
         <form *ngIf="opts.searchModel!==null" (ngSubmit)="setSearch(searchInput, true)">
@@ -29,10 +31,12 @@ let vm: TplTableComponent;
       <table class="tpltable">
         <thead class="tpltable__head">
           <tr>
-            <th *ngFor="let column of opts.columns" *ngIf="column || (!column?.ngIf || column.ngIf())">
-              <span *ngIf="!column?.translateColumn">{{column?.name}}</span>
-              <span *ngIf="column?.translateColumn">{{column?.name | translate}}</span>
-            </th>
+            <template ngFor let-column [ngForOf]="opts.columns">
+              <th *ngIf="column && (!column.ngIf || column.ngIf())">
+                <span *ngIf="!column.translateColumn">{{column.name}}</span>
+                <span *ngIf="column.translateColumn">{{column.name | translate}}</span>
+              </th>
+            </template>
             <th *ngIf="opts.showActionsColumn" class="edit">Aktionen</th>
           </tr>
         </thead>
@@ -42,35 +46,42 @@ let vm: TplTableComponent;
               <loadingpoints *ngIf="opts.loading"></loadingpoints>
             </td>
           </tr>
-          <tr *ngFor="let row of opts.entries; let rowIndex = index;" *ngIf="opts.entries && opts.entries.length && row">
-            <td *ngFor="let cell of opts.entrieValuesOrder; let cellIndex = index;" (mouseleave)="hover=false" (mouseenter)="hover=true" [ngStyle]="{'background-color': editableCell[0]===rowIndex && opts.colors.primaryColor, 'color': editableCell[0]===rowIndex && opts.colors.primaryFontColor}" [class.clickable]="onRowClick" [class.notclickable]="!onRowClick || editableCell[0]!==null" (click)="!onRowClick || editableCell[0]!==null || onRowClick({$index: rowIndex})" *ngIf="cell && !opts.columns[$index]?.ngIf || opts.columns[$index].ngIf()">
-              <div *ngIf="(editableCell[0]!==rowIndex || editableCell[1]!==$index || !opts.columns[$index].editable)">
-                <div *ngIf="opts.columns[$index].content === POSSIBLE_CONTENT_TYPES[0]" class="cell__text"><span *ngIf="!opts.columns[$index].translateValues">{{(cell.indexOf('.') !== -1 ? getCellValue(row, cell) : row[cell]) | checkmark}} {{columnValues[$index]}}</span><span *ngIf="opts.columns[$index].translateValues">{{((opts.columns[$index].translateValuePrefix ? opts.columns[$index].translateValuePrefix : '') + (cell.indexOf('.') !== -1 ? getCellValue(row, cell) : row[cell])) | translate}} {{columnValues[$index]}}</span></div>
-                <div *ngIf="opts.columns[$index].content === POSSIBLE_CONTENT_TYPES[1]" class="cell__image"><img [src]="row[cell]" [ngStyle]="{'max-width': opts.columns[$index].maxWidth ? opts.columns[$index].maxWidth : '250px', 'max-height': opts.columns[$index].maxHeight ? opts.columns[$index].maxHeight : '250px'}"/></div>
-              </div>
-              <!---<span *ngIf="editableCell[1]===$index && editableCell[0]===rowIndex && opts.columns[$index].editable">
-                <input type="text" [ngModel]="tempEditColumnCopy[cell]" [focus-me=]"editableCell[1]===$index && editableCell[0]===rowIndex" (click)="$event.stopPropagation()" (keyup)="$event.keyCode == 13 && saveEditedColumn()" class="edit-input"/>
-                {{columnValues[$index]}}
-              </span>
-              <div *ngIf="opts.columns[$index].editable && hover" (click)="toggleEditCell($event, rowIndex, $index)" [ngStyle]="{'background-color': hoverEdit && opts.colors.primaryColor, 'color': hoverEdit && opts.colors.primaryFontColor}" (mouseenter)="hoverEdit=true" (mouseleave)="hoverEdit=false" class="cell-controll edit">
-                <div *ngIf="hover" class="iconfont tbl-iconfont-pen"></div>
-              </div>
-              <div *ngIf="opts.columns[$index].editable && editableCell[0]===rowIndex && editableCell[1]===$index" [ngStyle]="{'background-color': opts.colors.secondaryColor, 'color': opts.colors.secondaryFontColor}" (click)="hover=false;saveEditedColumn()" class="cell-controll save">
-                <div class="iconfont iconfont-check"></div>
-              </div>--->
-            </td>
-            <td *ngIf="opts.showActionsColumn" class="edit"><span *ngIf="onAssign" (click)="!onAssign || editableCell[0]!==null || onAssign({$index: $index})" class="tbl-iconfont tbl-iconfont-export"></span><span *ngIf="onEdit" (click)="!onEdit || editableCell[0]!==null || onEdit({$index: $index})" class="tbl-iconfont tbl-iconfont-pen"></span><span *ngIf="onDelete" (click)="!onDelete || editableCell[0]!==null || onDelete({$index: $index})" class="tbl-iconfont tbl-iconfont-delete"></span><span *ngIf="onAdd" (click)="!onAdd || editableCell[0] !== null || onAdd({$index: $index})" class="icon icon-cal-button"></span><span *ngIf="onConfirm" (click)="!onConfirm || editableCell[0]!=null || onConfirm({$index: $index})" class="iconfont iconfont-check"></span>
-            </td>
-          </tr>
+          <template ngFor let-row [ngForOf]="opts.entries" let-rowindex="index">
+            <tr *ngIf="opts.entries && opts.entries.length && row">
+              <template ngFor let-cell [ngForOf]="opts.entrieValuesOrder" let-cellindex="index">
+                <td (mouseleave)="hover=false" (mouseenter)="hover=true" [ngStyle]="{'background-color': editableCell[0]===rowindex && opts.colors.primaryColor, 'color': editableCell[0]===rowindex && opts.colors.primaryFontColor}" [class.clickable]="onRowClick" [class.notclickable]="!onRowClick || editableCell[0]!==null" (click)="!onRowClick || editableCell[0]!==null || onRowClick({$index: rowindex})">
+                  <div *ngIf="cell && opts.columns && (!opts.columns[cellindex].ngIf || opts.columns[cellindex].ngIf())">
+                    <div *ngIf="(editableCell[0]!==rowindex || editableCell[1]!==cellindex || !opts.columns[cellindex].editable)">
+                      <div *ngIf="opts.columns[cellindex].content === POSSIBLE_CONTENT_TYPES[0]" class="cell__text"><span *ngIf="!opts.columns[cellindex].translateValues">{{(cell.indexOf('.') !== -1 ? getCellValue(row, cell) : row[cell]) | checkmark}}</span><span *ngIf="opts.columns[cellindex].translateValues">{{((opts.columns[cellindex].translateValuePrefix ? opts.columns[cellindex].translateValuePrefix : '') + (cell.indexOf('.') !== -1 ? getCellValue(row, cell) : row[cell])) | translate}}</span></div>
+                      <div *ngIf="opts.columns[cellindex].content === POSSIBLE_CONTENT_TYPES[1]" class="cell__image"><img [src]="row[cell]" [ngStyle]="{'max-width': opts.columns[cellindex].maxWidth ? opts.columns[cellindex].maxWidth : '250px', 'max-height': opts.columns[cellindex].maxHeight ? opts.columns[cellindex].maxHeight : '250px'}"/></div>
+                    </div>
+                    <!---<span *ngIf="editableCell[1]===cellindex && editableCell[0]===rowindex && opts.columns[cellindex].editable">
+                      <input type="text" [ngModel]="tempEditColumnCopy[cell]" [focus-me=]"editableCell[1]===cellindex && editableCell[0]===rowindex" (click)="$event.stopPropagation()" (keyup)="$event.keyCode == 13 && saveEditedColumn()" class="edit-input"/>
+                    </span>
+                    <div *ngIf="opts.columns[cellindex].editable && hover" (click)="toggleEditCell($event, rowindex, cellindex)" [ngStyle]="{'background-color': hoverEdit && opts.colors.primaryColor, 'color': hoverEdit && opts.colors.primaryFontColor}" (mouseenter)="hoverEdit=true" (mouseleave)="hoverEdit=false" class="cell-controll edit">
+                      <div *ngIf="hover" class="iconfont tbl-iconfont-pen"></div>
+                    </div>
+                    <div *ngIf="opts.columns[cellindex].editable && editableCell[0]===rowindex && editableCell[1]===cellindex" [ngStyle]="{'background-color': opts.colors.secondaryColor, 'color': opts.colors.secondaryFontColor}" (click)="hover=false;saveEditedColumn()" class="cell-controll save">
+                      <div class="iconfont iconfont-check"></div>
+                    </div>--->
+                  </div>
+                </td>
+              </template>
+              <td *ngIf="opts.showActionsColumn" class="edit"><span *ngIf="onAssign" (click)="!onAssign || editableCell[0]!==null || onAssign({$index: rowindex})" class="tbl-iconfont tbl-iconfont-export"></span><span *ngIf="onEdit" (click)="!onEdit || editableCell[0]!==null || onEdit({$index: rowindex})" class="tbl-iconfont tbl-iconfont-pen"></span><span *ngIf="onDelete" (click)="!onDelete || editableCell[0]!==null || onDelete({$index: rowindex})" class="tbl-iconfont tbl-iconfont-delete"></span><span *ngIf="onAdd" (click)="!onAdd || editableCell[0] !== null || onAdd({$index: rowindex})" class="icon icon-cal-button"></span><span *ngIf="onConfirm" (click)="!onConfirm || editableCell[0]!=null || onConfirm({$index: rowindex})" class="iconfont iconfont-check"></span>
+              </td>
+            </tr>
+          </template>
         </tbody>
       </table>
       <div *ngIf="opts.paginationModel && opts.showPagination" class="bottom-row">
         <div class="paginator">
-          <div [class.inactive]="opts.paginationModel === 1" [ngStyle]="handleFirstPaginatorStyles()" [attr.disabled]="opts.paginationModel === 1" (click)="setPage(1, true)" (mouseenter)="pageFirstHover=true" (mouseleave)="pageFirstHover=false" class="paginator__first">{{'TABLE_PAGING_START'|translate}}</div>
+          <div *ngIf="paginationStart < paginationEnd" [class.inactive]="opts.paginationModel === 1" [ngStyle]="handleFirstPaginatorStyles()" [attr.disabled]="opts.paginationModel === 1" (click)="setPage(1, true)" (mouseenter)="pageFirstHover=true" (mouseleave)="pageFirstHover=false" class="paginator__first">{{'TABLE_PAGING_START'|translate}}</div>
           <div *ngIf="paginationStart > 1" (click)="skipPagesBackward()" [ngStyle]="handleMidPaginatorStyles()" (mouseenter)="pageMid1Hover=true" (mouseleave)="pageMid1Hover=false" class="paginator__mid">...</div>
-          <div [class.active]="i === opts.paginationModel" *ngFor="let i of [paginationStart, paginationEnd] | toRange" *ngIf="i" (click)="setPage(i, true)" [ngStyle]="handleMid2PaginatorStyles(i)" (mouseenter)="pageMidHover=true" (mouseleave)="pageMidHover=false" class="paginator__mid">{{i}}</div>
+          <template ngFor let-i [ngForOf]="[paginationStart, paginationEnd] | toRange">
+            <div *ngIf="i" [class.active]="i === opts.paginationModel" (click)="setPage(i, true)" [ngStyle]="handleMid2PaginatorStyles(i)" (mouseenter)="pageMidHover=true" (mouseleave)="pageMidHover=false" class="paginator__mid">{{i}}</div>
+          </template>
           <div *ngIf="paginationEnd < opts.pageCount" (click)="skipPagesForward()" [ngStyle]="handleMid3PaginatorStyles()" (mouseenter)="pageMid2Hover=true" (mouseleave)="pageMid2Hover=false" class="paginator__mid">...</div>
-          <div [class.inactive]="opts.paginationModel === opts.pageCount" [ngStyle]="handleMid4PaginatorStyles()" [attr.disabled]="opts.paginationModel === opts.pageCount" (click)="setPage(opts.pageCount, true)" (mouseenter)="pageLastHover=true" (mouseleave)="pageLastHover=false" class="paginator__last">{{'TABLE_PAGING_END'|translate}}</div>
+          <div *ngIf="paginationStart < paginationEnd" [class.inactive]="opts.paginationModel === opts.pageCount" [ngStyle]="handleMid4PaginatorStyles()" [attr.disabled]="opts.paginationModel === opts.pageCount" (click)="setPage(opts.pageCount, true)" (mouseenter)="pageLastHover=true" (mouseleave)="pageLastHover=false" class="paginator__last">{{'TABLE_PAGING_END'|translate}}</div>
         </div>
       </div>
     </div>
@@ -103,7 +114,7 @@ export class TplTableComponent implements OnDestroy, OnInit {
   pageMid2Hover: boolean;
   paginationStart: number;
   paginationEnd: number;
-  POSSIBLE_CONTENT_TYPES: string[];
+  POSSIBLE_CONTENT_TYPES: TplTableColumnContentType[];
   POSSIBLE_RANGE_VALUES: number[];
   searchInput: string;
   tempEditColumnCopy: any;
@@ -121,7 +132,7 @@ export class TplTableComponent implements OnDestroy, OnInit {
     // this.$log = console.log; // TODO: check if there is a better solution, maybe a native angular service; otherwise write your own service
 
     this.editableCell = [null, null];
-    this.POSSIBLE_CONTENT_TYPES = ['TEXT', 'IMAGE'];
+    this.POSSIBLE_CONTENT_TYPES = [TplTableColumnContentType.TEXT, TplTableColumnContentType.IMAGE];
     this.POSSIBLE_RANGE_VALUES = [10, 25, 50, 100];
   }
 
@@ -132,7 +143,7 @@ export class TplTableComponent implements OnDestroy, OnInit {
     if (this.checkBindings()) {
       this.tplTableService.addTable(_.cloneDeep(this.opts));
 
-      if (this.restoreTableStateBeforeDestroying() && this.onPageChange) {
+      if (this.restoreTableStateBeforeDestroying() && this.pageChange) {
         this.onPageChange({ new: this.opts.paginationModel, old: this.opts.paginationModel }); //TODO: find a better way
       }
 
@@ -322,7 +333,7 @@ export class TplTableComponent implements OnDestroy, OnInit {
 
     this.handleEntriesPerPageCount(this.opts.entriesPerPageCount, oldEntriesPerPageCount);
 
-    if (callback && this.onPageSizeChange && this.opts.entriesPerPageCount !== oldEntriesPerPageCount) {
+    if (callback && this.pageSizeChange && this.opts.entriesPerPageCount !== oldEntriesPerPageCount) {
       this.onPageSizeChange({new: this.opts.entriesPerPageCount, old: oldEntriesPerPageCount});
     }
   }
@@ -334,7 +345,7 @@ export class TplTableComponent implements OnDestroy, OnInit {
     this.refreshPagination();
     this.resetEdit();
 
-    if (callback && this.onPageChange && this.opts.paginationModel !== old) {
+    if (callback && this.pageChange && this.opts.paginationModel !== old) {
       this.onPageChange({new: this.opts.paginationModel, old: old});
     }
   }
@@ -353,7 +364,7 @@ export class TplTableComponent implements OnDestroy, OnInit {
 
     this.handleSearchChange(this.opts.searchModel, old);
 
-    if (callback && this.onSearchChange && this.opts.searchModel !== old) {
+    if (callback && this.searchChange && this.opts.searchModel !== old) {
       this.onSearchChange({new: this.opts.searchModel, old: old});
     }
   }
@@ -373,10 +384,10 @@ export class TplTableComponent implements OnDestroy, OnInit {
       this.opts.setColumns = this.setColumns;
 
       this.opts.id = this.opts.id || 'tpltable';
-      this.opts.loading = this.opts.loading || false;
+      this.opts.loading = this.opts.loading !== null && this.opts.loading !== undefined ? this.opts.loading : false;
       this.opts.searchPlaceholderText = this.opts.searchPlaceholderText || 'TABLE_SEARCH';
       this.opts.noDataAvailableText = this.opts.noDataAvailableText || 'No Data Available ...';
-      this.opts.showActionsColumn = this.opts.showActionsColumn || false;
+      this.opts.showActionsColumn = this.opts.showActionsColumn !== null && this.opts.showActionsColumn !== undefined ? this.opts.showActionsColumn : false;
       this.opts.searchModel = this.opts.searchModel !== undefined ? this.opts.searchModel : null;
       this.opts.showPagination = this.opts.showPagination !== null && this.opts.showPagination !== undefined ? this.opts.showPagination : true;
       this.opts.paginationModel = this.opts.paginationModel || null;
@@ -390,25 +401,25 @@ export class TplTableComponent implements OnDestroy, OnInit {
           name: '',
           editable: true,
           unit: null,
-          content: this.POSSIBLE_CONTENT_TYPES[CONTENT_TYPE_TEXT]
+          content: TplTableColumnContentType.TEXT
         },
         {
           name: '',
           editable: true,
           unit: null,
-          content: this.POSSIBLE_CONTENT_TYPES[CONTENT_TYPE_TEXT]
+          content: TplTableColumnContentType.TEXT
         },
         {
           name: '',
           editable: true,
           unit: null,
-          content: this.POSSIBLE_CONTENT_TYPES[CONTENT_TYPE_TEXT]
+          content: TplTableColumnContentType.TEXT
         },
         {
           name: '',
           editable: true,
           unit: null,
-          content: this.POSSIBLE_CONTENT_TYPES[CONTENT_TYPE_TEXT]
+          content: TplTableColumnContentType.TEXT
         }
       ];
 
@@ -550,15 +561,15 @@ export class TplTableComponent implements OnDestroy, OnInit {
 
     if (vm.opts.columns && vm.opts.columns.length) {
       vm.opts.columns.forEach((column: TplTableColumn) => {
-        if (column.content && column.content !== '') {
-          const CONTENT_STRING: string = column.content.toUpperCase();
-          if (this.POSSIBLE_CONTENT_TYPES.indexOf(CONTENT_STRING) < 0) {
-            column.content = this.POSSIBLE_CONTENT_TYPES[CONTENT_TYPE_TEXT];
+        if (column.content) {
+          const CONTENT_TYPE: TplTableColumnContentType = column.content;
+          if (this.POSSIBLE_CONTENT_TYPES.indexOf(CONTENT_TYPE) < 0) {
+            column.content = TplTableColumnContentType.TEXT;
           } else {
-            column.content = CONTENT_STRING;
+            column.content = CONTENT_TYPE;
           }
         } else {
-          column.content = this.POSSIBLE_CONTENT_TYPES[CONTENT_TYPE_TEXT];
+          column.content = TplTableColumnContentType.TEXT;
         }
       });
     }
