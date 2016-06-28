@@ -1,7 +1,7 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'to-range'
+  name: 'toRange'
 })
 export class ToRangePipe implements PipeTransform {
   transform(input: any): any {

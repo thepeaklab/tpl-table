@@ -1,0 +1,7 @@
+{
+  "baseHref": "/examples/angular2/",
+  "baseUrl": "http://customer.thepeaklab.com/examples/angular2/",
+  "title": "TPL table",
+  "appLoadingText": "Loading...",
+  "debug": false
+}

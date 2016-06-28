@@ -6,6 +6,7 @@ coming soon ...
 - @angular/compiler
 - @angular/core
 - @angular/platform-browser
+- @angular/platform-browser-dynamic
 - core.js
 - lodash
 - reflect-metadata

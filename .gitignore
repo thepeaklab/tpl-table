@@ -1,5 +1,4 @@
-.tmp
-bower_components
+src/assets/*
 dist
 node_modules
 typings
