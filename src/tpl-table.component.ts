@@ -49,7 +49,7 @@ let vm: TplTableComponent;
           <template ngFor let-row [ngForOf]="opts.entries" let-rowindex="index">
             <tr *ngIf="opts.entries && opts.entries.length && row">
               <template ngFor let-cell [ngForOf]="opts.entrieValuesOrder" let-cellindex="index">
-                <td (mouseleave)="hover=false" (mouseenter)="hover=true" [ngStyle]="{'background-color': editableCell[0]===rowindex && opts.colors.primaryColor, 'color': editableCell[0]===rowindex && opts.colors.primaryFontColor}" [class.clickable]="onRowClick" [class.notclickable]="!onRowClick || editableCell[0]!==null" (click)="!onRowClick || editableCell[0]!==null || onRowClick({$index: rowindex})">
+                <td (mouseleave)="hover=false" (mouseenter)="hover=true" [ngStyle]="{'background-color': editableCell[0]===rowindex && opts.colors.primaryColor, 'color': editableCell[0]===rowindex && opts.colors.primaryFontColor}" [class.clickable]="rowClick" [class.notclickable]="!rowClick || editableCell[0]!==null" (click)="!rowClick || editableCell[0]!==null || onRowClick({$index: rowindex})">
                   <div *ngIf="cell && opts.columns && (!opts.columns[cellindex].ngIf || opts.columns[cellindex].ngIf())">
                     <div *ngIf="(editableCell[0]!==rowindex || editableCell[1]!==cellindex || !opts.columns[cellindex].editable)">
                       <div *ngIf="opts.columns[cellindex].content === POSSIBLE_CONTENT_TYPES[0]" class="cell__text"><span *ngIf="!opts.columns[cellindex].translateValues">{{(cell.indexOf('.') !== -1 ? getCellValue(row, cell) : row[cell]) | checkmark}}</span><span *ngIf="opts.columns[cellindex].translateValues">{{((opts.columns[cellindex].translateValuePrefix ? opts.columns[cellindex].translateValuePrefix : '') + (cell.indexOf('.') !== -1 ? getCellValue(row, cell) : row[cell])) | translate}}</span></div>
@@ -67,13 +67,13 @@ let vm: TplTableComponent;
                   </div>
                 </td>
               </template>
-              <td *ngIf="opts.showActionsColumn" class="edit"><span *ngIf="onAssign" (click)="!onAssign || editableCell[0]!==null || onAssign({$index: rowindex})" class="tbl-iconfont tbl-iconfont-export"></span><span *ngIf="onEdit" (click)="!onEdit || editableCell[0]!==null || onEdit({$index: rowindex})" class="tbl-iconfont tbl-iconfont-pen"></span><span *ngIf="onDelete" (click)="!onDelete || editableCell[0]!==null || onDelete({$index: rowindex})" class="tbl-iconfont tbl-iconfont-delete"></span><span *ngIf="onAdd" (click)="!onAdd || editableCell[0] !== null || onAdd({$index: rowindex})" class="icon icon-cal-button"></span><span *ngIf="onConfirm" (click)="!onConfirm || editableCell[0]!=null || onConfirm({$index: rowindex})" class="iconfont iconfont-check"></span>
+              <td *ngIf="opts.showActionsColumn" class="edit"><span *ngIf="assign" (click)="!assign || editableCell[0]!==null || onAssign({$index: rowindex})" class="tbl-iconfont tbl-iconfont-export"></span><span *ngIf="edit" (click)="!edit || editableCell[0]!==null || onEdit({$index: rowindex})" class="tbl-iconfont tbl-iconfont-pen"></span><span *ngIf="delete" (click)="!delete || editableCell[0]!==null || onDelete({$index: rowindex})" class="tbl-iconfont tbl-iconfont-delete"></span><span *ngIf="add" (click)="!add || editableCell[0] !== null || onAdd({$index: rowindex})" class="icon icon-cal-button"></span><span *ngIf="confirm" (click)="!confirm || editableCell[0]!=null || onConfirm({$index: rowindex})" class="iconfont iconfont-check"></span>
               </td>
             </tr>
           </template>
         </tbody>
       </table>
-      <div *ngIf="opts.paginationModel && opts.showPagination" class="bottom-row">
+      <div *ngIf="opts.showPagination && opts.paginationModel && paginationStart !== 1 && paginationEnd !== 1" class="bottom-row">
         <div class="paginator">
           <div *ngIf="paginationStart < paginationEnd" [class.inactive]="opts.paginationModel === 1" [ngStyle]="handleFirstPaginatorStyles()" [attr.disabled]="opts.paginationModel === 1" (click)="setPage(1, true)" (mouseenter)="pageFirstHover=true" (mouseleave)="pageFirstHover=false" class="paginator__first">{{'TABLE_PAGING_START'|translate}}</div>
           <div *ngIf="paginationStart > 1" (click)="skipPagesBackward()" [ngStyle]="handleMidPaginatorStyles()" (mouseenter)="pageMid1Hover=true" (mouseleave)="pageMid1Hover=false" class="paginator__mid">...</div>
