@@ -1,8 +1,9 @@
 import './tpl-table.component.css';
 
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { Subscription } from 'rxjs/Rx';
 
-import { TplTableColumnContentType, TplTableOptions } from './interfaces';
+import { TplTableCallback, TplTableColumnContentType, TplTableOptions } from './interfaces';
 import { TplTableComponent } from './tpl-table.component';
 
 @Component({
@@ -12,8 +13,14 @@ import { TplTableComponent } from './tpl-table.component';
   `,
   directives: [TplTableComponent]
 })
-export class RootComponent implements OnInit {
+export class RootComponent implements AfterViewInit, OnInit {
   options: TplTableOptions;
+
+  private deleteSubscription: Subscription;
+  private rowClickSubscription: Subscription;
+
+  @ViewChild(TplTableComponent)
+  private tplTableComponent: TplTableComponent;
 
   ngOnInit() {
     this.options = {
@@ -30,7 +37,24 @@ export class RootComponent implements OnInit {
           firstname: 'Max'
         }
       ],
-      pageCount: 10
-    }
+      showActionsColumn: true
+    };
+  }
+
+  ngAfterViewInit() {
+    setTimeout(() => {
+
+      this.rowClickSubscription = this.tplTableComponent
+        .rowClick$
+        .subscribe(data => {
+          console.log('row clicked', data.$index);
+        });
+
+      this.deleteSubscription = this.tplTableComponent
+        .delete$
+        .subscribe(data => {
+          console.log('delete row', data.$index);
+        });
+    }, 0);
   }
 }

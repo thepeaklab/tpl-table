@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Inject, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import * as _ from 'lodash';
+import { Subject } from 'rxjs/Rx';
 
 import { FocusMeDirective } from './helper';
 import { TplTableCallback, TplTableColumn, TplTableColumnContentType, TplTableOptions, TplTablePageChangeModel, TplTablePageSizeChangeModel, TplTableRow, TplTableSearchChangeModel, TplTableStateBeforeDetail, TplTableStateBeforeSearch } from './interfaces';
@@ -7,7 +8,6 @@ import { LoadingPointsComponent } from './loading-points';
 import { CheckmarkPipe, ToRangePipe, TranslatePipe } from './pipes';
 import { TplTableService } from './tpl-table.service';
 
-const CONTENT_TYPE_TEXT: number = 0;
 const MAX_PAGINATION_BUTTONS: number = 5;
 
 let vm: TplTableComponent;
@@ -49,7 +49,7 @@ let vm: TplTableComponent;
           <template ngFor let-row [ngForOf]="opts.entries" let-rowindex="index">
             <tr *ngIf="opts.entries && opts.entries.length && row">
               <template ngFor let-cell [ngForOf]="opts.entrieValuesOrder" let-cellindex="index">
-                <td (mouseleave)="hover=false" (mouseenter)="hover=true" [ngStyle]="{'background-color': editableCell[0]===rowindex && opts.colors.primaryColor, 'color': editableCell[0]===rowindex && opts.colors.primaryFontColor}" [class.clickable]="rowClick" [class.notclickable]="!rowClick || editableCell[0]!==null" (click)="!rowClick || editableCell[0]!==null || onRowClick({$index: rowindex})">
+                <td (mouseleave)="hover=false" (mouseenter)="hover=true" [ngStyle]="{'background-color': editableCell[0]===rowindex && opts.colors.primaryColor, 'color': editableCell[0]===rowindex && opts.colors.primaryFontColor}" [class.clickable]="rowClick$?.observers?.length" [class.notclickable]="!rowClick$?.observers?.length || editableCell[0]!==null" (click)="!rowClick$?.observers?.length || editableCell[0]!==null || onRowClick({$index: rowindex})">
                   <div *ngIf="cell && opts.columns && (!opts.columns[cellindex].ngIf || opts.columns[cellindex].ngIf())">
                     <div *ngIf="(editableCell[0]!==rowindex || editableCell[1]!==cellindex || !opts.columns[cellindex].editable)">
                       <div *ngIf="opts.columns[cellindex].content === POSSIBLE_CONTENT_TYPES[0]" class="cell__text"><span *ngIf="!opts.columns[cellindex].translateValues">{{(cell.indexOf('.') !== -1 ? getCellValue(row, cell) : row[cell]) | checkmark}}</span><span *ngIf="opts.columns[cellindex].translateValues">{{((opts.columns[cellindex].translateValuePrefix ? opts.columns[cellindex].translateValuePrefix : '') + (cell.indexOf('.') !== -1 ? getCellValue(row, cell) : row[cell])) | translate}}</span></div>
@@ -67,7 +67,7 @@ let vm: TplTableComponent;
                   </div>
                 </td>
               </template>
-              <td *ngIf="opts.showActionsColumn" class="edit"><span *ngIf="assign" (click)="!assign || editableCell[0]!==null || onAssign({$index: rowindex})" class="tbl-iconfont tbl-iconfont-export"></span><span *ngIf="edit" (click)="!edit || editableCell[0]!==null || onEdit({$index: rowindex})" class="tbl-iconfont tbl-iconfont-pen"></span><span *ngIf="delete" (click)="!delete || editableCell[0]!==null || onDelete({$index: rowindex})" class="tbl-iconfont tbl-iconfont-delete"></span><span *ngIf="add" (click)="!add || editableCell[0] !== null || onAdd({$index: rowindex})" class="icon icon-cal-button"></span><span *ngIf="confirm" (click)="!confirm || editableCell[0]!=null || onConfirm({$index: rowindex})" class="iconfont iconfont-check"></span>
+              <td *ngIf="opts.showActionsColumn" class="edit"><span *ngIf="assign$?.observers?.length" (click)="!assign$?.observers?.length || editableCell[0]!==null || onAssign({$index: rowindex})" class="tbl-iconfont tbl-iconfont-export"></span><span *ngIf="edit$?.observers?.length" (click)="!edit$?.observers?.length || editableCell[0]!==null || onEdit({$index: rowindex})" class="tbl-iconfont tbl-iconfont-pen"></span><span *ngIf="delete$?.observers?.length" (click)="!delete$?.observers?.length || editableCell[0]!==null || onDelete({$index: rowindex})" class="tbl-iconfont tbl-iconfont-delete"></span><span *ngIf="add$?.observers?.length" (click)="!add$?.observers?.length || editableCell[0] !== null || onAdd({$index: rowindex})" class="icon icon-cal-button"></span><span *ngIf="confirm$?.observers?.length" (click)="!confirm$?.observers?.length || editableCell[0]!=null || onConfirm({$index: rowindex})" class="iconfont iconfont-check"></span>
               </td>
             </tr>
           </template>
@@ -96,15 +96,48 @@ export class TplTableComponent implements OnDestroy, OnInit {
   hover: boolean;
   hoverEdit: boolean;
 
-  @Output() add = new EventEmitter<TplTableCallback>();
-  @Output() assign = new EventEmitter<TplTableCallback>();
-  @Output() confirm = new EventEmitter<TplTableCallback>();
-  @Output() delete = new EventEmitter<TplTableCallback>();
-  @Output() edit = new EventEmitter<TplTableCallback>();
+
+  ////////////
+  // INPUTS //
+  ////////////
+  @Input() tplTableOptions: TplTableOptions;
+  ////////////////
+  // END INPUTS //
+  ////////////////
+
+
+  /////////////
+  // OUTPUTS //
+  /////////////
   @Output() pageChange = new EventEmitter<TplTablePageChangeModel>();
   @Output() pageSizeChange = new EventEmitter<TplTablePageSizeChangeModel>();
-  @Output() rowClick = new EventEmitter<TplTableCallback>();
   @Output() searchChange = new EventEmitter<TplTableSearchChangeModel>();
+  /////////////////
+  // END OUTPUTS //
+  /////////////////
+
+
+  /////////////////
+  // OBSERVABLES //
+  /////////////////
+
+  ///////////////////////////////
+  // ACTIONS IN ACTIONS COLUMN //
+  ///////////////////////////////
+  add$: Subject<TplTableCallback>;
+  assign$: Subject<TplTableCallback>;
+  confirm$: Subject<TplTableCallback>;
+  delete$: Subject<TplTableCallback>;
+  edit$: Subject<TplTableCallback>;
+  ///////////////////////////////////
+  // END ACTIONS IN ACTIONS COLUMN //
+  ///////////////////////////////////
+
+  rowClick$: Subject<TplTableCallback>;
+  /////////////////////
+  // END OBSERVABLES //
+  /////////////////////
+
 
   opts: TplTableOptions;
   pageFirstHover: boolean;
@@ -118,8 +151,6 @@ export class TplTableComponent implements OnDestroy, OnInit {
   POSSIBLE_RANGE_VALUES: number[];
   searchInput: string;
   tempEditColumnCopy: any;
-
-  @Input() tplTableOptions: TplTableOptions;
 
   // private $log: any;
 
@@ -168,23 +199,23 @@ export class TplTableComponent implements OnDestroy, OnInit {
   // OUTPUTS //
   /////////////
   onAdd(index: TplTableCallback) {
-    this.add.next(index);
+    this.add$.next(index);
   }
 
   onAssign(index: TplTableCallback) {
-    this.assign.next(index);
+    this.assign$.next(index);
   }
 
   onConfirm(index: TplTableCallback) {
-    this.confirm.next(index);
+    this.confirm$.next(index);
   }
 
   onDelete(index: TplTableCallback) {
-    this.delete.next(index);
+    this.delete$.next(index);
   }
 
   onEdit(index: TplTableCallback) {
-    this.edit.next(index);
+    this.edit$.next(index);
   }
 
   onPageChange(model: TplTablePageChangeModel) {
@@ -196,7 +227,7 @@ export class TplTableComponent implements OnDestroy, OnInit {
   }
 
   onRowClick(index: TplTableCallback) {
-    this.rowClick.next(index);
+    this.rowClick$.next(index);
   }
 
   onSearchChange(model: TplTableSearchChangeModel) {
@@ -259,7 +290,6 @@ export class TplTableComponent implements OnDestroy, OnInit {
 
     return {};
   }
-
   ////////////////
   // END STYLES //
   ////////////////
@@ -383,45 +413,20 @@ export class TplTableComponent implements OnDestroy, OnInit {
       this.opts.setPageCount = this.setPageCount;
       this.opts.setColumns = this.setColumns;
 
-      this.opts.id = this.opts.id || 'tpltable';
+      this.opts.id = this.opts.id;
       this.opts.loading = this.opts.loading !== null && this.opts.loading !== undefined ? this.opts.loading : false;
       this.opts.searchPlaceholderText = this.opts.searchPlaceholderText || 'TABLE_SEARCH';
       this.opts.noDataAvailableText = this.opts.noDataAvailableText || 'No Data Available ...';
       this.opts.showActionsColumn = this.opts.showActionsColumn !== null && this.opts.showActionsColumn !== undefined ? this.opts.showActionsColumn : false;
-      this.opts.searchModel = this.opts.searchModel !== undefined ? this.opts.searchModel : null;
+      this.opts.searchModel = this.opts.searchModel !== null && this.opts.searchModel !== undefined ? this.opts.searchModel : null;
       this.opts.showPagination = this.opts.showPagination !== null && this.opts.showPagination !== undefined ? this.opts.showPagination : true;
       this.opts.paginationModel = this.opts.paginationModel || null;
       this.opts.pageCount = this.opts.pageCount || null;
       this.opts.entriesPerPageCount = this.opts.entriesPerPageCount || null;
       this.entriesPerPageCount = this.opts.entriesPerPageCount;
-      this.opts.entries = this.opts.entries || [];
-      this.opts.entrieValuesOrder = this.opts.entrieValuesOrder || null;
-      this.opts.columns = this.opts.columns || [
-        {
-          name: '',
-          editable: true,
-          unit: null,
-          content: TplTableColumnContentType.TEXT
-        },
-        {
-          name: '',
-          editable: true,
-          unit: null,
-          content: TplTableColumnContentType.TEXT
-        },
-        {
-          name: '',
-          editable: true,
-          unit: null,
-          content: TplTableColumnContentType.TEXT
-        },
-        {
-          name: '',
-          editable: true,
-          unit: null,
-          content: TplTableColumnContentType.TEXT
-        }
-      ];
+      this.opts.entries = this.opts.entries;
+      this.opts.entrieValuesOrder = this.opts.entrieValuesOrder;
+      this.opts.columns = this.opts.columns;
 
       this.paginationStart = 1;
       this.paginationEnd = 1;
@@ -430,6 +435,21 @@ export class TplTableComponent implements OnDestroy, OnInit {
       this.opts.colors.secondaryColor = this.opts.colors.secondaryColor || '004894';
       this.opts.colors.primaryFontColor = this.opts.colors.primaryFontColor || '333333';
       this.opts.colors.secondaryFontColor = this.opts.colors.secondaryFontColor || 'ffffff';
+
+
+      /////////////////
+      // OBSERVABLES //
+      /////////////////
+      this.add$ = new Subject<TplTableCallback>();
+      this.assign$ = new Subject<TplTableCallback>();
+      this.confirm$ = new Subject<TplTableCallback>();
+      this.delete$ = new Subject<TplTableCallback>();
+      this.edit$ = new Subject<TplTableCallback>();
+      this.rowClick$ = new Subject<TplTableCallback>();
+      /////////////////////
+      // END OBSERVABLES //
+      /////////////////////
+
 
       return true;
     }

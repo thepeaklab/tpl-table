@@ -11,6 +11,9 @@ export class TplTableService {
     this.tables = {};
   }
 
+  //////////////////////
+  // PUBLIC FUNCTIONS //
+  //////////////////////
   // TODO: check what is it good for
   addTable(newTableOpts: TplTableOptions) {
     const oldTableOpts = _.cloneDeep(this.tables[newTableOpts.id]);
@@ -71,4 +74,7 @@ export class TplTableService {
       entriesPerPageCountBeforeSearch: this.tables[id].pageObj ? this.tables[id].pageObj.entriesPerPageCountBeforeSearch : null
     };
   }
+  //////////////////////////
+  // END PUBLIC FUNCTIONS //
+  //////////////////////////
 }

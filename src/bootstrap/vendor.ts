@@ -12,3 +12,4 @@ import '@angular/platform-browser-dynamic';
 
 
 import 'lodash/lodash';
+import 'rxjs/Rx';

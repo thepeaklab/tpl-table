@@ -63,11 +63,12 @@
     "webpack-dev-server": "1.14.1"
   },
   "scripts": {
+    "init": "npm i",
     "typings": "typings",
     "postinstall": "typings install",
     "clean": "rimraf .tmp dist",
     "lint": "tslint src/**/*.ts",
-    "unit": "karma start config/karma.conf.js",
+    "test": "karma start config/karma.conf.js",
     "css": "postcss -c postcss.config.json",
     "prefonts": "mkdir -p dist/fonts",
     "fonts": "cp -R src/fonts/ dist/fonts/",
@@ -78,7 +79,7 @@
     "prebuild": "npm run clean",
     "build": "npm run lint && (npm run css & npm run fonts & tsc -d)",
     "replace:dev": "cp config/environments/dev.json src/bootstrap/env.json",
-    "serve": "npm run replace:dev && webpack-dev-server --history-api-fallback --inline --progress --host 0.0.0.0 --TARGET=DEV"
+    "start": "npm run replace:dev && webpack-dev-server --history-api-fallback --inline --progress --host 0.0.0.0 --TARGET=DEV"
   },
   "dependencies": {
     "@angular/common": "2.0.0-rc.4",
