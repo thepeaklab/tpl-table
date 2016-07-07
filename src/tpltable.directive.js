@@ -123,10 +123,10 @@
           vm.paginationStart = 1;
           vm.paginationEnd = 1;
           vm.opts.colors = vm.opts.colors || {};
-          vm.opts.colors.primaryColor = vm.opts.colors.primaryColor || 'e8f7fe';
-          vm.opts.colors.secondaryColor = vm.opts.colors.secondaryColor || '004894';
-          vm.opts.colors.primaryFontColor = vm.opts.colors.primaryFontColor || '333333';
-          vm.opts.colors.secondaryFontColor = vm.opts.colors.secondaryFontColor || 'ffffff';
+          vm.opts.colors.primaryColor = vm.opts.colors.primaryColor || '#e8f7fe';
+          vm.opts.colors.secondaryColor = vm.opts.colors.secondaryColor || '#004894';
+          vm.opts.colors.primaryFontColor = vm.opts.colors.primaryFontColor || '#333333';
+          vm.opts.colors.secondaryFontColor = vm.opts.colors.secondaryFontColor || '#ffffff';
 
 
           tplTableService.addTable(angular.copy(vm.opts));
