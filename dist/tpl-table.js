@@ -130,6 +130,7 @@
         vm.opts.pageAndSearchChangeMethod = vm.opts.pageAndSearchChangeMethod || function () {
           $log.info('tbl-table: no pageAndSearchChangeMethod given');
         };
+        vm.opts.onColumnEdit = vm.opts.onColumnEdit || null;
         vm.opts.columns = vm.opts.columns || [
           {
             name: '',
@@ -377,6 +378,8 @@
         $rootScope.$emit('tpltable.datarow.edited.' + vm.opts.id, vm.editableCell[0], vm.opts.entries[vm.editableCell[0]]);
         vm.editableCell[0] = null;
         vm.editableCell[1] = null;
+        // given values are the rowId and the data holded by the row
+        vm.opts.onColumnEdit(vm.editableCell[0], vm.opts.entries[vm.editableCell[0]]);
       };
       function getCellValue(row, cell) {
         var levels = cell.split('.');
