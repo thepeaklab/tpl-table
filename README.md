@@ -5,13 +5,11 @@
 * NPM (works with version 3.9.2)
 
 ### Libraries
-* @angular/common
 * @angular/compiler
 * @angular/core
-* @angular/platform-browser
-* @angular/platform-browser-dynamic
 * core.js
 * lodash
+* ng2-translate (depends on @angular/http)
 * reflect-metadata
 * rxjs
 * zone.js
@@ -28,7 +26,7 @@ npm run init
 
 Install via
 ```
-npm i --save git+https://stash.thepeaklab.biz/scm/open/tpl-table.git#2.0.0-beta.2
+npm i --save 'git+https://stash.thepeaklab.biz/scm/open/tpl-table.git#2.0.0-beta.2'
 ```
 
 Import via
@@ -39,7 +37,7 @@ import 'tpl-table';
 Look at the following example:
 
 ```
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs/Rx';
 import { TplTableColumnContentType, TplTableOptions } from 'tpl-table';
 
@@ -52,7 +50,7 @@ import { TplTableColumnContentType, TplTableOptions } from 'tpl-table';
     TplTableComponent
   ]
 })
-export class YourComponent implements AfterViewInit, OnInit {
+export class YourComponent implements AfterViewInit, OnDestroy, OnInit {
   options: TplTableOptions;
 
   private deleteSubscription: Subscription;
@@ -84,19 +82,33 @@ export class YourComponent implements AfterViewInit, OnInit {
   ngAfterViewInit() {
     setTimeout(() => {
 
-      this.rowClickSubscription = this.tplTableComponent
-        .rowClick$
-        .subscribe(data => {
-          console.log('row clicked', data.$index);
-        });
+      if (this.tplTableComponent.rowClick$) {
+        this.rowClickSubscription = this.tplTableComponent
+          .rowClick$
+          .subscribe(data => {
+            console.log('row clicked', data.$index);
+          });
+      }
 
-      this.deleteSubscription = this.tplTableComponent
-        .delete$
-        .subscribe(data => {
-          console.log('delete row', data.$index);
-        });
+      if (this.tplTableComponent.delete$) {
+        this.deleteSubscription = this.tplTableComponent
+          .delete$
+          .subscribe(data => {
+            console.log('delete row', data.$index);
+          });
+      }
 
     }, 0);
+  }
+
+  ngOnDestroy() {
+    if (this.rowClickSubscription) {
+      this.rowClickSubscription.unsubscribe();
+    }
+
+    if (this.deleteSubscription) {
+      this.deleteSubscription.unsubscribe();
+    }
   }
 }
 ```
@@ -132,14 +144,14 @@ The tpl table has the following options you can pass via the property binding 't
 | entries | entries of the table | TplTableRow[] | - | &#10003; |
 | entrieValuesOrder | order of the entry properties | string[] | - | &#10003; |
 | loading | indicates a pending table update | boolean | false | &#x2717; |
-| searchModel | variable for saving the search field value | string | null | &#x2717; |
+| enableSearch | toggles the state of the search | boolean | false | &#x2717; |
 | searchPlaceholderText | placeholder text of the search field | string | 'TABLE_SEARCH' | &#x2717; |
 | noDataAvailableText | message to show if table has zero entries | string | 'No Data Available ...' | &#x2717; |
-| showActionsColumn | toggles the visibility of the actions column | boolean | false | &#x2717; |
-| showPagination | toggles the visibility of the pagination | boolean | true | &#x2717; |
-| paginationModel | variable for saving the pagination value | number | null | &#x2717; |
-| pageCount | number of pages in the table, necessary for building the pagination | number | null | &#x2717; |
-| entriesPerPageCount | number of entries per page | number | undefined | &#x2717; |
+| enableActionsColumn | toggles the state of the actions column | boolean | false | &#x2717; |
+| enablePagination | toggles the state of the pagination | boolean | false | &#x2717; |
+| paginationModel | variable representing the pagination value | number | null | &#x2717; , required if pagination enabled |
+| entriesPerPageCount | number of entries per page | number | null | &#x2717; , required if pagination enabled |
+| pageCount | number of pages in the table, necessary for building the pagination | number | null | &#x2717; , required if pagination enabled |
 | colors | colors for customizing the table design | TplTableColors | { primaryColor: 'e8f7fe', secondaryColor: '004894', primaryFontColor: '333333', secondaryFontColor: 'ffffff' } | &#x2717; |
 
 
@@ -147,16 +159,16 @@ The tpl table has the following options you can pass via the property binding 't
 
 # TODO
 
+- paginationModel should only be handled internally
+
 ## Angular 2 Customization
-- Input and output implementation
 - Focus me directive implementation
 - Remove translate dependency
 
-### Build
-- CSS integration
-
-## Testing
-- Implement unit tests
+## Bugs to fix
+- Entries per Page label style fix ?
+- Catch null values
+- Column value filter
 
 ## Features
 - Order by => out of the scope of this component?
@@ -169,16 +181,8 @@ The tpl table has the following options you can pass via the property binding 't
 - How should pageCount work in component context? => not relevant for the component itself
 - Font option
 
-## Bug fixes
-- Entries per Page label style fix ?
-- Catch null values
-- Column value filter
+## Testing
+- Implement unit tests
 
-
-
-
-old stuff:
-#index.html
-
-    <script src="bower_components/tpl-table/dist/tpl-table.js"></script>
-    <link rel="stylesheet" href="bower_components/tpl-table/dist/tpl-table.css"/>
+## Build
+- CSS integration

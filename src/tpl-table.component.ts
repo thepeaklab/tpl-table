@@ -1,11 +1,12 @@
 import { Component, EventEmitter, Inject, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import * as _ from 'lodash';
+import { TranslatePipe } from 'ng2-translate/ng2-translate';
 import { Subject } from 'rxjs/Rx';
 
 import { FocusMeDirective } from './helper';
 import { TplTableCallback, TplTableColumn, TplTableColumnContentType, TplTableOptions, TplTablePageChangeModel, TplTablePageSizeChangeModel, TplTableRow, TplTableSearchChangeModel, TplTableStateBeforeDetail, TplTableStateBeforeSearch } from './interfaces';
 import { LoadingPointsComponent } from './loading-points';
-import { CheckmarkPipe, ToRangePipe, TranslatePipe } from './pipes';
+import { CheckmarkPipe, ToRangePipe } from './pipes';
 import { TplTableService } from './tpl-table.service';
 
 const MAX_PAGINATION_BUTTONS: number = 5;
@@ -15,16 +16,16 @@ let vm: TplTableComponent;
 @Component({
   selector: 'tpl-table',
   template: `
-    <div *ngIf="opts">
+    <div *ngIf="opts && optionsValidationSuccess">
       <div class="top-row">
-        <div *ngIf="opts.entriesPerPageCount && opts.showPagination" class="elementsperside__select prettyselect">
-          <select [ngModel]="opts.entriesPerPageCount" [ngStyle]="{'color': opts.colors.secondaryColor}" (ngModelChange)="entriesPerPageCount = opts.entriesPerPageCount; setEntriesPerPageCount(opts.entriesPerPageCount, true, entriesPerPageCount)" class="top-row__entry-count input-sm">
+        <div *ngIf="opts.enablePagination && opts.entriesPerPageCount" class="elementsperside__select prettyselect">
+          <select [ngModel]="opts.entriesPerPageCount" [ngStyle]="{'color': opts.colors.secondaryColor}" (ngModelChange)="oldEntriesPerPageCount = opts.entriesPerPageCount; setEntriesPerPageCount(opts.entriesPerPageCount, true, oldEntriesPerPageCount)" class="top-row__entry-count input-sm">
             <template ngFor let-range [ngForOf]="POSSIBLE_RANGE_VALUES">
-              <option *ngIf="range" [value]="range">range</option>
+              <option *ngIf="range" [value]="range">{{range}}</option>
             </template>
           </select>
-        </div><span *ngIf="opts.entriesPerPageCount && opts.showPagination" class="elementsperside__label">{{ 'TABLE_ENTRIES_PER_SITE' | translate }} {{dataOrder}}</span>
-        <form *ngIf="opts.searchModel!==null" (ngSubmit)="setSearch(searchInput, true)">
+        </div><span *ngIf="opts.enablePagination && opts.entriesPerPageCount" class="elementsperside__label">{{ 'TABLE_ENTRIES_PER_SITE' | translate }} {{dataOrder}}</span>
+        <form *ngIf="opts.enableSearch" (ngSubmit)="setSearch(searchInput, true)">
           <input type="text" [ngModel]="searchInput" [placeholder]="opts.searchPlaceholderText|translate" class="top-row__search"/>
         </form>
       </div>
@@ -37,12 +38,12 @@ let vm: TplTableComponent;
                 <span *ngIf="column.translateColumn">{{column.name | translate}}</span>
               </th>
             </template>
-            <th *ngIf="opts.showActionsColumn" class="edit">Aktionen</th>
+            <th *ngIf="opts.enableActionsColumn" class="edit">Aktionen</th>
           </tr>
         </thead>
         <tbody class="tpltable__body">
           <tr *ngIf="!opts.entries || !opts.entries.length || opts.loading" class="tpltable__row--placeholder">
-            <td [colSpan]="opts.entrieValuesOrder.length + (opts.showActionsColumn ? 1 : 0)"><span *ngIf="!opts.loading">{{opts.noDataAvailableText | translate}}</span>
+            <td [colSpan]="opts.entrieValuesOrder.length + (opts.enableActionsColumn ? 1 : 0)"><span *ngIf="!opts.loading">{{opts.noDataAvailableText | translate}}</span>
               <loadingpoints *ngIf="opts.loading"></loadingpoints>
             </td>
           </tr>
@@ -67,13 +68,13 @@ let vm: TplTableComponent;
                   </div>
                 </td>
               </template>
-              <td *ngIf="opts.showActionsColumn" class="edit"><span *ngIf="assign$?.observers?.length" (click)="!assign$?.observers?.length || editableCell[0]!==null || onAssign({$index: rowindex})" class="tbl-iconfont tbl-iconfont-export"></span><span *ngIf="edit$?.observers?.length" (click)="!edit$?.observers?.length || editableCell[0]!==null || onEdit({$index: rowindex})" class="tbl-iconfont tbl-iconfont-pen"></span><span *ngIf="delete$?.observers?.length" (click)="!delete$?.observers?.length || editableCell[0]!==null || onDelete({$index: rowindex})" class="tbl-iconfont tbl-iconfont-delete"></span><span *ngIf="add$?.observers?.length" (click)="!add$?.observers?.length || editableCell[0] !== null || onAdd({$index: rowindex})" class="icon icon-cal-button"></span><span *ngIf="confirm$?.observers?.length" (click)="!confirm$?.observers?.length || editableCell[0]!=null || onConfirm({$index: rowindex})" class="iconfont iconfont-check"></span>
+              <td *ngIf="opts.enableActionsColumn" class="edit"><span *ngIf="assign$?.observers?.length" (click)="!assign$?.observers?.length || editableCell[0]!==null || onAssign({$index: rowindex})" class="tbl-iconfont tbl-iconfont-export"></span><span *ngIf="edit$?.observers?.length" (click)="!edit$?.observers?.length || editableCell[0]!==null || onEdit({$index: rowindex})" class="tbl-iconfont tbl-iconfont-pen"></span><span *ngIf="delete$?.observers?.length" (click)="!delete$?.observers?.length || editableCell[0]!==null || onDelete({$index: rowindex})" class="tbl-iconfont tbl-iconfont-delete"></span><span *ngIf="add$?.observers?.length" (click)="!add$?.observers?.length || editableCell[0] !== null || onAdd({$index: rowindex})" class="icon icon-cal-button"></span><span *ngIf="confirm$?.observers?.length" (click)="!confirm$?.observers?.length || editableCell[0]!=null || onConfirm({$index: rowindex})" class="iconfont iconfont-check"></span>
               </td>
             </tr>
           </template>
         </tbody>
       </table>
-      <div *ngIf="opts.showPagination && opts.paginationModel && paginationStart !== 1 && paginationEnd !== 1" class="bottom-row">
+      <div *ngIf="opts.enablePagination && opts.paginationModel && paginationStart !== 1 && paginationEnd !== 1" class="bottom-row">
         <div class="paginator">
           <div *ngIf="paginationStart < paginationEnd" [class.inactive]="opts.paginationModel === 1" [ngStyle]="handleFirstPaginatorStyles()" [attr.disabled]="opts.paginationModel === 1" (click)="setPage(1, true)" (mouseenter)="pageFirstHover=true" (mouseleave)="pageFirstHover=false" class="paginator__first">{{'TABLE_PAGING_START'|translate}}</div>
           <div *ngIf="paginationStart > 1" (click)="skipPagesBackward()" [ngStyle]="handleMidPaginatorStyles()" (mouseenter)="pageMid1Hover=true" (mouseleave)="pageMid1Hover=false" class="paginator__mid">...</div>
@@ -91,16 +92,10 @@ let vm: TplTableComponent;
   pipes: [CheckmarkPipe, ToRangePipe, TranslatePipe]
 })
 export class TplTableComponent implements OnDestroy, OnInit {
-  editableCell: number[];
-  entriesPerPageCount: number;
-  hover: boolean;
-  hoverEdit: boolean;
-
-
   ////////////
   // INPUTS //
   ////////////
-  @Input() tplTableOptions: TplTableOptions;
+  @Input('tplTableOptions') opts: TplTableOptions;
   ////////////////
   // END INPUTS //
   ////////////////
@@ -139,7 +134,11 @@ export class TplTableComponent implements OnDestroy, OnInit {
   /////////////////////
 
 
-  opts: TplTableOptions;
+  editableCell: number[];
+  hover: boolean;
+  hoverEdit: boolean;
+  oldEntriesPerPageCount: number;
+  optionsValidationSuccess: boolean;
   pageFirstHover: boolean;
   pageLastHover: boolean;
   pageMidHover: boolean;
@@ -151,6 +150,8 @@ export class TplTableComponent implements OnDestroy, OnInit {
   POSSIBLE_RANGE_VALUES: number[];
   searchInput: string;
   tempEditColumnCopy: any;
+
+  private searchModel: string;
 
   // private $log: any;
 
@@ -171,7 +172,7 @@ export class TplTableComponent implements OnDestroy, OnInit {
   // HOOKS //
   ///////////
   ngOnInit() {
-    if (this.checkBindings()) {
+    if (this.checkOptions()) {
       this.tplTableService.addTable(_.cloneDeep(this.opts));
 
       if (this.restoreTableStateBeforeDestroying() && this.pageChange) {
@@ -381,21 +382,21 @@ export class TplTableComponent implements OnDestroy, OnInit {
   }
 
   setSearch(search: string, callback?: boolean) {
-    let old = this.opts.searchModel;
+    let old = this.searchModel;
 
     if (search) {
-      this.opts.searchModel = search;
+      this.searchModel = search;
       this.searchInput = search;
     } else {
-      this.opts.searchModel = this.searchInput;
+      this.searchModel = this.searchInput;
     }
 
     this.resetEdit();
 
-    this.handleSearchChange(this.opts.searchModel, old);
+    this.handleSearchChange(this.searchModel, old);
 
-    if (callback && this.searchChange && this.opts.searchModel !== old) {
-      this.onSearchChange({new: this.opts.searchModel, old: old});
+    if (callback && this.searchChange && this.searchModel !== old) {
+      this.onSearchChange({new: this.searchModel, old: old});
     }
   }
   //////////////////////////
@@ -406,36 +407,65 @@ export class TplTableComponent implements OnDestroy, OnInit {
   ////////////
   // HELPER //
   ////////////
-  private checkBindings(): boolean {
-    this.opts = this.tplTableOptions;
-
+  private checkOptions(): boolean {
     if (this.opts) {
-      this.opts.setPageCount = this.setPageCount;
-      this.opts.setColumns = this.setColumns;
-
+      //////////
+      // MAIN //
+      //////////
       this.opts.id = this.opts.id;
       this.opts.loading = this.opts.loading !== null && this.opts.loading !== undefined ? this.opts.loading : false;
+
+
+      ////////////
+      // SEARCH //
+      ////////////
+      this.opts.enableSearch = this.opts.enableSearch !== null && this.opts.enableSearch !== undefined ? this.opts.enableSearch : false;
       this.opts.searchPlaceholderText = this.opts.searchPlaceholderText || 'TABLE_SEARCH';
-      this.opts.noDataAvailableText = this.opts.noDataAvailableText || 'No Data Available ...';
-      this.opts.showActionsColumn = this.opts.showActionsColumn !== null && this.opts.showActionsColumn !== undefined ? this.opts.showActionsColumn : false;
-      this.opts.searchModel = this.opts.searchModel !== null && this.opts.searchModel !== undefined ? this.opts.searchModel : null;
-      this.opts.showPagination = this.opts.showPagination !== null && this.opts.showPagination !== undefined ? this.opts.showPagination : true;
+
+
+      ////////////////
+      // PAGINATION //
+      ////////////////
+      this.opts.enablePagination = this.opts.enablePagination !== null && this.opts.enablePagination !== undefined ? this.opts.enablePagination : false;
       this.opts.paginationModel = this.opts.paginationModel || null;
-      this.opts.pageCount = this.opts.pageCount || null;
       this.opts.entriesPerPageCount = this.opts.entriesPerPageCount || null;
-      this.entriesPerPageCount = this.opts.entriesPerPageCount;
-      this.opts.entries = this.opts.entries;
-      this.opts.entrieValuesOrder = this.opts.entrieValuesOrder;
-      this.opts.columns = this.opts.columns;
+      this.oldEntriesPerPageCount = this.opts.entriesPerPageCount;
+      this.opts.pageCount = this.opts.pageCount || null;
+
+      if (this.opts.enablePagination) {
+        if (!this.opts.paginationModel || !this.opts.entriesPerPageCount || !this.opts.pageCount) {
+          console.error('Enabled pagination requires paginationModel, entriesPerPageCount and pageCount to be set');
+          return false;
+        }
+      }
 
       this.paginationStart = 1;
       this.paginationEnd = 1;
+
+
+      ////////////////
+      // TABLE DATA //
+      ////////////////
+      this.opts.noDataAvailableText = this.opts.noDataAvailableText || 'No Data Available ...';
+      this.opts.columns = this.opts.columns;
+      this.opts.entries = this.opts.entries;
+      this.opts.entrieValuesOrder = this.opts.entrieValuesOrder;
+
+
+      /////////////////
+      // TABLE STYLE //
+      /////////////////
       this.opts.colors = this.opts.colors || {};
       this.opts.colors.primaryColor = this.opts.colors.primaryColor || 'e8f7fe';
       this.opts.colors.secondaryColor = this.opts.colors.secondaryColor || '004894';
       this.opts.colors.primaryFontColor = this.opts.colors.primaryFontColor || '333333';
       this.opts.colors.secondaryFontColor = this.opts.colors.secondaryFontColor || 'ffffff';
 
+
+      ///////////////////
+      // TABLE ACTIONS //
+      ///////////////////
+      this.opts.enableActionsColumn = this.opts.enableActionsColumn !== null && this.opts.enableActionsColumn !== undefined ? this.opts.enableActionsColumn : false;
 
       /////////////////
       // OBSERVABLES //
@@ -451,6 +481,14 @@ export class TplTableComponent implements OnDestroy, OnInit {
       /////////////////////
 
 
+      ////////////
+      // HELPER //
+      ////////////
+      this.opts.setPageCount = this.setPageCount;
+      this.opts.setColumns = this.setColumns;
+
+
+      this.optionsValidationSuccess = true;
       return true;
     }
     return false;
@@ -506,7 +544,7 @@ export class TplTableComponent implements OnDestroy, OnInit {
   private saveTableStateBeforeDestroying() {
     this.tplTableService.setStateBeforeDetail(this.opts.id, {
       actualPage: this.opts.paginationModel - 1,
-      actualSearch: this.opts.searchModel,
+      actualSearch: this.searchModel,
       actualEntriesPerPageCount: this.opts.entriesPerPageCount
     });
   }

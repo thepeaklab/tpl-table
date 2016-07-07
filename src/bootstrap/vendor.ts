@@ -4,6 +4,7 @@
 import '@angular/common';
 import '@angular/compiler';
 import '@angular/core';
+import '@angular/http';
 import '@angular/platform-browser';
 import '@angular/platform-browser-dynamic';
 ///////////////////
@@ -11,5 +12,6 @@ import '@angular/platform-browser-dynamic';
 ///////////////////
 
 
+import 'ng2-translate/ng2-translate';
 import 'lodash/lodash';
 import 'rxjs/Rx';

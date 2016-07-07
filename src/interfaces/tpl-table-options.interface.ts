@@ -8,9 +8,9 @@ export interface TplTableOptions {
   loading?: boolean;
   searchPlaceholderText?: string;
   noDataAvailableText?: string;
-  showActionsColumn?: boolean;
-  searchModel?: string;
-  showPagination?: boolean;
+  enableActionsColumn?: boolean;
+  enableSearch?: boolean;
+  enablePagination?: boolean;
   paginationModel?: number;
   pageCount?: number;
   entriesPerPageCount?: number;

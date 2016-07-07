@@ -28,11 +28,11 @@ tpl-table {
         line-height: 28px;
         display: inline-block;
 
-        /* TODO: not working properly */
-        vertical-align: middle;
+        /* vertical-align: middle; */ /* TODO: not working properly */
+
         position: relative;
 
-        margin-top: -22px;
+        /* margin-top: -22px; */ /* TODO: not working properly */
         margin-left: 5px;
       }
     }
