@@ -375,11 +375,11 @@
       };
       $scope.saveEditedColumn = function saveEditedColumn() {
         vm.opts.entries[vm.editableCell[0]] = vm.tempEditColumnCopy;
+        // given values are the rowId and the data holded by the row
+        vm.opts.onCellEdit(vm.editableCell[0], vm.opts.entries[vm.editableCell[0]]);
         $rootScope.$emit('tpltable.datarow.edited.' + vm.opts.id, vm.editableCell[0], vm.opts.entries[vm.editableCell[0]]);
         vm.editableCell[0] = null;
         vm.editableCell[1] = null;
-        // given values are the rowId and the data holded by the row
-        vm.opts.onCellEdit(vm.editableCell[0], vm.opts.entries[vm.editableCell[0]]);
       };
       function getCellValue(row, cell) {
         var levels = cell.split('.');
