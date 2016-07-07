@@ -120,27 +120,6 @@ export class YourComponent implements AfterViewInit, OnDestroy, OnInit {
 ```
 
 
-## TplTableColumn:
-| Property name | Description | Type | Default | Required |
-|---------------|-------------|------|---------|----------|
-| name | name of the property | string | - | &#10003; |
-| content | type of the property | TplTableColumnContentType (.TEXT or .IMAGE) | TplTableColumnContentType.TEXT | &#x2717; |
-| ngIf | toggles rendering of the column | boolean | true | &#x2717; |
-| editable | toggles state of the inline edit mode | boolean | false | &#x2717; |
-| unit | unknown | any | null | &#x2717; |
-| translateColumn | toggles translating of column name | boolean | false | &#x2717; |
-| translateValues | toggles translating of column values | boolean | false | &#x2717; |
-| translateValuePrefix | prefix for column value translation | string | '' | &#x2717; |
-| maxWidth | maximum width for cells with content type 'IMAGE' | string | '250px' | &#x2717; |
-| maxHeight | maximum height for cells with content type 'IMAGE' | string | '250px' | &#x2717; |
-
-
-## TplTableRow:
-```
-[key: string]: any
-```
-
-
 ## TplTableOptions
 The tpl table has the following options you can pass via the property binding 'tplTableOptions':
 | Option name   | Description   | Type  | Default   | Required  |
@@ -158,7 +137,7 @@ The tpl table has the following options you can pass via the property binding 't
 | entriesPerPageValues | possible values for entries per page | number[] | [10, 25, 50, 100] | &#x2717; |
 | defaultEntriesPerPageCount | default number of entries per page | number | 10 | &#x2717; |
 | initialPageCount | initial number of pages in the table | number | 1 | &#x2717; |
-| colors | colors for customizing the table design | TplTableColors | { primaryColor: 'e8f7fe', secondaryColor: '004894', primaryFontColor: '333333', secondaryFontColor: 'ffffff' } | &#x2717; |
+| colors | colors for customizing the table design | TplTableColors | { primaryColor: '#e8f7fe', secondaryColor: '#004894', primaryFontColor: '#333333', secondaryFontColor: '#ffffff' } | &#x2717; |
 
 
 ## TplTableService
@@ -169,6 +148,44 @@ To update the table data, you can use various methods:
 | setEntries | method for updating entries | tableId: string, entries: TplTableRow[] |
 | setEntrieValuesOrder | method for updating the order of the entry properties | tableId: string, entrieValuesOrder: string[] |
 | setPageCount | method for updating the number of pages in the table | tableId: string, pageCount: number |
+
+
+## TplTableColumn:
+| Property name | Description | Type | Default | Required |
+|---------------|-------------|------|---------|----------|
+| name | name of the property | string | - | &#10003; |
+| content | type of the property | TplTableColumnContentType (.TEXT or .IMAGE) | TplTableColumnContentType.TEXT | &#x2717; |
+| ngIf | toggles rendering of the column | boolean | true | &#x2717; |
+| editable | toggles state of the inline edit mode | boolean | false | &#x2717; |
+| unit | unknown | any | null | &#x2717; |
+| translateColumn | toggles translating of column name | boolean | false | &#x2717; |
+| translateValues | toggles translating of column values | boolean | false | &#x2717; |
+| translateValuePrefix | prefix for column value translation | string | '' | &#x2717; |
+| maxWidth | maximum width for cells with content type 'IMAGE' | string | '250px' | &#x2717; |
+| maxHeight | maximum height for cells with content type 'IMAGE' | string | '250px' | &#x2717; |
+
+
+## Events
+If you want to respond to events, you can use a mix of outputs and observables:
+| Event | Change handling | How to |
+|----------|-----------------|--------|
+| page change | Output | (onPageChange)="callback({new: number, old: number})" |
+| page size change | Output | (onPageSizeChange)="callback({new: number, old: number})" |
+| search change | Output | (onSearchChange)="callback({new: string, old: string})" |
+| row click | Observable | rowClick$.subscribe((index: number) => {}) |
+| add action | Observable | add$.subscribe((index: number) => {}) |
+| assign action | Observable | assign$.subscribe((index: number) => {}) |
+| confirm action | Observable | confirm$.subscribe((index: number) => {}) |
+| delete action | Observable | delete$.subscribe((index: number) => {}) |
+| edit action | Observable | edit$.subscribe((index: number) => {}) |
+
+
+
+
+## TplTableRow:
+```
+[key: string]: any
+```
 
 
 # TODO
