@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import * as _ from 'lodash';
 
-import { TplTableColumn, TplTableOptions, TplTableStateBeforeDetail, TplTableStateBeforeSearch } from './interfaces';
+import { TplTableColumn, TplTableOptions, TplTableRow, TplTableStateBeforeDetail, TplTableStateBeforeSearch } from './interfaces';
 
 @Injectable()
 export class TplTableService {
@@ -14,7 +14,6 @@ export class TplTableService {
   //////////////////////
   // PUBLIC FUNCTIONS //
   //////////////////////
-  // TODO: check what is it good for
   addTable(newTableOpts: TplTableOptions) {
     const oldTableOpts = _.cloneDeep(this.tables[newTableOpts.id]);
 
@@ -26,13 +25,31 @@ export class TplTableService {
       pageBeforeSearch: oldTableOpts && oldTableOpts.pageObj ? oldTableOpts.pageObj.pageBeforeSearch : null,
       entriesPerPageCountBeforeSearch: oldTableOpts && oldTableOpts.pageObj ? oldTableOpts.pageObj.entriesPerPageCountBeforeSearch : null
     };
+
     this.tables[newTableOpts.id] = newTableOpts;
   }
 
+  ///////////////////////
+  // UPDATE TABLE DATA //
+  ///////////////////////
   setColumns(tableId: string, columns: TplTableColumn[]) {
     let table = this.tables[tableId];
     if (table) {
       table.setColumns(columns);
+    }
+  }
+
+  setEntries(tableId: string, entries: TplTableRow[]) {
+    let table = this.tables[tableId];
+    if (table) {
+      table.setEntries(entries);
+    }
+  }
+
+  setEntrieValuesOrder(tableId: string, entrieValuesOrder: string[]) {
+    let table = this.tables[tableId];
+    if (table) {
+      table.setEntrieValuesOrder(entrieValuesOrder);
     }
   }
 
@@ -42,7 +59,13 @@ export class TplTableService {
       table.setPageCount(pageCount);
     }
   }
+  ///////////////////////////
+  // END UPDATE TABLE DATA //
+  ///////////////////////////
 
+  ////////////////////////////////
+  // STATE SAVING AND RESTORING //
+  ////////////////////////////////
   setStateBeforeDetail(id: string, state: TplTableStateBeforeDetail) {
     this.tables[id].pageObj.actualPage = state.actualPage;
     this.tables[id].pageObj.actualSearch = state.actualSearch;
@@ -74,6 +97,10 @@ export class TplTableService {
       entriesPerPageCountBeforeSearch: this.tables[id].pageObj ? this.tables[id].pageObj.entriesPerPageCountBeforeSearch : null
     };
   }
+  ////////////////////////////////////
+  // END STATE SAVING AND RESTORING //
+  ////////////////////////////////////
+
   //////////////////////////
   // END PUBLIC FUNCTIONS //
   //////////////////////////

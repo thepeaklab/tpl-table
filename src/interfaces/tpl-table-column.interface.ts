@@ -1,11 +1,12 @@
 import { TplTableColumnContentType } from './tpl-table-column-content-type.interface';
 
 export interface TplTableColumn {
-  ngIf?: () => boolean;
   name: string;
+
+  ngIf?: () => boolean;
   editable?: boolean;
   unit?: any;
-  content: TplTableColumnContentType;
+  content?: TplTableColumnContentType;
   translateColumn?: boolean;
   translateValues?: boolean;
   translateValuePrefix?: string;

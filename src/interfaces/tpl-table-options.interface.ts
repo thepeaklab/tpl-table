@@ -5,20 +5,25 @@ import { TplTableRow } from './tpl-table-row.interface';
 
 export interface TplTableOptions {
   id: string;
+  initialColumns: TplTableColumn[];
+  initialEntries: TplTableRow[];
+  initialEntrieValuesOrder: string[];
+
   loading?: boolean;
+  enableSearch?: boolean;
   searchPlaceholderText?: string;
   noDataAvailableText?: string;
   enableActionsColumn?: boolean;
-  enableSearch?: boolean;
   enablePagination?: boolean;
-  paginationModel?: number;
-  pageCount?: number;
-  entriesPerPageCount?: number;
-  entries: TplTableRow[];
-  entrieValuesOrder: string[];
-  columns: TplTableColumn[];
+  entriesPerPageValues?: number[];
+  defaultEntriesPerPageCount?: number;
+  initialPageCount?: number;
   colors?: TplTableColors;
+
   pageObj?: TplTablePage;
-  setPageCount?: (pageCount: number) => void;
+
   setColumns?: (columns: TplTableColumn[]) => void;
+  setEntries?: (entries: TplTableRow[]) => void;
+  setEntrieValuesOrder?: (entrieValuesOrder: string[]) => void;
+  setPageCount?: (pageCount: number) => void;
 }

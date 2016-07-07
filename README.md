@@ -62,20 +62,22 @@ export class YourComponent implements AfterViewInit, OnDestroy, OnInit {
   ngOnInit() {
     this.options = {
       id: 'tableName',
-      columns: [
+      initialColumns: [
         {
-          name: 'firstname',
-          content: TplTableColumnContentType.TEXT
+          name: 'Vorname',
+          translateColumn: true
         }
       ],
-      entrieValuesOrder: ['firstname'],
-      entries: [
+      initialEntrieValuesOrder: ['firstname'],
+      initialEntries: [
         {
           firstname: 'Max'
         }
       ],
-      pageCount: 10,
-      showActionsColumn: true
+      enableActionsColumn: true,
+      enablePagination: true,
+      initialPageCount: 1,
+      enableSearch: true
     };
   }
 
@@ -99,6 +101,10 @@ export class YourComponent implements AfterViewInit, OnDestroy, OnInit {
       }
 
     }, 0);
+
+    setTimeout(() => {
+      this.options.loading = false;
+    }, 2000);
   }
 
   ngOnDestroy() {
@@ -118,7 +124,7 @@ export class YourComponent implements AfterViewInit, OnDestroy, OnInit {
 | Property name | Description | Type | Default | Required |
 |---------------|-------------|------|---------|----------|
 | name | name of the property | string | - | &#10003; |
-| content | type of the property | TplTableColumnContentType (.TEXT or .IMAGE) | - | &#10003; |
+| content | type of the property | TplTableColumnContentType (.TEXT or .IMAGE) | TplTableColumnContentType.TEXT | &#x2717; |
 | ngIf | toggles rendering of the column | boolean | true | &#x2717; |
 | editable | toggles state of the inline edit mode | boolean | false | &#x2717; |
 | unit | unknown | any | null | &#x2717; |
@@ -140,30 +146,35 @@ The tpl table has the following options you can pass via the property binding 't
 | Option name   | Description   | Type  | Default   | Required  |
 |-------------  |-------------  |------ |---------  |---------- |
 | id | unique identifier to identify a tpl table instance | string  | - | &#10003; |
-| columns | columns of the table | TplTableColumn[] | - | &#10003; |
-| entries | entries of the table | TplTableRow[] | - | &#10003; |
-| entrieValuesOrder | order of the entry properties | string[] | - | &#10003; |
+| initialColumns | initial columns of the table | TplTableColumn[] | - | &#10003; |
+| initialEntries | initial entries of the table | TplTableRow[] | - | &#10003; |
+| initialEntrieValuesOrder | initial order of the entry properties | string[] | - | &#10003; |
 | loading | indicates a pending table update | boolean | false | &#x2717; |
 | enableSearch | toggles the state of the search | boolean | false | &#x2717; |
 | searchPlaceholderText | placeholder text of the search field | string | 'TABLE_SEARCH' | &#x2717; |
 | noDataAvailableText | message to show if table has zero entries | string | 'No Data Available ...' | &#x2717; |
 | enableActionsColumn | toggles the state of the actions column | boolean | false | &#x2717; |
 | enablePagination | toggles the state of the pagination | boolean | false | &#x2717; |
-| paginationModel | variable representing the pagination value | number | null | &#x2717; , required if pagination enabled |
-| entriesPerPageCount | number of entries per page | number | null | &#x2717; , required if pagination enabled |
-| pageCount | number of pages in the table, necessary for building the pagination | number | null | &#x2717; , required if pagination enabled |
+| entriesPerPageValues | possible values for entries per page | number[] | [10, 25, 50, 100] | &#x2717; |
+| defaultEntriesPerPageCount | default number of entries per page | number | 10 | &#x2717; |
+| initialPageCount | initial number of pages in the table | number | 1 | &#x2717; |
 | colors | colors for customizing the table design | TplTableColors | { primaryColor: 'e8f7fe', secondaryColor: '004894', primaryFontColor: '333333', secondaryFontColor: 'ffffff' } | &#x2717; |
 
 
+## TplTableService
+To update the table data, you can use various methods:
+| Method name | Description | Parameters |
+|-------------|-------------|------------|
+| setColumns | method for updating columns | tableId: string, columns: TplTableColumn[] |
+| setEntries | method for updating entries | tableId: string, entries: TplTableRow[] |
+| setEntrieValuesOrder | method for updating the order of the entry properties | tableId: string, entrieValuesOrder: string[] |
+| setPageCount | method for updating the number of pages in the table | tableId: string, pageCount: number |
 
 
 # TODO
 
-- paginationModel should only be handled internally
-
 ## Angular 2 Customization
 - Focus me directive implementation
-- Remove translate dependency
 
 ## Bugs to fix
 - Entries per Page label style fix ?
@@ -172,7 +183,6 @@ The tpl table has the following options you can pass via the property binding 't
 
 ## Features
 - Order by => out of the scope of this component?
-- Automatic set loading => out of the scope of this component?
 - Reset search button
 - Do search button
 - Custom classes: for example custom select class

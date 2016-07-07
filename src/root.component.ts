@@ -25,25 +25,23 @@ export class RootComponent implements AfterViewInit, OnDestroy, OnInit {
   ngOnInit() {
     this.options = {
       id: 'tableName',
-      columns: [
+      initialColumns: [
         {
           name: 'Vorname',
-          content: TplTableColumnContentType.TEXT,
           translateColumn: true
         }
       ],
-      entrieValuesOrder: ['firstname'],
-      entries: [
+      initialEntrieValuesOrder: ['firstname'],
+      initialEntries: [
         {
           firstname: 'Max'
         }
       ],
       enableActionsColumn: true,
       enablePagination: true,
-      paginationModel: 1,
-      entriesPerPageCount: 10,
-      pageCount: 1,
-      enableSearch: true
+      initialPageCount: 1,
+      enableSearch: true,
+      loading: true
     };
   }
 
@@ -66,6 +64,10 @@ export class RootComponent implements AfterViewInit, OnDestroy, OnInit {
           });
       }
     }, 0);
+
+    setTimeout(() => {
+      this.options.loading = false;
+    }, 2000);
   }
 
   ngOnDestroy() {
