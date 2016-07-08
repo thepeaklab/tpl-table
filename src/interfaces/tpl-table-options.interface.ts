@@ -1,6 +1,6 @@
 import { TplTableColors } from './tpl-table-colors.interface';
 import { TplTableColumn } from './tpl-table-column.interface';
-import { TplTablePage } from './tpl-table-page.interface';
+import { TplTableState } from './tpl-table-state.interface';
 import { TplTableRow } from './tpl-table-row.interface';
 
 export interface TplTableOptions {
@@ -9,18 +9,24 @@ export interface TplTableOptions {
   initialEntries: TplTableRow[];
   initialEntrieValuesOrder: string[];
 
-  loading?: boolean;
-  enableSearch?: boolean;
-  searchPlaceholderText?: string;
   noDataAvailableText?: string;
+
+  loading?: boolean;
+
+  enableSearch?: boolean;
+  searchDebounceTime?: number;
+  searchPlaceholderText?: string;
+
   enableActionsColumn?: boolean;
+
   enablePagination?: boolean;
   entriesPerPageValues?: number[];
   defaultEntriesPerPageCount?: number;
   initialPageCount?: number;
+
   colors?: TplTableColors;
 
-  pageObj?: TplTablePage;
+  stateObject?: TplTableState;
 
   setColumns?: (columns: TplTableColumn[]) => void;
   setEntries?: (entries: TplTableRow[]) => void;

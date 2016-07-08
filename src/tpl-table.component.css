@@ -1,6 +1,73 @@
 /* @import 'compass/utilities/general/clearfix'; */
 @import 'fonts';
 
+
+/* BOOTSTRAP */
+
+/* INPUT GROUP */
+.input-group {
+  position: relative;
+  display: table;
+  border-collapse: separate;
+}
+.input-group[class*="col-"] {
+  float: none;
+  padding-left: 0;
+  padding-right: 0;
+}
+/* END INPUT GROUP */
+
+/* INPUT GROUP ADDON */
+.input-group-addon {
+  display: table-cell;
+}
+
+.input-group-addon:not(:first-child):not(:last-child) {
+  border-radius: 0;
+}
+
+.input-group-addon {
+  width: 1%;
+  min-width: 16px;
+
+  white-space: nowrap;
+  vertical-align: middle;
+}
+
+.input-group-addon {
+  padding: 6px 12px;
+  font-size: 14px;
+  font-weight: normal;
+  line-height: 1;
+  color: #555555;
+  text-align: center;
+  background-color: #eeeeee;
+  border: 1px solid #cccccc;
+  border-radius: 4px;
+}
+
+.input-group-addon:first-child {
+  border-bottom-right-radius: 0;
+  border-top-right-radius: 0;
+}
+
+.input-group-addon:first-child {
+  border-right: 0;
+}
+
+.input-group-addon:last-child {
+  border-bottom-left-radius: 0;
+  border-top-left-radius: 0;
+}
+
+.input-group-addon:last-child {
+  border-left: 0;
+}
+/* END INPUT GROUP ADDON */
+
+/* END BOOTSTRAP */
+
+
 $font-color-darkgrey: #5c5c5c;
 $border-color-grey: #ebebeb;
 $color-blue-dark: #004894;
@@ -23,10 +90,14 @@ tpl-table {
     font-size: 12px;
 
     .elementsperside {
+      &__select {
+        float: left;
+      }
+
       &__label {
         height: 28px;
         line-height: 28px;
-        display: inline-block;
+        /* display: inline-block; */
 
         /* vertical-align: middle; */ /* TODO: not working properly */
 
@@ -39,7 +110,7 @@ tpl-table {
 
 
     &__entry-count {
-      float: left;
+      /* float: left; */
       height: 30px;
       border: 1px solid $border-color-grey;
       border-radius: 0 !important;
@@ -48,7 +119,10 @@ tpl-table {
 
     form {
       float: right;
+
+      max-width: 200px;
       height: 30px;
+
       line-height: 28px;
     }
 

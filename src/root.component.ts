@@ -3,13 +3,13 @@ import './tpl-table.component.css';
 import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs/Rx';
 
-import { TplTableCallback, TplTableColumnContentType, TplTableOptions } from './interfaces';
+import { TplTableCallback, TplTableColumnContentType, TplTableOptions, TplTablePageChangeModel, TplTablePageSizeChangeModel, TplTableSearchChangeModel } from './interfaces';
 import { TplTableComponent } from './tpl-table.component';
 
 @Component({
   selector: 'root',
   template: `
-    <tpl-table [tplTableOptions]="options"></tpl-table>
+    <tpl-table [tplTableOptions]="options" (searchChange)="tableSearchChange($event)" (pageChange)="tablePageChange($event)" (pageSizeChange)="tablePageSizeChange($event)"></tpl-table>
   `,
   directives: [TplTableComponent]
 })
@@ -39,7 +39,7 @@ export class RootComponent implements AfterViewInit, OnDestroy, OnInit {
       ],
       enableActionsColumn: true,
       enablePagination: true,
-      initialPageCount: 1,
+      initialPageCount: 2,
       enableSearch: true,
       loading: true
     };
@@ -79,4 +79,23 @@ export class RootComponent implements AfterViewInit, OnDestroy, OnInit {
       this.deleteSubscription.unsubscribe();
     }
   }
+
+
+  ///////////////////////
+  // TPL TABLE OUTPUTS //
+  ///////////////////////
+  tableSearchChange(model: TplTableSearchChangeModel) {
+    console.table(model);
+  }
+
+  tablePageChange(model: TplTablePageChangeModel) {
+    console.table(model);
+  }
+
+  tablePageSizeChange(model: TplTablePageSizeChangeModel) {
+    console.table(model);
+  }
+  ///////////////////////////
+  // END TPL TABLE OUTPUTS //
+  ///////////////////////////
 }

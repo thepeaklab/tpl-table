@@ -1,7 +1,8 @@
 import { Component, EventEmitter, Inject, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { FormControl, FORM_DIRECTIVES, REACTIVE_FORM_DIRECTIVES } from '@angular/forms';
 import * as _ from 'lodash';
 import { TranslatePipe } from 'ng2-translate/ng2-translate';
-import { Subject } from 'rxjs/Rx';
+import { Subject, Subscription } from 'rxjs/Rx';
 
 import { FocusMeDirective } from './helper';
 import { TplTableCallback, TplTableColors, TplTableColumn, TplTableColumnContentType, TplTableOptions, TplTablePageChangeModel, TplTablePageSizeChangeModel, TplTableRow, TplTableSearchChangeModel, TplTableStateBeforeDetail, TplTableStateBeforeSearch } from './interfaces';
@@ -19,15 +20,21 @@ let vm: TplTableComponent;
     <div *ngIf="optionsValidationSuccess">
       <div class="top-row">
         <div *ngIf="enablePagination && entriesPerPageCount" class="elementsperside__select prettyselect">
-          <select [ngModel]="entriesPerPageCount" [ngStyle]="{'color': colors.secondaryColor}" (ngModelChange)="oldEntriesPerPageCount = entriesPerPageCount; setEntriesPerPageCount(entriesPerPageCount, true, oldEntriesPerPageCount)" class="top-row__entry-count input-sm">
+          <select [ngModel]="entriesPerPageCount" [ngStyle]="{'color': colors.secondaryColor}" (ngModelChange)="oldEntriesPerPageCount = entriesPerPageCount; setEntriesPerPageCount($event, true, oldEntriesPerPageCount)" class="top-row__entry-count input-sm">
             <template ngFor let-range [ngForOf]="entriesPerPageValues">
               <option *ngIf="range" [value]="range">{{range}}</option>
             </template>
           </select>
-        </div><span *ngIf="enablePagination && entriesPerPageCount" class="elementsperside__label">{{ 'TABLE_ENTRIES_PER_SITE' | translate }} {{dataOrder}}</span>
-        <form *ngIf="enableSearch" (ngSubmit)="setSearch(searchInput, true)">
-          <input type="text" [ngModel]="searchInput" [placeholder]="searchPlaceholderText|translate" class="top-row__search"/>
-        </form>
+          <span *ngIf="enablePagination && entriesPerPageCount" class="elementsperside__label">{{ 'TABLE_ENTRIES_PER_SITE' | translate }} {{dataOrder}}</span>
+        </div>
+        <div *ngIf="enableSearch">
+          <div class="input-group">
+            <input type="search" [formControl]="searchControl" [placeholder]="searchPlaceholderText|translate" class="top-row__search" [disabled]="opts.loading">
+            <span class="input-group-addon" [class.action]="searchControl.value" (click)="searchControl.value && onResetSearch()">
+              <span *ngIf="searchControl.value">&#x2717;</span>
+            </span>
+          </div>
+        </div>
       </div>
       <table class="tpltable">
         <thead class="tpltable__head">
@@ -74,22 +81,60 @@ let vm: TplTableComponent;
           </template>
         </tbody>
       </table>
-      <div *ngIf="enablePagination && paginationModel && paginationStart !== 1 && paginationEnd !== 1" class="bottom-row">
+      <div *ngIf="enablePagination && paginationModel && paginationEnd !== 1" class="bottom-row">
         <div class="paginator">
-          <div *ngIf="paginationStart < paginationEnd" [class.inactive]="paginationModel === 1" [ngStyle]="handleFirstPaginatorStyles()" [attr.disabled]="paginationModel === 1" (click)="setPage(1, true)" (mouseenter)="pageFirstHover=true" (mouseleave)="pageFirstHover=false" class="paginator__first">{{'TABLE_PAGING_START'|translate}}</div>
-          <div *ngIf="paginationStart > 1" (click)="skipPagesBackward()" [ngStyle]="handleMidPaginatorStyles()" (mouseenter)="pageMid1Hover=true" (mouseleave)="pageMid1Hover=false" class="paginator__mid">...</div>
+          <div *ngIf="paginationStart < paginationEnd" [class.inactive]="paginationModel === 1" [ngStyle]="handleFirstPaginatorStyles()" [attr.disabled]="paginationModel === 1" (click)="setPage(1, true)" (mouseenter)="pageFirstHover=true" (mouseleave)="pageFirstHover=false" class="paginator__first">
+            {{'TABLE_PAGING_START'|translate}}
+          </div>
+          <div *ngIf="paginationStart > 1" (click)="skipPagesBackward()" [ngStyle]="handleMid1PaginatorStyles()" (mouseenter)="pageMid1Hover=true" (mouseleave)="pageMid1Hover=false" class="paginator__mid">
+            ...
+          </div>
           <template ngFor let-i [ngForOf]="[paginationStart, paginationEnd] | toRange">
-            <div *ngIf="i" [class.active]="i === paginationModel" (click)="setPage(i, true)" [ngStyle]="handleMid2PaginatorStyles(i)" (mouseenter)="pageMidHover=true" (mouseleave)="pageMidHover=false" class="paginator__mid">{{i}}</div>
+            <div *ngIf="i" [class.active]="i === paginationModel" (click)="setPage(i, true)" [ngStyle]="handleMidPaginatorStyles(i)" (mouseenter)="pageMidHover=true" (mouseleave)="pageMidHover=false" class="paginator__mid">
+              {{i}}
+            </div>
           </template>
-          <div *ngIf="paginationEnd < pageCount" (click)="skipPagesForward()" [ngStyle]="handleMid3PaginatorStyles()" (mouseenter)="pageMid2Hover=true" (mouseleave)="pageMid2Hover=false" class="paginator__mid">...</div>
-          <div *ngIf="paginationStart < paginationEnd" [class.inactive]="paginationModel === pageCount" [ngStyle]="handleMid4PaginatorStyles()" [attr.disabled]="paginationModel === pageCount" (click)="setPage(pageCount, true)" (mouseenter)="pageLastHover=true" (mouseleave)="pageLastHover=false" class="paginator__last">{{'TABLE_PAGING_END'|translate}}</div>
+          <div *ngIf="paginationEnd < pageCount" (click)="skipPagesForward()" [ngStyle]="handleMid2PaginatorStyles()" (mouseenter)="pageMid2Hover=true" (mouseleave)="pageMid2Hover=false" class="paginator__mid">
+            ...
+          </div>
+          <div *ngIf="paginationStart < paginationEnd" [class.inactive]="paginationModel === pageCount" [ngStyle]="handleLastPaginatorStyles()" [attr.disabled]="paginationModel === pageCount" (click)="setPage(pageCount, true)" (mouseenter)="pageLastHover=true" (mouseleave)="pageLastHover=false" class="paginator__last">
+            {{'TABLE_PAGING_END'|translate}}
+          </div>
         </div>
       </div>
     </div>
   `,
-  directives: [FocusMeDirective, LoadingPointsComponent],
-  providers: [TplTableService],
-  pipes: [CheckmarkPipe, ToRangePipe, TranslatePipe]
+  styles: [
+    `
+    /* IE */
+    input[type=text]::-ms-clear { display: none; width: 0; height: 0; }
+    input[type=text]::-ms-reveal { display: none; width: 0; height: 0; }
+
+    /* CHROME */
+    input[type="search"]::-webkit-search-decoration,
+    input[type="search"]::-webkit-search-cancel-button,
+    input[type="search"]::-webkit-search-results-button,
+    input[type="search"]::-webkit-search-results-decoration { display: none; }
+
+    .action {
+      cursor: pointer;
+    }
+    `
+  ],
+  directives: [
+    FocusMeDirective,
+    FORM_DIRECTIVES,
+    LoadingPointsComponent,
+    REACTIVE_FORM_DIRECTIVES
+  ],
+  providers: [
+    TplTableService
+  ],
+  pipes: [
+    CheckmarkPipe,
+    ToRangePipe,
+    TranslatePipe
+  ]
 })
 export class TplTableComponent implements OnDestroy, OnInit {
   ////////////
@@ -157,13 +202,14 @@ export class TplTableComponent implements OnDestroy, OnInit {
   paginationStart: number;
   paginationEnd: number;
   POSSIBLE_CONTENT_TYPES: TplTableColumnContentType[];
-  searchInput: string;
+  searchControl: FormControl;
   searchPlaceholderText: string;
   tempEditColumnCopy: any;
 
   private entriesPerPageCount: number;
   private paginationModel: number;
   private pageCount: number;
+  private searchControlValueChangesSubscription: Subscription;
   private searchModel: string;
 
   // private $log: any;
@@ -188,7 +234,7 @@ export class TplTableComponent implements OnDestroy, OnInit {
       this.tplTableService.addTable(_.cloneDeep(this.opts));
 
       if (this.restoreTableStateBeforeDestroying() && this.pageChange) {
-        this.onPageChange({ new: this.paginationModel, old: this.paginationModel }); //TODO: find a better way
+        this.onPageChange({ new: this.paginationModel, old: this.paginationModel }); //TODO: check if this is necessary
       }
 
       this.refreshPagination();
@@ -208,9 +254,9 @@ export class TplTableComponent implements OnDestroy, OnInit {
   // PUBLIC FUNCTIONS //
   //////////////////////
 
-  /////////////
-  // OUTPUTS //
-  /////////////
+  ////////////
+  // EVENTS //
+  ////////////
   onAdd(index: TplTableCallback) {
     this.add$.next(index);
   }
@@ -239,6 +285,18 @@ export class TplTableComponent implements OnDestroy, OnInit {
     this.pageSizeChange.next(model);
   }
 
+  onResetSearch() {
+    if (this.searchControlValueChangesSubscription) {
+      this.searchControlValueChangesSubscription.unsubscribe();
+    }
+
+    this.enableSearch = false;
+    this.setupSearch();
+    setTimeout(() => { this.enableSearch = true; }, 0);
+
+    this.setSearch(undefined, true);
+  }
+
   onRowClick(index: TplTableCallback) {
     this.rowClick$.next(index);
   }
@@ -246,9 +304,9 @@ export class TplTableComponent implements OnDestroy, OnInit {
   onSearchChange(model: TplTableSearchChangeModel) {
     this.searchChange.next(model);
   }
-  /////////////////
-  // END OUTPUTS //
-  /////////////////
+  ////////////////
+  // END EVENTS //
+  ////////////////
 
   ////////////
   // STYLES //
@@ -265,14 +323,14 @@ export class TplTableComponent implements OnDestroy, OnInit {
     return {};
   }
 
-  handleMidPaginatorStyles(): any {
+  handleMid1PaginatorStyles(): any {
     if (this.pageMid1Hover) {
       return {'color': this.colors.secondaryColor, 'background-color': this.colors.primaryColor};
     }
     return {'color': this.colors.secondaryColor};
   }
 
-  handleMid2PaginatorStyles(page: number): any {
+  handleMidPaginatorStyles(page: number): any { // TODO: not working properly
     if (page !== this.paginationModel && !this.pageMidHover) {
       return {'color': this.colors.secondaryColor};
     }
@@ -284,7 +342,7 @@ export class TplTableComponent implements OnDestroy, OnInit {
     return {'color': this.colors.secondaryFontColor, 'background-color': this.colors.secondaryColor};
   }
 
-  handleMid3PaginatorStyles(): any {
+  handleMid2PaginatorStyles(): any {
     if (this.pageMid2Hover) {
       return {'color': this.colors.secondaryColor, 'background-color': this.colors.primaryColor};
     }
@@ -292,7 +350,7 @@ export class TplTableComponent implements OnDestroy, OnInit {
     return {'color': this.colors.secondaryColor};
   }
 
-  handleMid4PaginatorStyles(): any {
+  handleLastPaginatorStyles(): any {
     if (this.paginationModel !== this.pageCount && !this.pageLastHover) {
       return {'color': this.colors.secondaryColor};
     }
@@ -371,8 +429,8 @@ export class TplTableComponent implements OnDestroy, OnInit {
   }
 
   setEntriesPerPageCount(entriesPerPageCount: number, callback?: boolean, old?: number) {
-    let oldEntriesPerPageCount = old || this.entriesPerPageCount;
-    this.entriesPerPageCount = entriesPerPageCount;
+    let oldEntriesPerPageCount = +old || this.entriesPerPageCount;
+    this.entriesPerPageCount = +entriesPerPageCount;
 
     this.handleEntriesPerPageCount(this.entriesPerPageCount, oldEntriesPerPageCount);
 
@@ -381,7 +439,7 @@ export class TplTableComponent implements OnDestroy, OnInit {
     }
   }
 
-  setPage(page: number, callback?: boolean) {
+  setPage(page: number, callback?: boolean) { // TODO: not working properly, infinite loop
     let old = this.paginationModel;
     this.paginationModel = page;
 
@@ -396,12 +454,7 @@ export class TplTableComponent implements OnDestroy, OnInit {
   setSearch(search: string, callback?: boolean) {
     let old = this.searchModel;
 
-    if (search) {
-      this.searchModel = search;
-      this.searchInput = search;
-    } else {
-      this.searchModel = this.searchInput;
-    }
+    this.searchModel = search;
 
     this.resetEdit();
 
@@ -437,6 +490,9 @@ export class TplTableComponent implements OnDestroy, OnInit {
       // SEARCH //
       ////////////
       this.enableSearch = this.opts.enableSearch !== null && this.opts.enableSearch !== undefined ? this.opts.enableSearch : false;
+      if (this.enableSearch) {
+        this.setupSearch();
+      }
       this.searchPlaceholderText = this.opts.searchPlaceholderText || 'TABLE_SEARCH';
 
 
@@ -526,6 +582,17 @@ export class TplTableComponent implements OnDestroy, OnInit {
     return false;
   }
 
+  private setupSearch() {
+    this.searchControl = new FormControl('');
+
+    this.searchControlValueChangesSubscription = this.searchControl
+      .valueChanges
+      .debounceTime(this.opts.searchDebounceTime || 1000)
+      .subscribe(value => {
+        this.setSearch(value, true);
+      });
+  }
+
   private handleEntriesPerPageCount(newVal: number, oldVal: number) {
     if ((newVal || newVal === 0) && newVal !== oldVal) {
       this.setPage(1);
@@ -533,15 +600,15 @@ export class TplTableComponent implements OnDestroy, OnInit {
   }
 
   private handleSearchChange(newVal: string, oldVal: string) {
-    if ((oldVal === '' || !oldVal) && newVal !== oldVal) { // Search started
+    if ((oldVal === '' || !oldVal) && newVal && newVal.length && newVal !== oldVal) { // Search started
       this.saveTableStateBeforeSearch();
 
       if (this.paginationModel !== 1) {
         this.setPage(1);
       }
-    } else if ((newVal === '' || !newVal)) { // Search ended
+    } else if ((newVal === '' || !newVal) && newVal !== oldVal) { // Search ended
       this.restoreTableStateBeforeSearch();
-    } else if (newVal !== oldVal) { // New search after search started
+    } else if (newVal && oldVal && newVal.length && oldVal.length && newVal !== oldVal) { // New search after search started
       if (this.paginationModel !== 1) {
         this.setPage(1);
       }

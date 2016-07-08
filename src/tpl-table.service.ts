@@ -17,13 +17,13 @@ export class TplTableService {
   addTable(newTableOpts: TplTableOptions) {
     const oldTableOpts = _.cloneDeep(this.tables[newTableOpts.id]);
 
-    // copy pageObj of oldTableOpts to newTableOpts if present
-    newTableOpts.pageObj = {
-      actualPage: oldTableOpts && oldTableOpts.pageObj ? oldTableOpts.pageObj.actualPage : null,
-      actualSearch: oldTableOpts && oldTableOpts.pageObj ? oldTableOpts.pageObj.actualSearch : '',
-      actualEntriesPerPageCount: oldTableOpts && oldTableOpts.pageObj ? oldTableOpts.pageObj.actualEntriesPerPageCount : null,
-      pageBeforeSearch: oldTableOpts && oldTableOpts.pageObj ? oldTableOpts.pageObj.pageBeforeSearch : null,
-      entriesPerPageCountBeforeSearch: oldTableOpts && oldTableOpts.pageObj ? oldTableOpts.pageObj.entriesPerPageCountBeforeSearch : null
+    // copy stateObject of oldTableOpts to newTableOpts if present
+    newTableOpts.stateObject = {
+      actualPage: oldTableOpts && oldTableOpts.stateObject ? oldTableOpts.stateObject.actualPage : null,
+      actualSearch: oldTableOpts && oldTableOpts.stateObject ? oldTableOpts.stateObject.actualSearch : '',
+      actualEntriesPerPageCount: oldTableOpts && oldTableOpts.stateObject ? oldTableOpts.stateObject.actualEntriesPerPageCount : null,
+      pageBeforeSearch: oldTableOpts && oldTableOpts.stateObject ? oldTableOpts.stateObject.pageBeforeSearch : null,
+      entriesPerPageCountBeforeSearch: oldTableOpts && oldTableOpts.stateObject ? oldTableOpts.stateObject.entriesPerPageCountBeforeSearch : null
     };
 
     this.tables[newTableOpts.id] = newTableOpts;
@@ -67,9 +67,9 @@ export class TplTableService {
   // STATE SAVING AND RESTORING //
   ////////////////////////////////
   setStateBeforeDetail(id: string, state: TplTableStateBeforeDetail) {
-    this.tables[id].pageObj.actualPage = state.actualPage;
-    this.tables[id].pageObj.actualSearch = state.actualSearch;
-    this.tables[id].pageObj.actualEntriesPerPageCount = state.actualEntriesPerPageCount;
+    this.tables[id].stateObject.actualPage = state.actualPage;
+    this.tables[id].stateObject.actualSearch = state.actualSearch;
+    this.tables[id].stateObject.actualEntriesPerPageCount = state.actualEntriesPerPageCount;
   }
 
   getStateBeforeDetail(id: string): TplTableStateBeforeDetail {
@@ -77,15 +77,15 @@ export class TplTableService {
       return null;
     }
     return {
-      actualPage: this.tables[id].pageObj ? this.tables[id].pageObj.actualPage : null,
-      actualSearch: this.tables[id].pageObj ? this.tables[id].pageObj.actualSearch : '',
-      actualEntriesPerPageCount: this.tables[id].pageObj ? this.tables[id].pageObj.actualEntriesPerPageCount : null
+      actualPage: this.tables[id].stateObject ? this.tables[id].stateObject.actualPage : null,
+      actualSearch: this.tables[id].stateObject ? this.tables[id].stateObject.actualSearch : '',
+      actualEntriesPerPageCount: this.tables[id].stateObject ? this.tables[id].stateObject.actualEntriesPerPageCount : null
     };
   }
 
   setStateBeforeSearch(id: string, stateBeforeSearch: TplTableStateBeforeSearch) {
-    this.tables[id].pageObj.pageBeforeSearch = stateBeforeSearch.pageBeforeSearch;
-    this.tables[id].pageObj.entriesPerPageCountBeforeSearch = stateBeforeSearch.entriesPerPageCountBeforeSearch;
+    this.tables[id].stateObject.pageBeforeSearch = stateBeforeSearch.pageBeforeSearch;
+    this.tables[id].stateObject.entriesPerPageCountBeforeSearch = stateBeforeSearch.entriesPerPageCountBeforeSearch;
   }
 
   getStateBeforeSearch(id: string): TplTableStateBeforeSearch {
@@ -93,8 +93,8 @@ export class TplTableService {
       return null;
     }
     return {
-      pageBeforeSearch: this.tables[id].pageObj ? this.tables[id].pageObj.pageBeforeSearch : null,
-      entriesPerPageCountBeforeSearch: this.tables[id].pageObj ? this.tables[id].pageObj.entriesPerPageCountBeforeSearch : null
+      pageBeforeSearch: this.tables[id].stateObject ? this.tables[id].stateObject.pageBeforeSearch : null,
+      entriesPerPageCountBeforeSearch: this.tables[id].stateObject ? this.tables[id].stateObject.entriesPerPageCountBeforeSearch : null
     };
   }
   ////////////////////////////////////
