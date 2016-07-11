@@ -5,7 +5,7 @@ import { TranslatePipe } from 'ng2-translate/ng2-translate';
 import { Subject, Subscription } from 'rxjs/Rx';
 
 import { FocusMeDirective } from './helper';
-import { TplTableCallback, TplTableColors, TplTableColumn, TplTableColumnContentType, TplTableOptions, TplTablePageChangeModel, TplTablePageSizeChangeModel, TplTableRow, TplTableSearchChangeModel, TplTableStateBeforeDetail, TplTableStateBeforeSearch } from './interfaces';
+import { TplTableCallback, TplTableCellEditModel, TplTableColors, TplTableColumn, TplTableColumnContentType, TplTableOptions, TplTablePageChangeModel, TplTablePageSizeChangeModel, TplTableRow, TplTableSearchChangeModel, TplTableStateBeforeDetail, TplTableStateBeforeSearch } from './interfaces';
 import { LoadingPointsComponent } from './loading-points';
 import { CheckmarkPipe, ToRangePipe } from './pipes';
 import { TplTableService } from './tpl-table.service';
@@ -57,25 +57,30 @@ let vm: TplTableComponent;
           <template ngFor let-row [ngForOf]="entries" let-rowindex="index">
             <tr *ngIf="entries && entries.length && !opts.loading && row">
               <template ngFor let-cell [ngForOf]="entrieValuesOrder" let-cellindex="index">
-                <td (mouseleave)="hover=false" (mouseenter)="hover=true" [ngStyle]="{'background-color': editableCell[0]===rowindex && colors.primaryColor, 'color': editableCell[0]===rowindex && colors.primaryFontColor}" [class.clickable]="rowClick$?.observers?.length" [class.notclickable]="!rowClick$?.observers?.length || editableCell[0]!==null" (click)="!rowClick$?.observers?.length || editableCell[0]!==null || onRowClick({$index: rowindex})">
+                <td (mouseleave)="hover=false" (mouseenter)="hover=true" [ngStyle]="{'background-color': editableCell[0] === rowindex && colors.primaryColor, 'color': editableCell[0] === rowindex && colors.primaryFontColor}" [class.clickable]="rowClick$?.observers?.length" [class.notclickable]="!rowClick$?.observers?.length || editableCell[0] !== null" (click)="!rowClick$?.observers?.length || editableCell[0] !== null || onRowClick({$index: rowindex})">
                   <div *ngIf="cell && columns && (!columns[cellindex].ngIf || columns[cellindex].ngIf())">
                     <div *ngIf="(editableCell[0]!==rowindex || editableCell[1]!==cellindex || !columns[cellindex].editable)">
                       <div *ngIf="columns[cellindex].content === POSSIBLE_CONTENT_TYPES[0]" class="cell__text"><span *ngIf="!columns[cellindex].translateValues">{{(cell.indexOf('.') !== -1 ? getCellValue(row, cell) : row[cell]) | checkmark}}</span><span *ngIf="columns[cellindex].translateValues">{{((columns[cellindex].translateValuePrefix ? columns[cellindex].translateValuePrefix : '') + (cell.indexOf('.') !== -1 ? getCellValue(row, cell) : row[cell])) | translate}}</span></div>
                       <div *ngIf="columns[cellindex].content === POSSIBLE_CONTENT_TYPES[1]" class="cell__image"><img [src]="row[cell]" [ngStyle]="{'max-width': columns[cellindex].maxWidth ? columns[cellindex].maxWidth : '250px', 'max-height': columns[cellindex].maxHeight ? columns[cellindex].maxHeight : '250px'}"/></div>
                     </div>
-                    <!---<span *ngIf="editableCell[1]===cellindex && editableCell[0]===rowindex && columns[cellindex].editable">
-                      <input type="text" [ngModel]="tempEditColumnCopy[cell]" [focus-me=]"editableCell[1]===cellindex && editableCell[0]===rowindex" (click)="$event.stopPropagation()" (keyup)="$event.keyCode == 13 && saveEditedColumn()" class="edit-input"/>
+                    <span *ngIf="editableCell[1] === cellindex && editableCell[0] === rowindex && columns[cellindex].editable">
+                      <input type="text" [(ngModel)]="tmpEditedCellData[cell]" [focusMe]="editableCell[1] === cellindex && editableCell[0] === rowindex" (click)="$event.stopPropagation()" (keyup.enter)="saveEditedCellData()" class="edit-input">
                     </span>
-                    <div *ngIf="columns[cellindex].editable && hover" (click)="toggleEditCell($event, rowindex, cellindex)" [ngStyle]="{'background-color': hoverEdit && colors.primaryColor, 'color': hoverEdit && colors.primaryFontColor}" (mouseenter)="hoverEdit=true" (mouseleave)="hoverEdit=false" class="cell-controll edit">
-                      <div *ngIf="hover" class="iconfont tbl-iconfont-pen"></div>
+                    <div *ngIf="columns[cellindex].editable && hover" (click)="toggleCellEditing($event, rowindex, cellindex)" [ngStyle]="{'background-color': hoverEdit && colors.primaryColor, 'color': hoverEdit && colors.primaryFontColor}" (mouseenter)="hoverEdit=true" (mouseleave)="hoverEdit=false" class="cell-controll edit">
+                      <div class="iconfont tbl-iconfont-pen"></div>
                     </div>
-                    <div *ngIf="columns[cellindex].editable && editableCell[0]===rowindex && editableCell[1]===cellindex" [ngStyle]="{'background-color': colors.secondaryColor, 'color': colors.secondaryFontColor}" (click)="hover=false;saveEditedColumn()" class="cell-controll save">
-                      <div class="iconfont iconfont-check"></div>
-                    </div>--->
+                    <div *ngIf="columns[cellindex].editable && editableCell[0] === rowindex && editableCell[1] === cellindex">
+                      <div [ngStyle]="{'background-color': colors.secondaryColor, 'color': colors.secondaryFontColor}" (click)="hover=false; saveEditedCellData()" class="cell-controll save">
+                        <div class="iconfont tbl-iconfont-check"></div>
+                      </div>
+                      <div [ngStyle]="{'background-color': colors.secondaryColor, 'color': colors.secondaryFontColor}" (click)="hover=false; resetInlineCellEdit()" class="cell-controll">
+                        <div class="iconfont tbl-iconfont-cancel"></div>
+                      </div>
+                    </div>
                   </div>
                 </td>
               </template>
-              <td *ngIf="enableActionsColumn" class="edit"><span *ngIf="assign$?.observers?.length" (click)="!assign$?.observers?.length || editableCell[0]!==null || onAssign({$index: rowindex})" class="tbl-iconfont tbl-iconfont-export"></span><span *ngIf="edit$?.observers?.length" (click)="!edit$?.observers?.length || editableCell[0]!==null || onEdit({$index: rowindex})" class="tbl-iconfont tbl-iconfont-pen"></span><span *ngIf="delete$?.observers?.length" (click)="!delete$?.observers?.length || editableCell[0]!==null || onDelete({$index: rowindex})" class="tbl-iconfont tbl-iconfont-delete"></span><span *ngIf="add$?.observers?.length" (click)="!add$?.observers?.length || editableCell[0] !== null || onAdd({$index: rowindex})" class="icon icon-cal-button"></span><span *ngIf="confirm$?.observers?.length" (click)="!confirm$?.observers?.length || editableCell[0]!=null || onConfirm({$index: rowindex})" class="iconfont iconfont-check"></span>
+              <td *ngIf="enableActionsColumn && (assign$?.observers?.length || edit$?.observers?.length || delete$?.observers?.length || add$?.observers?.length || confirm$?.observers?.length)" class="edit"><span *ngIf="assign$?.observers?.length" (click)="!assign$?.observers?.length || editableCell[0]!==null || onAssign({$index: rowindex})" class="tbl-iconfont tbl-iconfont-export"></span><span *ngIf="edit$?.observers?.length" (click)="!edit$?.observers?.length || editableCell[0]!==null || onEdit({$index: rowindex})" class="tbl-iconfont tbl-iconfont-pen"></span><span *ngIf="delete$?.observers?.length" (click)="!delete$?.observers?.length || editableCell[0]!==null || onDelete({$index: rowindex})" class="tbl-iconfont tbl-iconfont-delete"></span><span *ngIf="add$?.observers?.length" (click)="!add$?.observers?.length || editableCell[0] !== null || onAdd({$index: rowindex})" class="icon icon-cal-button"></span><span *ngIf="confirm$?.observers?.length" (click)="!confirm$?.observers?.length || editableCell[0]!=null || onConfirm({$index: rowindex})" class="iconfont tbl-iconfont-check"></span>
               </td>
             </tr>
           </template>
@@ -83,21 +88,21 @@ let vm: TplTableComponent;
       </table>
       <div *ngIf="enablePagination && paginationModel && paginationEnd !== 1" class="bottom-row">
         <div class="paginator">
-          <div *ngIf="paginationStart < paginationEnd" [class.inactive]="paginationModel === 1" [ngStyle]="handleFirstPaginatorStyles()" [attr.disabled]="paginationModel === 1" (click)="setPage(1, true)" (mouseenter)="pageFirstHover=true" (mouseleave)="pageFirstHover=false" class="paginator__first">
+          <div *ngIf="paginationStart < paginationEnd" [class.inactive]="paginationModel === 1" [ngStyle]="handleFirstPaginatorStyles()" [attr.disabled]="paginationModel === 1" (click)="paginationModel !== 1 && setPage(1, true)" (mouseenter)="onFirstPaginatorMouseEnter()" (mouseleave)="onFirstPaginatorMouseLeave()" class="paginator__first">
             {{'TABLE_PAGING_START'|translate}}
           </div>
-          <div *ngIf="paginationStart > 1" (click)="skipPagesBackward()" [ngStyle]="handleMid1PaginatorStyles()" (mouseenter)="pageMid1Hover=true" (mouseleave)="pageMid1Hover=false" class="paginator__mid">
+          <div *ngIf="paginationStart > 1" (click)="skipPagesBackward()" [ngStyle]="handleMid1PaginatorStyles()" (mouseenter)="onMid1PaginatorMouseEnter()" (mouseleave)="onMid1PaginatorMouseLeave()" class="paginator__mid">
             ...
           </div>
           <template ngFor let-i [ngForOf]="[paginationStart, paginationEnd] | toRange">
-            <div *ngIf="i" [class.active]="i === paginationModel" (click)="setPage(i, true)" [ngStyle]="handleMidPaginatorStyles(i)" (mouseenter)="pageMidHover=true" (mouseleave)="pageMidHover=false" class="paginator__mid">
+            <div *ngIf="i" [class.active]="i === paginationModel" (click)="i !== paginationModel && setPage(i, true)" [ngStyle]="handleMidPaginatorStyles(i)" (mouseenter)="onMidPaginatorMouseEnter()" (mouseleave)="onMidPaginatorMouseLeave()" class="paginator__mid">
               {{i}}
             </div>
           </template>
-          <div *ngIf="paginationEnd < pageCount" (click)="skipPagesForward()" [ngStyle]="handleMid2PaginatorStyles()" (mouseenter)="pageMid2Hover=true" (mouseleave)="pageMid2Hover=false" class="paginator__mid">
+          <div *ngIf="paginationEnd < pageCount" (click)="skipPagesForward()" [ngStyle]="handleMid2PaginatorStyles()" (mouseenter)="onMid2PaginatorMouseEnter()" (mouseleave)="onMid2PaginatorMouseLeave()" class="paginator__mid">
             ...
           </div>
-          <div *ngIf="paginationStart < paginationEnd" [class.inactive]="paginationModel === pageCount" [ngStyle]="handleLastPaginatorStyles()" [attr.disabled]="paginationModel === pageCount" (click)="setPage(pageCount, true)" (mouseenter)="pageLastHover=true" (mouseleave)="pageLastHover=false" class="paginator__last">
+          <div *ngIf="paginationStart < paginationEnd" [class.inactive]="paginationModel === pageCount" [ngStyle]="handleLastPaginatorStyles()" [attr.disabled]="paginationModel === pageCount" (click)="paginationModel < pageCount && setPage(pageCount, true)" (mouseenter)="onLastPaginatorMouseEnter()" (mouseleave)="onLastPaginatorMouseLeave()" class="paginator__last">
             {{'TABLE_PAGING_END'|translate}}
           </div>
         </div>
@@ -161,6 +166,8 @@ export class TplTableComponent implements OnDestroy, OnInit {
   // OBSERVABLES //
   /////////////////
 
+  inlineCellEdit$: Subject<TplTableCellEditModel>;
+
   ///////////////////////////////
   // ACTIONS IN ACTIONS COLUMN //
   ///////////////////////////////
@@ -204,15 +211,14 @@ export class TplTableComponent implements OnDestroy, OnInit {
   POSSIBLE_CONTENT_TYPES: TplTableColumnContentType[];
   searchControl: FormControl;
   searchPlaceholderText: string;
-  tempEditColumnCopy: any;
+  tmpEditedCellData: TplTableRow;
 
   private entriesPerPageCount: number;
+  private log: Console;
   private paginationModel: number;
   private pageCount: number;
   private searchControlValueChangesSubscription: Subscription;
   private searchModel: string;
-
-  // private $log: any;
 
   constructor(
     // @Inject(DOCUMENT) private $document: any,
@@ -220,7 +226,7 @@ export class TplTableComponent implements OnDestroy, OnInit {
   ) {
     vm = this;
 
-    // this.$log = console.log; // TODO: check if there is a better solution, maybe a native angular service; otherwise write your own service
+    this.log = console; // TODO: check if there is a better solution, maybe a native angular service; otherwise write your own service
 
     this.editableCell = [null, null];
     this.POSSIBLE_CONTENT_TYPES = [TplTableColumnContentType.TEXT, TplTableColumnContentType.IMAGE];
@@ -238,7 +244,7 @@ export class TplTableComponent implements OnDestroy, OnInit {
       }
 
       this.refreshPagination();
-      this.resetEdit();
+      this.resetInlineCellEdit();
     }
   }
 
@@ -277,11 +283,15 @@ export class TplTableComponent implements OnDestroy, OnInit {
     this.edit$.next(index);
   }
 
-  onPageChange(model: TplTablePageChangeModel) {
+  private onInlineCellEdit(model: TplTableCellEditModel) {
+    this.inlineCellEdit$.next(model);
+  }
+
+  private onPageChange(model: TplTablePageChangeModel) {
     this.pageChange.next(model);
   }
 
-  onPageSizeChange(model: TplTablePageSizeChangeModel) {
+  private onPageSizeChange(model: TplTablePageSizeChangeModel) {
     this.pageSizeChange.next(model);
   }
 
@@ -301,12 +311,68 @@ export class TplTableComponent implements OnDestroy, OnInit {
     this.rowClick$.next(index);
   }
 
-  onSearchChange(model: TplTableSearchChangeModel) {
+  private onSearchChange(model: TplTableSearchChangeModel) {
     this.searchChange.next(model);
   }
   ////////////////
   // END EVENTS //
   ////////////////
+
+  //////////////////
+  // MOUSE EVENTS //
+  //////////////////
+  onFirstPaginatorMouseEnter() {
+    this.log.info('onFirstPaginatorMouseEnter');
+    this.pageFirstHover = true;
+  }
+
+  onFirstPaginatorMouseLeave() {
+    this.log.info('onFirstPaginatorMouseLeave');
+    this.pageFirstHover = false;
+  }
+
+  onMid1PaginatorMouseEnter() {
+    this.log.info('onMid1PaginatorMouseEnter');
+    this.pageMid1Hover = true;
+  }
+
+  onMid1PaginatorMouseLeave() {
+    this.log.info('onMid1PaginatorMouseLeave');
+    this.pageMid1Hover = false;
+  }
+
+  onMidPaginatorMouseEnter() {
+    this.log.info('onMidPaginatorMouseEnter');
+    this.pageMidHover = true;
+  }
+
+  onMidPaginatorMouseLeave() {
+    this.log.info('onMidPaginatorMouseLeave');
+    this.pageMidHover = false;
+  }
+
+  onMid2PaginatorMouseEnter() {
+    this.log.info('onMid2PaginatorMouseEnter');
+    this.pageMid2Hover = true;
+  }
+
+  onMid2PaginatorMouseLeave() {
+    this.log.info('onMid2PaginatorMouseLeave');
+    this.pageMid2Hover = false;
+  }
+
+  onLastPaginatorMouseEnter() {
+    this.log.info('onLastPaginatorMouseEnter');
+    this.pageLastHover = true;
+  }
+
+  onLastPaginatorMouseLeave() {
+    this.log.info('onLastPaginatorMouseLeave');
+    this.pageLastHover = false;
+  }
+  //////////////////////
+  // END MOUSE EVENTS //
+  //////////////////////
 
   ////////////
   // STYLES //
@@ -332,11 +398,11 @@ export class TplTableComponent implements OnDestroy, OnInit {
 
   handleMidPaginatorStyles(page: number): any { // TODO: not working properly
     if (page !== this.paginationModel && !this.pageMidHover) {
-      return {'color': this.colors.secondaryColor};
+      return {'color': this.colors.secondaryColor, 'cursor': 'pointer'};
     }
 
     if (page !== this.paginationModel && this.pageMidHover) {
-      return {'background-color': this.colors.primaryColor, 'color': this.colors.secondaryColor};
+      return {'background-color': this.colors.primaryColor, 'color': this.colors.secondaryColor, 'cursor': 'pointer'};
     }
 
     return {'color': this.colors.secondaryFontColor, 'background-color': this.colors.secondaryColor};
@@ -365,44 +431,45 @@ export class TplTableComponent implements OnDestroy, OnInit {
   // END STYLES //
   ////////////////
 
-  /* toggleEditCell(event: Event, rowIndex: number, columnIndex: number) {
+  ////////////////////
+  // INLINE EDITING //
+  ////////////////////
+  toggleCellEditing(event: Event, rowIndex: number, columnIndex: number) {
     event.stopPropagation();
 
     this.editableCell[0] = rowIndex;
     this.editableCell[1] = columnIndex;
 
-    this.tempEditColumnCopy = angular.copy(vm.entries[rowIndex]);
-    angular.forEach(this.tempEditColumnCopy, (value, key) => {
-      if (value === '-' || value === '--' || value === '---') {
-        this.tempEditColumnCopy[key] = null;
+    this.tmpEditedCellData = _.cloneDeep(this.entries[rowIndex]);
+    for (let key in this.tmpEditedCellData) {
+      if (this.tmpEditedCellData[key] === '-' || this.tmpEditedCellData[key] === '--' || this.tmpEditedCellData[key] === '---') {
+        this.tmpEditedCellData[key] = null;
       }
-    });
-
-    this.$document.find('body').bind('click', this.resetEdit);
+    }
   }
 
-  saveEditedColumn() {
-    this.entries[this.editableCell[0]] = this.tempEditColumnCopy;
+  saveEditedCellData() {
+    const OLD_ROW = this.entries[this.editableCell[0]];
+    const NEW_ROW = this.tmpEditedCellData;
 
-    this.$rootScope.$emit('tpltable.datarow.edited.' + this.id,
-      this.editableCell[0],
-      this.entries[this.editableCell[0]]
-    );
+    this.onInlineCellEdit({rowIndex: this.editableCell[0], columnIndex: this.editableCell[1], newValue: NEW_ROW, oldValue: OLD_ROW});
 
-    this.editableCell[0] = null;
-    this.editableCell[1] = null;
-  } */
+    this.resetInlineCellEdit();
+  }
+  ////////////////////////
+  // END INLINE EDITING //
+  ////////////////////////
 
   getCellValue(row: TplTableRow, cell: string): any {
     const LEVELS: string[] = cell.split('.');
-    const LEVELS_MAP: { [levelNumber: number]: () => any } = {
-      2: () => {
+    const LEVELS_MAP: { [levelNumber: number]: () => {} } = {
+      2: (): any => {
         return row[LEVELS[0]] ? row[LEVELS[0]][LEVELS[1]] : '-';
       },
-      3: () => {
+      3: (): any => {
         return row[LEVELS[0]] ? (row[LEVELS[0]][LEVELS[1]] ? row[LEVELS[0]][LEVELS[1]][LEVELS[2]] : '-') : '-';
       },
-      4: () => {
+      4: (): any => {
         return row[LEVELS[0]] ? (row[LEVELS[0]][LEVELS[1]] ? (row[LEVELS[0]][LEVELS[1]][LEVELS[2]] ? row[LEVELS[0]][LEVELS[1]][LEVELS[2]][LEVELS[3]] : '-') : '-') : '-';
       }
     };
@@ -410,6 +477,9 @@ export class TplTableComponent implements OnDestroy, OnInit {
     return LEVELS_MAP[LEVELS.length] ? LEVELS_MAP[LEVELS.length]() : '';
   }
 
+  ////////////////
+  // PAGINATION //
+  ////////////////
   skipPagesForward() {
     let calculatedPage: number = vm.paginationModel + MAX_PAGINATION_BUTTONS;
     if (calculatedPage > vm.pageCount) {
@@ -439,24 +509,27 @@ export class TplTableComponent implements OnDestroy, OnInit {
     }
   }
 
-  setPage(page: number, callback?: boolean) { // TODO: not working properly, infinite loop
+  setPage(page: number, callback?: boolean) {
     let old = this.paginationModel;
     this.paginationModel = page;
 
     this.refreshPagination();
-    this.resetEdit();
+    this.resetInlineCellEdit();
 
     if (callback && this.pageChange && this.paginationModel !== old) {
       this.onPageChange({new: this.paginationModel, old: old});
     }
   }
+  ////////////////////
+  // END PAGINATION //
+  ////////////////////
 
   setSearch(search: string, callback?: boolean) {
     let old = this.searchModel;
 
     this.searchModel = search;
 
-    this.resetEdit();
+    this.resetInlineCellEdit();
 
     this.handleSearchChange(this.searchModel, old);
 
@@ -464,6 +537,7 @@ export class TplTableComponent implements OnDestroy, OnInit {
       this.onSearchChange({new: this.searchModel, old: old});
     }
   }
+
   //////////////////////////
   // END PUBLIC FUNCTIONS //
   //////////////////////////
@@ -478,7 +552,7 @@ export class TplTableComponent implements OnDestroy, OnInit {
       // MAIN //
       //////////
       if (!this.opts.id || !this.opts.id.length) {
-        console.error('The option id is required');
+        this.log.error('The option id is required');
         return false;
       }
       this.id = this.opts.id;
@@ -515,7 +589,7 @@ export class TplTableComponent implements OnDestroy, OnInit {
       this.noDataAvailableText = this.opts.noDataAvailableText || 'No Data Available ...';
 
       if (!this.opts.initialColumns || !this.opts.initialColumns.length) {
-        console.error('The option initialColumns is required');
+        this.log.error('The option initialColumns is required');
         return false;
       }
       this.columns = this.opts.initialColumns;
@@ -526,13 +600,13 @@ export class TplTableComponent implements OnDestroy, OnInit {
       });
 
       if (!this.opts.initialEntries || !this.opts.initialEntries.length) {
-        console.error('The option initialEntries is required');
+        this.log.error('The option initialEntries is required');
         return false;
       }
       this.entries = this.opts.initialEntries;
 
       if (!this.opts.initialEntrieValuesOrder || !this.opts.initialEntrieValuesOrder.length) {
-        console.error('The option initialEntrieValuesOrder is required');
+        this.log.error('The option initialEntrieValuesOrder is required');
         return false;
       }
       this.entrieValuesOrder = this.opts.initialEntrieValuesOrder;
@@ -561,6 +635,7 @@ export class TplTableComponent implements OnDestroy, OnInit {
       this.confirm$ = new Subject<TplTableCallback>();
       this.delete$ = new Subject<TplTableCallback>();
       this.edit$ = new Subject<TplTableCallback>();
+      this.inlineCellEdit$ = new Subject<TplTableCellEditModel>();
       this.rowClick$ = new Subject<TplTableCallback>();
       /////////////////////
       // END OBSERVABLES //
@@ -678,31 +753,44 @@ export class TplTableComponent implements OnDestroy, OnInit {
   }
 
   private refreshPagination() {
+    let paginationStart: number;
+    let paginationEnd: number;
+
     let calculatedStart: number = vm.paginationModel - ((MAX_PAGINATION_BUTTONS - 1) / 2);
     if (calculatedStart > 0) {
-      vm.paginationStart = calculatedStart;
+      paginationStart = calculatedStart;
     } else {
-      vm.paginationStart = 1;
+      paginationStart = 1;
     }
 
     let calculatedEnd: number = vm.paginationModel + ((MAX_PAGINATION_BUTTONS - 1) / 2);
-    if (calculatedEnd <= vm.pageCount && (calculatedEnd - vm.paginationStart) === 5) {
-      vm.paginationEnd = calculatedEnd;
-    } else if (vm.paginationStart + (MAX_PAGINATION_BUTTONS - 1) <= vm.pageCount) {
-      vm.paginationEnd = vm.paginationStart + (MAX_PAGINATION_BUTTONS - 1);
+    if (calculatedEnd <= vm.pageCount && (calculatedEnd - paginationStart) === 5) {
+      paginationEnd = calculatedEnd;
+    } else if (paginationStart + (MAX_PAGINATION_BUTTONS - 1) <= vm.pageCount) {
+      paginationEnd = paginationStart + (MAX_PAGINATION_BUTTONS - 1);
     } else {
-      vm.paginationEnd = vm.pageCount;
+      paginationEnd = vm.pageCount;
+    }
+
+    if (paginationStart !== vm.paginationStart) {
+      vm.paginationStart = paginationStart;
+    }
+
+    if (paginationEnd !== vm.paginationEnd) {
+      vm.paginationEnd = paginationEnd;
     }
   }
 
-  private resetEdit(event?: Event) {
+  private resetInlineCellEdit(event?: Event) {
     setTimeout(() => { // TODO: check if there is a native angular service for that
-      /* vm.editableCell[0] = null;
-      vm.editableCell[1] = null; */
-      if (event) {
-        event.stopPropagation();
-      }
-      // vm.$document.find('body').unbind('click', vm.resetEdit); // TODO: find out how to do this in angular 2
+      this.editableCell[0] = null;
+      this.editableCell[1] = null;
+
+      this.tmpEditedCellData = null;
+
+      // if (event) { // TODO: check if this is necessary
+      //   event.stopPropagation();
+      // }
     }, 0);
   }
 
@@ -743,7 +831,7 @@ export class TplTableComponent implements OnDestroy, OnInit {
     vm.pageCount = pageCount;
 
     vm.refreshPagination();
-    vm.resetEdit();
+    vm.resetInlineCellEdit();
   }
   /////////////////////////////////
   // END CALLED BY TABLE SERVICE //

@@ -17,6 +17,7 @@ export class RootComponent implements AfterViewInit, OnDestroy, OnInit {
   options: TplTableOptions;
 
   private deleteSubscription: Subscription;
+  private inlineEditSubscription: Subscription;
   private rowClickSubscription: Subscription;
 
   @ViewChild(TplTableComponent)
@@ -28,7 +29,8 @@ export class RootComponent implements AfterViewInit, OnDestroy, OnInit {
       initialColumns: [
         {
           name: 'Vorname',
-          translateColumn: true
+          translateColumn: true,
+          editable: true
         }
       ],
       initialEntrieValuesOrder: ['firstname'],
@@ -39,7 +41,7 @@ export class RootComponent implements AfterViewInit, OnDestroy, OnInit {
       ],
       enableActionsColumn: true,
       enablePagination: true,
-      initialPageCount: 2,
+      initialPageCount: 6,
       enableSearch: true,
       loading: true
     };
@@ -63,6 +65,14 @@ export class RootComponent implements AfterViewInit, OnDestroy, OnInit {
             console.log('delete row', data.$index);
           });
       }
+
+      if (this.tplTableComponent.inlineCellEdit$) {
+        this.inlineEditSubscription = this.tplTableComponent
+          .inlineCellEdit$
+          .subscribe(data => {
+            console.log(data);
+          });
+      }
     }, 0);
 
     setTimeout(() => {
@@ -77,6 +87,10 @@ export class RootComponent implements AfterViewInit, OnDestroy, OnInit {
 
     if (this.deleteSubscription) {
       this.deleteSubscription.unsubscribe();
+    }
+
+    if (this.inlineEditSubscription) {
+      this.inlineEditSubscription.unsubscribe();
     }
   }
 

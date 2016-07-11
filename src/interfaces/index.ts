@@ -1,4 +1,5 @@
 export * from './tpl-table-callback.interface';
+export * from './tpl-table-cell-edit-model.interface';
 export * from './tpl-table-colors.interface';
 export * from './tpl-table-column.interface';
 export * from './tpl-table-column-content-type.interface';

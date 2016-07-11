@@ -182,7 +182,7 @@ tpl-table {
       &__mid {
         border-right: 1px solid $border-color-grey;
 
-        cursor: pointer;
+        // cursor: pointer;
 
         &.active {
           background-color: $color-blue-dark;
@@ -215,7 +215,9 @@ tpl-table {
 
   width: 100%;
 
-  border: 1px solid $border-color-grey;
+  border-top: 1px solid $border-color-grey;
+  border-right: 1px solid $border-color-grey;
+  border-left: 1px solid $border-color-grey;
 
   &__head {
     border: 1px solid $border-color-grey;
@@ -228,7 +230,7 @@ tpl-table {
 
 
       th {
-        border: 1px solid $border-color-grey;
+        /* border: 1px solid $border-color-grey; */
         line-height: 36px;
         height: 36px;
         padding: 0 10px;
@@ -266,6 +268,7 @@ tpl-table {
 
       td {
         border: 1px solid $border-color-grey;
+
         line-height: 36px;
         height: 36px;
         padding: 0 10px;
@@ -289,8 +292,10 @@ tpl-table {
 
         .cell-controll {
           margin: auto;
+
           width: 36px;
           height: 36px;
+
           cursor: pointer;
           position: absolute;
           right: 0;
@@ -308,6 +313,8 @@ tpl-table {
           }
 
           &.save {
+            right: 38px;
+
             background-color: $color-blue-dark;
             border-left: 1px solid $border-color-grey;
           }

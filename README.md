@@ -55,6 +55,7 @@ export class YourComponent implements AfterViewInit, OnDestroy, OnInit {
   options: TplTableOptions;
 
   private deleteSubscription: Subscription;
+  private inlineEditSubscription: Subscription;
   private rowClickSubscription: Subscription;
 
   @ViewChild(TplTableComponent)
@@ -66,7 +67,8 @@ export class YourComponent implements AfterViewInit, OnDestroy, OnInit {
       initialColumns: [
         {
           name: 'Vorname',
-          translateColumn: true
+          translateColumn: true,
+          editable: true
         }
       ],
       initialEntrieValuesOrder: ['firstname'],
@@ -77,7 +79,7 @@ export class YourComponent implements AfterViewInit, OnDestroy, OnInit {
       ],
       enableActionsColumn: true,
       enablePagination: true,
-      initialPageCount: 1,
+      initialPageCount: 6,
       enableSearch: true
     };
   }
@@ -101,6 +103,14 @@ export class YourComponent implements AfterViewInit, OnDestroy, OnInit {
           });
       }
 
+      if (this.tplTableComponent.inlineCellEdit$) {
+        this.inlineEditSubscription = this.tplTableComponent
+          .inlineCellEdit$
+          .subscribe(data => {
+            console.log(data);
+          });
+      }
+
     }, 0);
 
     setTimeout(() => {
@@ -115,6 +125,10 @@ export class YourComponent implements AfterViewInit, OnDestroy, OnInit {
 
     if (this.deleteSubscription) {
       this.deleteSubscription.unsubscribe();
+    }
+
+    if (this.inlineEditSubscription) {
+      this.inlineEditSubscription.unsubscribe();
     }
   }
 
@@ -184,21 +198,22 @@ If you want to respond to events, you can use a mix of outputs and observables:
 | confirm action | Observable | confirm$.subscribe((index: number) => {}) |
 | delete action | Observable | delete$.subscribe((index: number) => {}) |
 | edit action | Observable | edit$.subscribe((index: number) => {}) |
+| inline cell edit | Observable | inlineCellEdit$.subscribe((rowIndex: number, columnIndex: number, newValue: TplTableRow, oldValue: TplTableRow) => {}) |
 
 
 ## TplTableColumn:
 | Property name | Description | Type | Default | Required |
 |---------------|-------------|------|---------|----------|
 | name | name of the property | string | - | &#10003; |
-| content | type of the property | TplTableColumnContentType (.TEXT or .IMAGE) | TplTableColumnContentType.TEXT | &#x2717; |
-| ngIf | toggles rendering of the column | boolean | true | &#x2717; |
-| editable | toggles state of the inline edit mode | boolean | false | &#x2717; |
-| unit | unknown | any | null | &#x2717; |
-| translateColumn | toggles translating of column name | boolean | false | &#x2717; |
-| translateValues | toggles translating of column values | boolean | false | &#x2717; |
-| translateValuePrefix | prefix for column value translation | string | '' | &#x2717; |
-| maxWidth | maximum width for cells with content type 'IMAGE' | string | '250px' | &#x2717; |
-| maxHeight | maximum height for cells with content type 'IMAGE' | string | '250px' | &#x2717; |
+| content | type of the property | TplTableColumnContentType (.TEXT or .IMAGE) | TplTableColumnContentType.TEXT | - |
+| ngIf | toggles rendering of the column | boolean | true | - |
+| editable | toggles state of the inline edit mode | boolean | false | - |
+| unit | unknown | any | null | - |
+| translateColumn | toggles translating of column name | boolean | false | - |
+| translateValues | toggles translating of column values | boolean | false | - |
+| translateValuePrefix | prefix for column value translation | string | '' | - |
+| maxWidth | maximum width for cells with content type 'IMAGE' | string | '250px' | - |
+| maxHeight | maximum height for cells with content type 'IMAGE' | string | '250px' | - |
 
 
 
@@ -210,6 +225,7 @@ If you want to respond to events, you can use a mix of outputs and observables:
 
 
 # TODO
+- Expose observables via service?
 
 ## Angular 2 Customization
 - Focus me directive implementation
