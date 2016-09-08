@@ -74,11 +74,11 @@
       </td>
 
       <td ng-if="vm.opts.showActionsColumn" class="edit">
-        <span ng-if="vm.opts.actions.assign.function && vm.opts.actions.assign.if($index)" class="tbl-iconfont tbl-iconfont-export" ng-click="(row.meta.disable && onDisabledRowClick($event, row)) || row.meta.disable !vm.opts.actions.assign.function || vm.editableCell[0]!==null || vm.opts.actions.assign.function($index)"></span>
-        <span ng-if="vm.opts.actions.edit.function && vm.opts.actions.edit.if($index)" class="tbl-iconfont tbl-iconfont-pen" ng-click="(row.meta.disable && onDisabledRowClick($event, row)) || row.meta.disable !vm.opts.actions.edit.function || vm.editableCell[0]!==null || vm.opts.actions.edit.function($index)"></span>
-        <span ng-if="vm.opts.actions.add.function && vm.opts.actions.add.if($index)" class="icon icon-cal-button" ng-click="(row.meta.disable && onDisabledRowClick($event, row)) || row.meta.disable !vm.opts.actions.add.function || vm.editableCell[0] !== null || vm.opts.actions.add.function($index)"></span>
-        <span ng-if="vm.opts.actions.confirm.function && vm.opts.actions.confirm.if($index)" class="iconfont iconfont-check" ng-click="(row.meta.disable && onDisabledRowClick($event, row)) || row.meta.disable !vm.opts.actions.confirm.function ||  vm.editableCell[0]!=null || vm.opts.actions.confirm.function($index)"></span>
-        <span ng-if="vm.opts.actions.delete.function && vm.opts.actions.delete.if($index)" class="tbl-iconfont tbl-iconfont-delete" ng-click="(row.meta.disable && onDisabledRowClick($event, row)) || row.meta.disable !vm.opts.actions.delete.function || vm.editableCell[0]!==null || vm.opts.actions.delete.function($index)"></span>
+        <span ng-if="vm.opts.actions.assign.function && vm.opts.actions.assign.if($index)" class="tbl-iconfont tbl-iconfont-export" ng-click="(row.meta.disable && onDisabledRowClick($event, row)) || row.meta.disable || !vm.opts.actions.assign.function || vm.editableCell[0]!==null || vm.opts.actions.assign.function($index)"></span>
+        <span ng-if="vm.opts.actions.edit.function && vm.opts.actions.edit.if($index)" class="tbl-iconfont tbl-iconfont-pen" ng-click="(row.meta.disable && onDisabledRowClick($event, row)) || row.meta.disable || !vm.opts.actions.edit.function || vm.editableCell[0]!==null || vm.opts.actions.edit.function($index)"></span>
+        <span ng-if="vm.opts.actions.add.function && vm.opts.actions.add.if($index)" class="icon icon-cal-button" ng-click="(row.meta.disable && onDisabledRowClick($event, row)) || row.meta.disable || !vm.opts.actions.add.function || vm.editableCell[0] !== null || vm.opts.actions.add.function($index)"></span>
+        <span ng-if="vm.opts.actions.confirm.function && vm.opts.actions.confirm.if($index)" class="iconfont iconfont-check" ng-click="(row.meta.disable && onDisabledRowClick($event, row)) || row.meta.disable || !vm.opts.actions.confirm.function ||  vm.editableCell[0]!=null || vm.opts.actions.confirm.function($index)"></span>
+        <span ng-if="vm.opts.actions.delete.function && vm.opts.actions.delete.if($index)" class="tbl-iconfont tbl-iconfont-delete" ng-click="(row.meta.disable && onDisabledRowClick($event, row)) || row.meta.disable || !vm.opts.actions.delete.function || vm.editableCell[0]!==null || vm.opts.actions.delete.function($index)"></span>
       </td>
 
     </tr>
