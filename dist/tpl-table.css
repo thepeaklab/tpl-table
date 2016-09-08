@@ -423,7 +423,7 @@ tpl-table .bottom-row .paginator__last.inactive:hover {
 }
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/david\/Development\/Projects\/directives\/tpl-table\/src\/tpltable\.directive\.scss}line{font-family:\00003167}}
 .tpltable__body tr.disabled {
-  opacity: 75%;
+  opacity: .5;
 }
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/david\/Development\/Projects\/directives\/tpl-table\/src\/tpltable\.directive\.scss}line{font-family:\00003171}}
 .tpltable__body tr.active {
