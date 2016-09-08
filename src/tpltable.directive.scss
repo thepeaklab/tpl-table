@@ -164,6 +164,10 @@ tpl-table {
       height: 36px;
       line-height: 36px;
 
+      &.disabled {
+        opacity: 75%;
+      }
+
       &.active {
         background-color: $color-blue-light !important;
 

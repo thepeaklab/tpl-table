@@ -66,7 +66,7 @@ angular.module('tpl.table').run(['$templateCache', function($templateCache) {
     "      </td>\n" +
     "    </tr>\n" +
     "\n" +
-    "    <tr ng-if=\"vm.opts.entries && vm.opts.entries.length\" ng-repeat=\"row in vm.opts.entries\">\n" +
+    "    <tr ng-if=\"vm.opts.entries && vm.opts.entries.length\" ng-repeat=\"row in vm.opts.entries\" ng-class=\"{'disabled': !row.meta || !row.meta.disable }\" ng-click=\"row.meta.disable && onDisabledRowClick($event, row) \">\n" +
     "\n" +
     "      <td ng-repeat=\"cell in vm.opts.entrieValuesOrder\" ng-mouseleave=\"hover=false\" ng-mouseenter=\"hover=true\" ng-style=\"vm.editableCell[1]===$parent.$index && vm.editableCell[0]===$parent.$parent.$index && {'background-color': vm.opts.colors.primaryColor, 'color': vm.opts.colors.primaryFontColor}\" ng-class=\"{'clickable': vm.opts.onRowClick, 'notclickable': !vm.opts.onRowClick || vm.editableCell[0]!==null}\" ng-click=\"!vm.opts.onRowClick || vm.editableCell[0]!==null || vm.opts.onRowClick($parent.$parent.$index)\" ng-if=\"!vm.opts.columns[$index].ngIf || vm.opts.columns[$index].ngIf()\">\n" +
     "\n" +
