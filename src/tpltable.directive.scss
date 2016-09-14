@@ -121,9 +121,7 @@ tpl-table {
           }
         }
       }
-
     }
-
   }
 }
 
@@ -138,6 +136,26 @@ tpl-table {
   &__head {
     border: 1px solid $border-color-grey;
     border-bottom: 2px solid $border-color-grey;
+
+    &.desc-sortable {
+      cursor: s-resize !important;
+    }
+
+    &.asc-sortable {
+      cursor: n-resize !important;
+    }
+
+    &.res-sortable {
+      cursor: pointer !important;
+    }
+
+    &.not-sortable {
+      cursor: default !important;
+    }
+
+    &__sortarrow {
+      float: right;
+    }
 
     tr {
       border: 1px solid $border-color-grey;

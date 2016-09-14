@@ -65,6 +65,15 @@
         vm.opts.entries = vm.opts.entries || [];
         vm.opts.entrieValuesOrder = vm.opts.entrieValuesOrder || null;
         vm.opts.onRowClick = vm.opts.onRowClick || null;
+        vm.opts.onSortAsc = vm.opts.onSortAsc || function() {
+          return;
+        };
+        vm.opts.onSortDesc = vm.opts.onSortDesc || function() {
+          return;
+        };
+        vm.opts.onClearSort = vm.opts.onClearSort || function() {
+          return;
+        };
         // removed since version 1.2 and replaced by the 'actions'-object
         // vm.opts.onAssignBtnClick = vm.opts.onAssignBtnClick || null;
         // vm.opts.onEditBtnClick = vm.opts.onEditBtnClick || null;
@@ -128,6 +137,16 @@
           content: vm.POSSIBLE_CONTENT_TYPES[vm.CONTENT_TYPE_TEXT]
         }];
 
+        angular.forEach(vm.opts.columns, function(column) {
+          if (column) {
+            if (!column.sortable) {
+              column.sortable = false;
+            }
+            column.sortAscActive = false;
+            column.sortDescActive = false;
+          }
+        });
+
         vm.paginationStart = 1;
         vm.paginationEnd = 1;
         vm.opts.colors = vm.opts.colors || {};
@@ -135,7 +154,6 @@
         vm.opts.colors.secondaryColor = vm.opts.colors.secondaryColor || '#004894';
         vm.opts.colors.primaryFontColor = vm.opts.colors.primaryFontColor || '#333333';
         vm.opts.colors.secondaryFontColor = vm.opts.colors.secondaryFontColor || '#ffffff';
-
 
         tplTableService.addTable(angular.copy(vm.opts));
 
@@ -409,6 +427,28 @@
         if (entry && entry.meta && entry.meta.onDisabledRowClick) {
           entry.meta.onDisabledRowClick();
         }
+      };
+
+      $scope.onTableHeaderCellClick = function onTableHeaderCellClick(index) {
+
+        if (vm.opts.columns.sortable) {
+          var column = vm.opts.columns[index];
+
+          if (!column.sortAscActive && !column.sortDescActive) {
+            column.sortAscActive = true;
+            column.sortDescActive = false;
+            vm.opts.onSortAsc(index);
+          } else if (column.sortAscActive && !column.sortDescActive) {
+            column.sortAscActive = false;
+            column.sortDescActive = true;
+            vm.opts.onSortDesc(index);
+          } else if (!column.sortAscActive && column.sortDescActive) {
+            column.sortAscActive = false;
+            column.sortDescActive = false;
+            vm.opts.onClearSort(index);
+          }
+        }
+
       };
 
       function getCellValue(row, cell) {

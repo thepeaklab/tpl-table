@@ -18,9 +18,11 @@
 
   <thead class="tpltable__head">
     <tr>
-      <th ng-repeat="column in vm.opts.columns" ng-if="!column.ngIf || column.ngIf()">
+      <th ng-repeat="column in vm.opts.columns" ng-if="!column.ngIf || column.ngIf()" ng-class="{'asc-sortable': column.sortable && !column.sortAscActive && !column.sortDescActive, 'desc-sortable': column.sortable && column.sortAscActive && !column.sortDescActive, 'res-sortable': column.sortable && !column.sortAscActive && column.sortDescActive, 'not-sortable': !column.sortable}" ng-click="!column.sortable || onTableHeaderCellClick($index)">
         <span ng-if="!column.translateColumn">{{column.name}}</span>
         <span ng-if="column.translateColumn">{{column.name | translate}}</span>
+        <span class="tpltable__head__sortarrow" ng-if="column.sortAscActive">&uarr;</span>
+        <span class="tpltable__head__sortarrow" ng-if="column.sortDescActive">&darr;</span>
       </th>
       <th ng-if="vm.opts.showActionsColumn" class="edit">Aktionen</th>
     </tr>

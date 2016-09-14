@@ -49,9 +49,11 @@ angular.module('tpl.table').run(['$templateCache', function($templateCache) {
     "\n" +
     "  <thead class=\"tpltable__head\">\n" +
     "    <tr>\n" +
-    "      <th ng-repeat=\"column in vm.opts.columns\" ng-if=\"!column.ngIf || column.ngIf()\">\n" +
+    "      <th ng-repeat=\"column in vm.opts.columns\" ng-if=\"!column.ngIf || column.ngIf()\" ng-class=\"{'asc-sortable': column.sortable && !column.sortAscActive && !column.sortDescActive, 'desc-sortable': column.sortable && column.sortAscActive && !column.sortDescActive, 'res-sortable': column.sortable && !column.sortAscActive && column.sortDescActive, 'not-sortable': !column.sortable}\" ng-click=\"!column.sortable || onTableHeaderCellClick($index)\">\n" +
     "        <span ng-if=\"!column.translateColumn\">{{column.name}}</span>\n" +
     "        <span ng-if=\"column.translateColumn\">{{column.name | translate}}</span>\n" +
+    "        <span class=\"tpltable__head__sortarrow\" ng-if=\"column.sortAscActive\">&uarr;</span>\n" +
+    "        <span class=\"tpltable__head__sortarrow\" ng-if=\"column.sortDescActive\">&darr;</span>\n" +
     "      </th>\n" +
     "      <th ng-if=\"vm.opts.showActionsColumn\" class=\"edit\">Aktionen</th>\n" +
     "    </tr>\n" +
