@@ -422,6 +422,12 @@
       };
       $scope.onTableHeaderCellClick = function onTableHeaderCellClick(index) {
         var column = vm.opts.columns[index];
+        for (var i = 0; i < vm.opts.columns.length; i++) {
+          if (i !== index) {
+            vm.opts.columns[i].sortAscActive = false;
+            vm.opts.columns[i].sortDescActive = false;
+          }
+        }
         if (column.sortable) {
           if (!column.sortAscActive && !column.sortDescActive) {
             column.sortAscActive = true;
