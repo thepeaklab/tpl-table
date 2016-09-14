@@ -431,8 +431,9 @@
 
       $scope.onTableHeaderCellClick = function onTableHeaderCellClick(index) {
 
-        if (vm.opts.columns.sortable) {
-          var column = vm.opts.columns[index];
+        var column = vm.opts.columns[index];
+
+        if (column.sortable) {
 
           if (!column.sortAscActive && !column.sortDescActive) {
             column.sortAscActive = true;
