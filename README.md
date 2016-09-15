@@ -5,6 +5,7 @@
 * NPM (works with version 3.9.2)
 
 ### Libraries
+* @angular/common
 * @angular/core
 * @angular/forms
 * @angular/http
@@ -23,11 +24,22 @@ npm run init
 
 
 
+# Development
+
+Run the following command to serve the application on port 8080
+
+```
+npm start
+```
+
+
+
+
 # Usage
 
 Install via
 ```
-npm i --save 'git+https://stash.thepeaklab.biz/scm/open/tpl-table.git#2.0.0-beta.2'
+npm i --save 'git+https://stash.thepeaklab.biz/scm/open/tpl-table.git#2.0.0-beta.3'
 ```
 
 Import via
@@ -38,18 +50,20 @@ import 'tpl-table';
 Look at the following example:
 
 ```
-import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, NgModule, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs/Rx';
-import { TplTableColumnContentType, TplTableOptions } from 'tpl-table';
+import { TplTableColumnContentType, TplTableModule, TplTableOptions } from 'tpl-table';
+
+@NgModule({
+  imports: [ TplTableModule ]
+})
+export class YourModule {}
 
 @Component({
   selector: 'your-selector',
   template: `
     <tpl-table [tplTableOptions]="options" (searchChange)="tableSearchChange($event)" (pageChange)="tablePageChange($event)" (pageSizeChange)="tablePageSizeChange($event)"></tpl-table>
-  `,
-  directives: [
-    TplTableComponent
-  ]
+  `
 })
 export class YourComponent implements AfterViewInit, OnDestroy, OnInit {
   options: TplTableOptions;

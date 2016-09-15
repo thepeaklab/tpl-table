@@ -10,8 +10,7 @@ import { TplTableComponent } from './tpl-table.component';
   selector: 'root',
   template: `
     <tpl-table [tplTableOptions]="options" (searchChange)="tableSearchChange($event)" (pageChange)="tablePageChange($event)" (pageSizeChange)="tablePageSizeChange($event)"></tpl-table>
-  `,
-  directives: [TplTableComponent]
+  `
 })
 export class RootComponent implements AfterViewInit, OnDestroy, OnInit {
   options: TplTableOptions;

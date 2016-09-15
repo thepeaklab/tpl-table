@@ -53,9 +53,69 @@
 .tbl-iconfont-pen:before {
   content: "c";
 }
+.tbl-iconfont-check:before {
+  content: '✓';
+}
+.tbl-iconfont-cancel:before {
+  content: '✗';
+}
 .iconfont-add:before {
   content: "+";
 }
+/* BOOTSTRAP */
+/* INPUT GROUP */
+.input-group {
+  position: relative;
+  display: table;
+  border-collapse: separate;
+}
+.input-group[class*="col-"] {
+  float: none;
+  padding-left: 0;
+  padding-right: 0;
+}
+/* END INPUT GROUP */
+/* INPUT GROUP ADDON */
+.input-group-addon {
+  display: table-cell;
+}
+.input-group-addon:not(:first-child):not(:last-child) {
+  border-radius: 0;
+}
+.input-group-addon {
+  width: 1%;
+  min-width: 16px;
+
+  white-space: nowrap;
+  vertical-align: middle;
+}
+.input-group-addon {
+  padding: 6px 12px;
+  font-size: 14px;
+  font-weight: normal;
+  line-height: 1;
+  color: #555555;
+  text-align: center;
+  background-color: #eeeeee;
+  border: 1px solid #cccccc;
+  border-radius: 4px;
+}
+.input-group-addon:first-child {
+  border-bottom-right-radius: 0;
+  border-top-right-radius: 0;
+}
+.input-group-addon:first-child {
+  border-right: 0;
+}
+.input-group-addon:last-child {
+  border-bottom-left-radius: 0;
+  border-top-left-radius: 0;
+}
+.input-group-addon:last-child {
+  border-left: 0;
+}
+/* END INPUT GROUP ADDON */
+/* END BOOTSTRAP */
 tpl-table .icon {
   display: inline-block;
   vertical-align: baseline !important;
@@ -70,18 +130,18 @@ tpl-table .top-row {
   font-size: 12px;
 
 }
+tpl-table .top-row .elementsperside__select {
+  float: left;
+
+}
 tpl-table .top-row .elementsperside__label {
   height: 28px;
-  line-height: 28px;
-  display: inline-block;/* TODO: not working properly */
-  vertical-align: middle;
-  position: relative;
-  margin-top: -22px;
+  line-height: 28px;/* display: inline-block; *//* vertical-align: middle; *//* TODO: not working properly */
+  position: relative;/* margin-top: -22px; *//* TODO: not working properly */
   margin-left: 5px;
 
 }
-tpl-table .top-row__entry-count {
-  float: left;
+tpl-table .top-row__entry-count {/* float: left; */
   height: 30px;
   border: 1px solid #ebebeb;
   border-radius: 0 !important;
@@ -90,6 +150,7 @@ tpl-table .top-row__entry-count {
 }
 tpl-table .top-row form {
   float: right;
+  max-width: 200px;
   height: 30px;
   line-height: 28px;
 
@@ -149,7 +210,7 @@ tpl-table .bottom-row .paginator__first.inactive:hover {
 }
 tpl-table .bottom-row .paginator__mid {
   border-right: 1px solid #ebebeb;
-  cursor: pointer;
+  // cursor: pointer;
 
 }
 tpl-table .bottom-row .paginator__mid.active {
@@ -179,7 +240,9 @@ tpl-table .bottom-row .paginator__last.inactive:hover {
 
   width: 100%;
 
-  border: 1px solid #ebebeb;
+  border-top: 1px solid #ebebeb;
+  border-right: 1px solid #ebebeb;
+  border-left: 1px solid #ebebeb;
 }
 .tpltable__head {
   border: 1px solid #ebebeb;
@@ -192,8 +255,7 @@ tpl-table .bottom-row .paginator__last.inactive:hover {
   line-height: 36px;
 
 }
-.tpltable__head tr th {
-  border: 1px solid #ebebeb;
+.tpltable__head tr th {/* border: 1px solid #ebebeb; */
   line-height: 36px;
   height: 36px;
   padding: 0 10px;
@@ -274,6 +336,7 @@ tpl-table .bottom-row .paginator__last.inactive:hover {
 
 }
 .tpltable__body tr td .cell-controll.save {
+  right: 38px;
   background-color: #004894;
   border-left: 1px solid #ebebeb;
 

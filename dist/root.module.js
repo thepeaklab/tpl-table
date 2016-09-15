@@ -9,19 +9,24 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
-var TranslatePipe = (function () {
-    function TranslatePipe() {
+var platform_browser_1 = require('@angular/platform-browser');
+var root_component_1 = require('./root.component');
+var tpl_table_module_1 = require('./tpl-table.module');
+var RootModule = (function () {
+    function RootModule() {
     }
-    TranslatePipe.prototype.transform = function (input) {
-        return input;
-    };
-    TranslatePipe = __decorate([
-        core_1.Pipe({
-            name: 'translate'
+    RootModule = __decorate([
+        core_1.NgModule({
+            imports: [
+                platform_browser_1.BrowserModule,
+                tpl_table_module_1.TplTableModule
+            ],
+            declarations: [root_component_1.RootComponent],
+            bootstrap: [root_component_1.RootComponent]
         }), 
         __metadata('design:paramtypes', [])
-    ], TranslatePipe);
-    return TranslatePipe;
+    ], RootModule);
+    return RootModule;
 }());
-exports.TranslatePipe = TranslatePipe;
-//# sourceMappingURL=tpl-table-translate.pipe.js.map
+exports.RootModule = RootModule;
+//# sourceMappingURL=root.module.js.map

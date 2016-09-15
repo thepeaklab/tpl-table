@@ -1,13 +1,9 @@
 import { Component, EventEmitter, Inject, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { FormControl, FORM_DIRECTIVES, REACTIVE_FORM_DIRECTIVES } from '@angular/forms';
+import { FormControl } from '@angular/forms';
 import * as _ from 'lodash';
-import { TranslatePipe } from 'ng2-translate/ng2-translate';
 import { Subject, Subscription } from 'rxjs/Rx';
 
-import { FocusMeDirective } from './helper';
 import { TplTableCallback, TplTableCellEditModel, TplTableColors, TplTableColumn, TplTableColumnContentType, TplTableOptions, TplTablePageChangeModel, TplTablePageSizeChangeModel, TplTableRow, TplTableSearchChangeModel, TplTableStateBeforeDetail, TplTableStateBeforeSearch } from './interfaces';
-import { LoadingPointsComponent } from './loading-points';
-import { CheckmarkPipe, ToRangePipe } from './pipes';
 import { TplTableService } from './tpl-table.service';
 
 const MAX_PAGINATION_BUTTONS: number = 5;
@@ -95,7 +91,7 @@ let vm: TplTableComponent;
             ...
           </div>
           <template ngFor let-i [ngForOf]="[paginationStart, paginationEnd] | toRange">
-            <div *ngIf="i" [class.active]="i === paginationModel" (click)="i !== paginationModel && setPage(i, true)" [ngStyle]="handleMidPaginatorStyles(i)" (mouseenter)="onMidPaginatorMouseEnter()" (mouseleave)="onMidPaginatorMouseLeave()" class="paginator__mid">
+            <div *ngIf="i" [class.active]="i === paginationModel" (click)="i !== paginationModel && setPage(i, true)" [ngStyle]="handleMidPaginatorStyles(i)" (mouseenter)="onMidPaginatorMouseEnter(i)" (mouseleave)="onMidPaginatorMouseLeave()" class="paginator__mid">
               {{i}}
             </div>
           </template>
@@ -125,20 +121,6 @@ let vm: TplTableComponent;
       cursor: pointer;
     }
     `
-  ],
-  directives: [
-    FocusMeDirective,
-    FORM_DIRECTIVES,
-    LoadingPointsComponent,
-    REACTIVE_FORM_DIRECTIVES
-  ],
-  providers: [
-    TplTableService
-  ],
-  pipes: [
-    CheckmarkPipe,
-    ToRangePipe,
-    TranslatePipe
   ]
 })
 export class TplTableComponent implements OnDestroy, OnInit {
@@ -213,6 +195,7 @@ export class TplTableComponent implements OnDestroy, OnInit {
   searchPlaceholderText: string;
   tmpEditedCellData: TplTableRow;
 
+  private currentlyHoveredPage: number;
   private entriesPerPageCount: number;
   private log: Console;
   private paginationModel: number;
@@ -341,13 +324,15 @@ export class TplTableComponent implements OnDestroy, OnInit {
     this.pageMid1Hover = false;
   }
 
-  onMidPaginatorMouseEnter() {
+  onMidPaginatorMouseEnter(i) {
     this.log.info('onMidPaginatorMouseEnter');
+    this.currentlyHoveredPage = i;
     this.pageMidHover = true;
   }
 
   onMidPaginatorMouseLeave() {
     this.log.info('onMidPaginatorMouseLeave');
+    this.currentlyHoveredPage = null;
     this.pageMidHover = false;
   }
 
@@ -391,26 +376,28 @@ export class TplTableComponent implements OnDestroy, OnInit {
 
   handleMid1PaginatorStyles(): any {
     if (this.pageMid1Hover) {
-      return {'color': this.colors.secondaryColor, 'background-color': this.colors.primaryColor};
+      return {'color': this.colors.secondaryColor, 'background-color': this.colors.primaryColor, 'cursor': 'pointer'};
     }
     return {'color': this.colors.secondaryColor};
   }
 
-  handleMidPaginatorStyles(page: number): any { // TODO: not working properly
-    if (page !== this.paginationModel && !this.pageMidHover) {
-      return {'color': this.colors.secondaryColor, 'cursor': 'pointer'};
-    }
+  handleMidPaginatorStyles(page: number): any {
+    if (page === this.currentlyHoveredPage) {
+      if (this.currentlyHoveredPage !== this.paginationModel && !this.pageMidHover) {
+        return {'color': this.colors.secondaryColor, 'cursor': 'pointer'};
+      }
 
-    if (page !== this.paginationModel && this.pageMidHover) {
-      return {'background-color': this.colors.primaryColor, 'color': this.colors.secondaryColor, 'cursor': 'pointer'};
-    }
+      if (this.currentlyHoveredPage !== this.paginationModel && this.pageMidHover) {
+        return {'background-color': this.colors.primaryColor, 'color': this.colors.secondaryColor, 'cursor': 'pointer'};
+      }
 
-    return {'color': this.colors.secondaryFontColor, 'background-color': this.colors.secondaryColor};
+      return {'color': this.colors.secondaryFontColor, 'background-color': this.colors.secondaryColor, 'cursor': 'initial'};
+    }
   }
 
   handleMid2PaginatorStyles(): any {
     if (this.pageMid2Hover) {
-      return {'color': this.colors.secondaryColor, 'background-color': this.colors.primaryColor};
+      return {'color': this.colors.secondaryColor, 'background-color': this.colors.primaryColor, 'cursor': 'pointer'};
     }
 
     return {'color': this.colors.secondaryColor};

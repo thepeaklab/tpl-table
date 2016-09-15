@@ -10,13 +10,15 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('@angular/core');
 var FocusMeDirective = (function () {
-    function FocusMeDirective() {
+    function FocusMeDirective(el) {
+        this.el = el.nativeElement;
     }
     FocusMeDirective.prototype.ngOnChanges = function (changes) {
+        var _this = this;
         if (changes['focusMe'].currentValue === true) {
             setTimeout(function () {
-                element[0].focus();
-                // changes['focusMe'] = false;
+                _this.el.focus();
+                _this.focusMe = false;
             }, 0);
         }
     };
@@ -28,7 +30,7 @@ var FocusMeDirective = (function () {
         core_1.Directive({
             selector: '[focusMe]'
         }), 
-        __metadata('design:paramtypes', [])
+        __metadata('design:paramtypes', [core_1.ElementRef])
     ], FocusMeDirective);
     return FocusMeDirective;
 }());

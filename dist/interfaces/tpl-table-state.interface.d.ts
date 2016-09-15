@@ -1,4 +1,4 @@
-export interface TplTablePage {
+export interface TplTableState {
     actualPage: number;
     actualSearch: string;
     actualEntriesPerPageCount: number;
