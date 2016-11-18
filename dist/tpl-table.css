@@ -296,7 +296,7 @@ tpl-table .top-row .elementsperside__label {
   display: inline-block;
   vertical-align: middle;
   position: relative;
-  margin-top: -22px;
+  margin-top: -24px;
   margin-left: 5px;
 }
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/david\/Development\/Projects\/directives\/tpl-table\/src\/tpltable\.directive\.scss}line{font-family:\0000339}}
