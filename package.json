@@ -52,7 +52,7 @@
   },
   "scripts": {
     "typings": "typings",
-    "postinstall": "typings install",
+    "postinstall": "./node_modules/.bin typings install",
     "clean": "rimraf .tmp dist",
     "lint": "tslint src/**/*.ts",
     "unit": "karma start config/karma.conf.js",
