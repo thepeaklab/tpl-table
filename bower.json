@@ -1,11 +1,11 @@
 {
   "name": "tpl.table",
-  "version": "0.9.3",
+  "version": "borderless-1.3.16",
   "main": [
     "dist/tpl-table.js"
   ],
   "dependencies": {
-    "tpl.scope-listener-manager": "http://stash.thepeaklab.biz:7990/scm/open/scope-listener-manager.git"
+    "tpl.scope-listener-manager": "https://stash.thepeaklab.biz/scm/open/scope-listener-manager.git"
   },
   "devDependencies": {
     "angular": "latest"
